@@ -1292,6 +1292,11 @@ footer {
     height: 82px;
     font-size: 26px;
   }
+
+  /* Adjust table for vertical orientation on mobile */
+  .table-rail, .table-felt {
+    border-radius: 40% / 50% !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
