@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" role="img" aria-labelledby="title">
+  <title>Carte dorée de l'Afrique</title>
+  <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0ad"/><stop offset=".45" stop-color="#e0b84a"/><stop offset="1" stop-color="#9b6d16"/></linearGradient></defs>
+  <rect x="2" y="2" width="60" height="76" rx="8" fill="url(#gold)" stroke="#ffe7a0" stroke-width="2"/>
+  <rect x="5" y="5" width="54" height="70" rx="6" fill="none" stroke="#8a6418" stroke-opacity=".7"/>
+  <text x="10" y="18" fill="#5c0a10" font-family="Georgia,serif" font-size="12" font-weight="700">A</text>
+  <path d="M34 17 29 21 27 28 23 34 25 42 29 47 30 55 36 62 41 58 40 51 45 45 43 39 47 34 43 29 42 23 37 21Z" fill="#5c0a10"/>
+  <path d="m29 21-4-3-3 2 4 4m-1 10-5 2 2 4m11 22 3 6 4 1" fill="none" stroke="#5c0a10" stroke-width="2" stroke-linecap="round"/>
+  <text x="47" y="70" fill="#5c0a10" font-family="Georgia,serif" font-size="12" font-weight="700" transform="rotate(180 47 70)">A</text>
+</svg>
