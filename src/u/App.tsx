@@ -1215,6 +1215,7 @@ export default function App() {
   const playerName = currentUser?.name || currentUser?.pseudo || "Vous"
   const heroPlayer = players.find(p => p.isHero)
   const currentHeroChips = heroPlayer ? heroPlayer.chips : userCave
+  const tableName = new URLSearchParams(window.location.search).get("nom") || "Table Afripoks"
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
@@ -1248,11 +1249,11 @@ export default function App() {
             <span className="text-sm">🚪</span>
             <span className="tracking-wide uppercase" style={{ fontFamily: "var(--font-display)" }}>Quitter</span>
           </button>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-black tracking-widest text-amber-200 uppercase drop-shadow-md" style={{ fontFamily: "var(--font-display)" }}>
-              Table #1
+          <div className="table-title-block flex items-center gap-2">
+            <span className="table-title text-sm font-black tracking-widest text-amber-200 uppercase drop-shadow-md" style={{ fontFamily: "var(--font-display)" }}>
+              {tableName}
             </span>
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-400/20 text-amber-300">
+            <span className="table-round text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-400/20 text-amber-300">
               NL Texas Hold'em ({roundName})
             </span>
           </div>

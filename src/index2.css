@@ -298,6 +298,35 @@ body {
     letter-spacing: 0 !important;
   }
 
+  .table-title-block {
+    flex: 1 1 180px;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 3px !important;
+  }
+
+  .table-title {
+    display: block;
+    width: 100%;
+    max-width: 58vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px !important;
+    line-height: 1.1;
+  }
+
+  .table-round {
+    max-width: 58vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 9px !important;
+    line-height: 1.2;
+    padding: 3px 6px !important;
+  }
+
   .table-header span {
     white-space: nowrap;
   }
@@ -308,8 +337,10 @@ body {
   }
 
   .table-stage {
-    width: min(98vw, 720px) !important;
-    height: min(52dvh, 390px) !important;
+    width: min(96vw, 720px) !important;
+    height: auto !important;
+    max-height: min(48dvh, 330px);
+    aspect-ratio: 1.95 / 1;
     margin-top: 2px;
   }
 
@@ -453,8 +484,25 @@ body {
   }
 
   .table-stage {
-    width: min(82vw, 760px) !important;
-    height: min(62dvh, 300px) !important;
+    width: min(78vw, 760px) !important;
+    height: auto !important;
+    max-height: min(58dvh, 270px);
+    aspect-ratio: 2.25 / 1;
+  }
+
+  .table-title-block {
+    flex-direction: row;
+    align-items: center !important;
+  }
+
+  .table-title {
+    max-width: 30vw;
+    font-size: 12px !important;
+  }
+
+  .table-round {
+    max-width: 28vw;
+    font-size: 8px !important;
   }
 
   .game-footer {
