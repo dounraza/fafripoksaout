@@ -82,4 +82,7 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    allowedHosts: ['frontv1-production.up.railway.app'],
+  },
 });
