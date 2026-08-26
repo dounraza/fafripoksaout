@@ -72,6 +72,21 @@ export default defineConfig({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'src/index.html'),
+        lobby: path.resolve(__dirname, 'src/lobby.html'),
+        connexion: path.resolve(__dirname, 'src/connexion.html'),
+        inscription: path.resolve(__dirname, 'src/inscription.html'),
+        depot: path.resolve(__dirname, 'src/depot.html'),
+        retrait: path.resolve(__dirname, 'src/retrait.html'),
+        account: path.resolve(__dirname, 'src/account.html'),
+        admin: path.resolve(__dirname, 'src/admin.html'),
+        code: path.resolve(__dirname, 'src/code.html'),
+        'mot-de-passe-oublie': path.resolve(__dirname, 'src/mot-de-passe-oublie.html'),
+        'nouveau-mot-de-passe': path.resolve(__dirname, 'src/nouveau-mot-de-passe.html'),
+      },
+    },
   },
   server: {
     port: 5173,
@@ -83,6 +98,7 @@ export default defineConfig({
     },
   },
   preview: {
-    allowedHosts: ['frontv1-production.up.railway.app'],
+    port: Number(process.env.PORT) || 4173,
+    allowedHosts: true,
   },
 });
