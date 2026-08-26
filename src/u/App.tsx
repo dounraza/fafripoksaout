@@ -1224,9 +1224,9 @@ export default function App() {
   }
 
   return (
-    <div className="room-bg w-full h-screen flex flex-col justify-between overflow-hidden select-none">
+    <div className="room-bg table-screen w-full h-screen flex flex-col justify-between overflow-hidden select-none">
       <header
-        className="w-full flex items-center justify-between px-6 py-2.5 z-30 flex-shrink-0"
+        className="table-header w-full flex items-center justify-between px-6 py-2.5 z-30 flex-shrink-0"
         style={{
           background: "linear-gradient(180deg, rgba(30, 3, 7, 0.98) 0%, rgba(20, 2, 4, 0.88) 100%)",
           borderBottom: "1.5px solid rgba(217, 174, 75, 0.4)",
@@ -1284,8 +1284,8 @@ export default function App() {
       </header>
 
       {/* ── Table de poker ───────────────────────────────────────────────────── */}
-      <main className="flex-1 flex items-center justify-center relative w-full px-4 overflow-hidden min-h-0">
-        <div className="relative" style={{ width: "min(88vw, 1040px)", height: "min(66vh, 560px)", zIndex: 1 }}>
+      <main className="table-main flex-1 flex items-center justify-center relative w-full px-4 overflow-hidden min-h-0">
+        <div className="table-stage relative" style={{ width: "min(88vw, 1040px)", height: "min(66vh, 560px)", zIndex: 1 }}>
           <div className="table-rail absolute rounded-[50%]" style={{ inset: "6%", border: "2px solid rgba(201,168,76,0.15)" }}>
             {players.map((_, i) => {
               const angle = SEAT_ANGLES[i] + 20
@@ -1413,12 +1413,12 @@ export default function App() {
 
       {/* ── Barre d'actions & Contrôles inférieure (Footer ergonomique non-bloquant) ── */}
       <footer
-        className="w-full relative z-40 bg-transparent border-t border-amber-500/10 p-0 flex items-center justify-center gap-3 flex-shrink-0"
+        className="game-footer w-full relative z-40 bg-transparent border-t border-amber-500/10 p-0 flex items-center justify-center gap-3 flex-shrink-0"
         style={{ minHeight: "44px" }}
       >
         {/* Côté Gauche : Chat & Info */}
         {/* Centre : Actions du Joueur */}
-        <div className="flex-1 flex items-center justify-center max-w-2xl">
+        <div className="player-action-panel flex-1 flex items-center justify-center max-w-2xl">
           {heroAction ? (
             <div
               className="px-5 py-2 rounded-xl border border-amber-400/50 bg-black/80 shadow-lg text-xs font-bold uppercase tracking-wider text-amber-300 animate-pulse"
@@ -1431,14 +1431,18 @@ export default function App() {
               const defaultActions = ["fold", "check", "call", "raise"]
               const available = legalActions.length > 0 ? legalActions : defaultActions
               return (
-                <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+                <div className="action-grid flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+                  <div className="mobile-turn-label">
+                    <span>Votre tour</span>
+                    <strong>{currentHeroChips.toLocaleString()} jetons</strong>
+                  </div>
                   {available.map((action) => {
                     if (action === "raise") {
                       return (
-                        <div key="raise-container" className="flex items-center gap-1.5 bg-black/60 border border-amber-500/30 p-1 rounded-xl">
+                        <div key="raise-container" className="raise-control flex items-center gap-1.5 bg-black/60 border border-amber-500/30 p-1 rounded-xl">
                           <button
                             onClick={() => setRaiseAmount(prev => Math.max(20, prev - 50))}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300 hover:bg-amber-800 text-xs font-bold transition-colors cursor-pointer"
+                            className="raise-step w-7 h-7 flex items-center justify-center rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300 hover:bg-amber-800 text-xs font-bold transition-colors cursor-pointer"
                           >
                             -
                           </button>
@@ -1446,17 +1450,17 @@ export default function App() {
                             type="number" 
                             value={raiseAmount} 
                             onChange={(e) => setRaiseAmount(Number(e.target.value))}
-                            className="w-16 px-1.5 py-1 rounded bg-black/80 border border-amber-500/40 text-amber-200 text-center font-mono font-bold text-xs focus:outline-none focus:border-amber-400"
+                            className="raise-input w-16 px-1.5 py-1 rounded bg-black/80 border border-amber-500/40 text-amber-200 text-center font-mono font-bold text-xs focus:outline-none focus:border-amber-400"
                           />
                           <button
                             onClick={() => setRaiseAmount(prev => prev + 50)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300 hover:bg-amber-800 text-xs font-bold transition-colors cursor-pointer"
+                            className="raise-step w-7 h-7 flex items-center justify-center rounded-lg bg-amber-950/60 border border-amber-500/30 text-amber-300 hover:bg-amber-800 text-xs font-bold transition-colors cursor-pointer"
                           >
                             +
                           </button>
                           <button
                             onClick={() => handleHeroAction(`raise:${raiseAmount}`)}
-                            className="action-btn px-4 py-1.5 rounded-lg text-xs font-black shadow-md hover:scale-105 transition-transform cursor-pointer"
+                            className="action-btn raise-submit px-4 py-1.5 rounded-lg text-xs font-black shadow-md hover:scale-105 transition-transform cursor-pointer"
                             style={{
                               background: "linear-gradient(135deg, rgba(180,110,10,0.95), rgba(110,65,5,0.95))",
                               border: "1.5px solid #f59e0b",
@@ -1475,7 +1479,7 @@ export default function App() {
                       <button
                         key={action}
                         onClick={() => handleHeroAction(action)}
-                        className="action-btn px-4 sm:px-6 py-2 rounded-xl text-xs font-black shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        className="action-btn main-action px-4 sm:px-6 py-2 rounded-xl text-xs font-black shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
                         style={{
                           background: style.bg,
                           border: `1.5px solid ${style.border}`,
@@ -1492,7 +1496,7 @@ export default function App() {
                   <button
                     onClick={() => handleHeroAction("allin")}
                     disabled={currentHeroChips <= 0}
-                    className="action-btn px-4 sm:px-6 py-2 rounded-xl text-xs font-black shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="action-btn main-action px-4 sm:px-6 py-2 rounded-xl text-xs font-black shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       background: "linear-gradient(135deg, #7f1d1d, #3f0a13)",
                       border: "1.5px solid #f43f5e",
@@ -1519,13 +1523,13 @@ export default function App() {
         </div>
 
         {/* Côté Droit : Bouton Chat déplacé */}
-        <div className="flex items-center gap-2">
+        <div className="chat-control flex items-center gap-2">
           <button
             onClick={() => {
               if (!isChatOpen) setUnreadChatCount(0)
               setIsChatOpen(prev => !prev)
             }}
-            className="action-btn relative px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600/30 hover:bg-amber-600/50 border border-amber-400/40 text-amber-200 cursor-pointer transition-all shadow-sm"
+            className="action-btn chat-toggle relative px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600/30 hover:bg-amber-600/50 border border-amber-400/40 text-amber-200 cursor-pointer transition-all shadow-sm"
           >
             <span className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -1547,7 +1551,7 @@ export default function App() {
       {/* ── Fenêtre Popup du Chat ────────────────────────────────────────────── */}
       {isChatOpen && (
         <div
-          className="fixed bottom-20 left-4 sm:left-auto sm:right-6 w-96 max-w-[calc(100vw-2rem)] h-[480px] rounded-2xl flex flex-col overflow-hidden shadow-2xl z-50 animate-fade-in"
+          className="chat-window fixed bottom-20 left-4 sm:left-auto sm:right-6 w-96 max-w-[calc(100vw-2rem)] h-[480px] rounded-2xl flex flex-col overflow-hidden shadow-2xl z-50 animate-fade-in"
           style={{
             background: "linear-gradient(170deg, rgba(30, 4, 8, 0.98), rgba(16, 2, 4, 0.99))",
             border: "2px solid rgba(217, 174, 75, 0.7)",
