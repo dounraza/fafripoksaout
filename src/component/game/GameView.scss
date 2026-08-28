@@ -1,0 +1,226 @@
+.game-view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: transparent;
+}
+
+.table-area {
+    /* Format horizontal très large et plat */
+    width: 190%;
+    max-width: 1600px;
+    height: 350px;
+
+    position: relative;
+
+    /* Tapis Vert */
+    background-color: #1a6e35;
+
+    /* LED Strip Effect - Blue */
+    border: 15px solid #1a1a1a;
+    box-shadow: 
+        0 0 30px 15px rgba(0, 150, 255, 0.6),
+        inset 0 0 20px #000;
+
+    /* Forme de table de poker étirée (capsule horizontale) */
+    border-radius: 125px; 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-branding {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.table-logo {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    opacity: 0.9;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.table-name {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 
+        0 0 10px #ffd700, 
+        0 0 20px #ffd700, 
+        0 0 30px #b8860b;
+}
+
+
+/* Animation pour les cartes */
+@keyframes card-hover {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.card {
+    animation: card-hover 2s ease-in-out infinite;
+}
+
+.chairs-container,
+.players-info-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Styles pour les chaises */
+.seat {
+    position: absolute;
+    width: 80px; 
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Look and Feel: Solid Black Leather Chair - Shadow removed */
+    background: radial-gradient(circle at 30% 30%, #444, #111);
+    border: 4px solid #333;
+    box-shadow: none;
+    z-index: 5;
+    opacity: 1;
+}
+
+/* Dossier de la chaise */
+.chair-back {
+    position: absolute;
+    top: -30px; /* Positionné au-dessus de l'assise */
+    width: 60px;
+    height: 40px;
+    background: linear-gradient(to bottom, #444, #000);
+    border: 3px solid #333;
+    border-radius: 10px 10px 5px 5px;
+    z-index: 4; /* Derrière l'assise */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+/* Bras de la chaise */
+.chair-arm {
+    position: absolute;
+    top: 20px;
+    width: 15px;
+    height: 40px;
+    background: linear-gradient(to right, #5d4037, #3e2723);
+    border-radius: 5px;
+    z-index: 6; /* Au-dessus de l'assise */
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.chair-arm-left {
+    left: -10px;
+    transform: rotate(-10deg);
+}
+
+.chair-arm-right {
+    right: -10px;
+    transform: rotate(10deg);
+}
+
+/* 9 positions pour les chaises (autour du tapis) */
+.seat-0 { top: 105%; left: 49%; transform: translateX(-50%); }
+.seat-1 { top: 105%; left: 15%; }
+.seat-2 { top: 80%; left: -12%; transform: translateY(-50%); }
+.seat-3 { bottom: 65%; left: -12%; }
+.seat-4 { bottom: 105%; left: 15%; transform: translateX(-50%); }
+.seat-5 { bottom: 105%; left: 45%; }
+.seat-6 { top: -15%; left: 85%; transform: translateY(-50%); }
+.seat-7 { top: 30%; left: 100%; }
+.seat-8 { top: 105%; left: 85%; }
+
+/* Styles pour les infos joueurs (sur le tapis) */
+.player-info-container {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    
+    /* Look & Feel propre et simple */
+    background: transparent;
+    border: none;
+    padding: 8px;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Positions précises pour les infos joueurs */
+.player-info-0 { top: 105%; left: 62%; transform: translate(-50%, -50%); }
+.player-info-1 { top: 105%; left: 28%; transform: translate(-50%, -50%); }
+.player-info-2 { top: 105%; left: -2%; transform: translate(-50%, -50%)rotate(70deg); }
+.player-info-3 { bottom: 83%; left: -4%; transform: translate(-50%, 50%)rotate(120deg); }
+.player-info-4 { bottom: 130%; left: 2%; transform: translate(-50%, 50%); }
+.player-info-5 { bottom: 130%; left: 37%; transform: translate(-50%, 50%); }
+.player-info-6 { top: -30%; left: 77%; transform: translate(-50%, -50%); }
+.player-info-7 { top: 65%; left: 102%; transform: translate(-50%, -50%) rotate(-90deg); }
+.player-info-8 { top: 105%; left: 92%; transform: translate(-50%, -50%) rotate(-15deg); }
+
+/* Style spécifique par joueur pour les cartes (ajustez les valeurs ici) */
+.card-container-0 { transform: translateY(-10px) rotate(0deg) !important; }
+.card-container-1 { transform: translateY(-10px) !important; }
+.card-container-2 { transform: translateY(-46px) translateX(5px) rotate(0deg) !important; }
+.card-container-3 { transform: translateY(-45px) translateX(0px) rotate(0deg)!important; }
+.card-container-4 { transform: translateY(100px) !important; }
+.card-container-5 { transform: translateY(100px) !important; }
+.card-container-6 { transform: translateY(100px) !important; }
+.card-container-7 { transform: translateY(-5px) translateX(0px) rotate(0deg)!important; }
+.card-container-8 { transform: translateY(-20px) translateX(-18px) rotate(-15deg)!important; }
+
+/* Styles spécifiques pour chaque chaise (ajustez ici) */
+.chair-0 {transform: rotate(180deg) !important;//skew(10deg) 
+}
+.chair-1 {transform: rotate(180deg) !important;}
+.chair-2 {transform: rotate(-105deg) !important;}
+.chair-3 {transform: rotate(-55deg) !important;}
+.chair-4 {}
+.chair-5 {}
+.chair-6 {}
+.chair-7 {transform: rotate(90deg) !important;}
+.chair-8 {transform: rotate(160deg) !important;}
+
+.chair-inactive {
+    filter: grayscale(100%) brightness(0.5);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.community-cards-container {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

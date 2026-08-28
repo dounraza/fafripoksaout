@@ -1,7 +1,4 @@
-
-
-# Dependencies and generated output must be rebuilt in Railway's Linux image.
+.env
 node_modules/
-dist/
-.vite/
-npm-debug.log*
+build/
+.vercel
