@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://afripoks-backend-production.up.railway.app';
 const API_URL = `${BASE_URL}/api/auth/admin/login`; 
 
 export const loginAdmin = async (email, password) => {

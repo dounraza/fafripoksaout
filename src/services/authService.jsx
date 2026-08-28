@@ -2,7 +2,7 @@ import axios from 'axios';
 import api from './api';
 import { onlineUsersSocket } from '../engine/socket';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://afripoks-backend-production.up.railway.app';
 const API_URL = `${BASE_URL}/api/auth/login`; 
 
 export const uploadAvatar = async (file) => {

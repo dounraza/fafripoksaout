@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { getConnectedUsers } from '../services/api';
 import io from 'socket.io-client';
 
-const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'https://afripoks-backend-production.up.railway.app';
 
 export const useConnectedUsers = () => {
   const [connectedCount, setConnectedCount] = useState(0);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://afripoks-backend-production.up.railway.app';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -97,7 +97,7 @@ export const getFullAvatarUrl = (avatarPath) => {
   if (!avatarPath) return '/avatars/0.png';
   if (avatarPath.startsWith('http') || avatarPath.startsWith('blob:')) return avatarPath;
   
-  const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+  const baseUrl = process.env.REACT_APP_BASE_URL || 'https://afripoks-backend-production.up.railway.app';
   
   // Si l'avatar commence par /uploads ou uploads
   if (avatarPath.startsWith('/uploads')) return `${baseUrl}${avatarPath}`;

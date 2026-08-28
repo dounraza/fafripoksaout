@@ -1,5 +1,5 @@
 import api, { publicApi } from "./api";
-const API_URL = `http://localhost:5000/api/tables`;
+const API_URL = `https://afripoks-backend-production.up.railway.app/api/tables`;
 
 
 export const getAll = async (setter, setSitCounts) => {
