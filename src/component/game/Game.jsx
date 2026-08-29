@@ -506,17 +506,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         <div key={tableId} className="game-container">
             <ToastContainer />
           
-            {tableState.handInProgress && tableState.toAct === tableState.seat && ( 
-                <PlayerActions
-                    tableState={tableState}
-                    betSize={betSize}
-                    setBetSize={setBetSize}
-                    emitPlayerAction={emitPlayerAction}
-                    addRange={addRange}
-                    minusRange={minusRange}
-                />
-            )}
-
             <GameView
                 tableState={tableState}
                 tableId={tableId}
@@ -545,6 +534,12 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                 dealer={dealer}
                 avatars={avatars}
                 potRef={potRef}
+                // Pass props for PlayerActions
+                betSize={betSize}
+                setBetSize={setBetSize}
+                emitPlayerAction={emitPlayerAction}
+                addRange={addRange}
+                minusRange={minusRange}
             />
 
             {!tableState.handInProgress && (

@@ -9,7 +9,7 @@ export async function syncSession() {
       return;
     }
 
-    const r = await fetch('https://afripoks-backend-production.up.railway.app/auth/me', {
+    const r = await fetch('http://localhost:5000/auth/me', {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + token

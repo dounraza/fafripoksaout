@@ -3,35 +3,31 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
     background-color: transparent;
+    overflow: hidden; /* Prevent any scrolling */
 }
 
 .table-area {
-    /* Format horizontal très large et plat */
-    width: 190%;
-    max-width: 1600px;
+    /* Scale down based on screen size */
+    transform-origin: center center;
+    
+    /* Responsive scaling factor (adjust as needed) */
+    @media (orientation: landscape) {
+        transform: scale(0.6); 
+    }
+    @media (orientation: portrait) {
+        transform: scale(0.4);
+    }
+
+    /* Fixed dimensions to act as the base for scaling */
+    width: 1000px;
     height: 350px;
-
+    
     position: relative;
-
-    /* Tapis Vert */
-    background-color: #1a6e35;
-
-    /* LED Strip Effect - Blue */
-    border: 15px solid #1a1a1a;
-    box-shadow: 
-        0 0 30px 15px rgba(0, 150, 255, 0.6),
-        inset 0 0 20px #000;
-
-    /* Forme de table de poker étirée (capsule horizontale) */
-    border-radius: 125px; 
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
+
 
 .table-branding {
     position: absolute;
@@ -143,15 +139,15 @@
 }
 
 /* 9 positions pour les chaises (autour du tapis) */
-.seat-0 { top: 105%; left: 49%; transform: translateX(-50%); }
-.seat-1 { top: 105%; left: 15%; }
-.seat-2 { top: 80%; left: -12%; transform: translateY(-50%); }
-.seat-3 { bottom: 65%; left: -12%; }
-.seat-4 { bottom: 105%; left: 15%; transform: translateX(-50%); }
-.seat-5 { bottom: 105%; left: 45%; }
-.seat-6 { top: -15%; left: 85%; transform: translateY(-50%); }
-.seat-7 { top: 30%; left: 100%; }
-.seat-8 { top: 105%; left: 85%; }
+.seat-0 { top: 105%; left: 53%; transform: translateX(-50%); }
+.seat-1 { top: 105%; left: 19%; }
+.seat-2 { top: 60%; left: 3%; transform: translateY(-50%); }
+.seat-3 { bottom: 65%; left: 4%; }
+.seat-4 { bottom: 95%; left: 25%; transform: translateX(-50%); }
+.seat-5 { bottom: 95%; left: 45%; }
+.seat-6 { top: -3%; left: 75%; transform: translateY(-50%); }
+.seat-7 { top: 30%; left: 90%; }
+.seat-8 { top: 105%; left: 75%; }
 
 /* Styles pour les infos joueurs (sur le tapis) */
 .player-info-container {
@@ -183,7 +179,7 @@
 .player-info-7 { top: 65%; left: 102%; transform: translate(-50%, -50%) rotate(-90deg); }
 .player-info-8 { top: 105%; left: 92%; transform: translate(-50%, -50%) rotate(-15deg); }
 
-/* Style spécifique par joueur pour les cartes (ajustez les valeurs ici) */
+/* Styles spécifiques pour chaque joueur pour les cartes (ajustez les valeurs ici) */
 .card-container-0 { transform: translateY(-10px) rotate(0deg) !important; }
 .card-container-1 { transform: translateY(-10px) !important; }
 .card-container-2 { transform: translateY(-46px) translateX(5px) rotate(0deg) !important; }
@@ -193,6 +189,7 @@
 .card-container-6 { transform: translateY(100px) !important; }
 .card-container-7 { transform: translateY(-5px) translateX(0px) rotate(0deg)!important; }
 .card-container-8 { transform: translateY(-20px) translateX(-18px) rotate(-15deg)!important; }
+
 
 /* Styles spécifiques pour chaque chaise (ajustez ici) */
 .chair-0 {transform: rotate(180deg) !important;//skew(10deg) 
@@ -215,8 +212,8 @@
 .community-cards-container {
     position: absolute;
     top: 50%;
-    left: 0;
-    width: 100%;
+    left: 30%;
+    width: 33%;
     transform: translateY(-50%);
     z-index: 10;
     display: flex;
