@@ -66,7 +66,7 @@ const GameView = ({
                     top: '50%',
                     left: '50%',
                     width: '800px',
-                    height: '280px',
+                    height: '90vh',
                     transform: 'translate(-50%, -50%)',
                     borderRadius: '150px',
                     background: 'radial-gradient(ellipse at center, #065a2e 0%, #043d20 100%)',
