@@ -61,19 +61,7 @@ const GameView = ({
 
             <div className="table-area" ref={tableRef}>
                 {/* Visualisation de la table (tapis vert + LED) */}
-                <div className="table-visual" style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    width: '800px',
-                    height: '90vh',
-                    transform: 'translate(-50%, -50%)',
-                    borderRadius: '150px',
-                    background: 'radial-gradient(ellipse at center, #065a2e 0%, #043d20 100%)',
-                    border: '8px solid #1a3c6d', // Bordure LED bleue
-                    boxShadow: '0 0 20px rgba(0, 100, 255, 0.5), inset 0 0 50px rgba(0,0,0,0.5)',
-                    zIndex: 0
-                }}></div>
+                <div className="table-visual"></div>
 
                 {/* Logo and Table Name */}
                 <div className="table-branding" >
