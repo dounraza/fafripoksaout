@@ -43,10 +43,10 @@
 
 .chat-container {
     position: fixed;
-    bottom: 90px;
+    bottom: 1vh;
     right: 20px;
     width: 350px;
-    max-height: 550px;
+    max-height: 410px;
     /* Design Glassmorphism */
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(20px);
@@ -66,31 +66,32 @@
     .chat-header {
         background: rgba(255, 255, 255, 0.05);
         color: #fff;
-        padding: 16px 20px;
+        padding: 10px 15px; /* Réduit */
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 40px; /* Ajout d'une hauteur min */
 
         .chat-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px; /* Réduit */
             font-weight: 600;
-            font-size: 15px;
+            font-size: 13px; /* Réduit */
             color: #FFD700;
         }
 
         .chat-controls {
             display: flex;
-            gap: 10px;
+            gap: 6px; /* Réduit */
 
             .chat-control-btn {
                 background: rgba(255, 255, 255, 0.1);
                 border: none;
                 color: #fff;
                 cursor: pointer;
-                padding: 6px;
+                padding: 4px; /* Réduit */
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
