@@ -35,7 +35,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border-radius: 150px;
+        border-radius: 50%; /* Meilleure forme ovale */
+        aspect-ratio: 2 / 1; /* Forme cohérente */
         background: radial-gradient(rgb(6, 90, 46) 0%, rgb(4, 61, 32) 100%);
         border: 8px solid rgb(26, 60, 109);
         box-shadow: rgba(0, 100, 255, 0.5) 0px 0px 20px, rgba(0, 0, 0, 0.5) 0px 0px 50px inset;
@@ -43,14 +44,12 @@
 
         /* Mobile */
         @media (max-width: 768px) {
-            width: 110vw;
-            height: 106vh;
+            width: 118vw;
         }
 
         /* Web */
         @media (min-width: 769px) {
-            width: 52vw;
-            height: 58vh;
+            width: 800px;
         }
 
         .table-surface {
@@ -184,9 +183,9 @@
 .seat-1 { top: 105%; left: 29%; }
 .seat-2 { top:70%; left: 3%; transform: translateY(-50%); }
 .seat-3 { bottom: 65%; left: 4%; }
-.seat-4 { bottom: 105%; left: 25%; transform: translateX(-50%); }
+.seat-4 { bottom: 100%; left: 25%; transform: translateX(-50%); }
 .seat-5 { bottom: 105%; left: 45%; }
-.seat-6 { top: -14%; left: 75%; transform: translateY(-50%); }
+.seat-6 { top: -9%; left: 75%; transform: translateY(-50%); }
 .seat-7 { top: 30%; left: 90%; }
 .seat-8 { top: 105%; left: 75%; }
 

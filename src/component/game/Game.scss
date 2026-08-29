@@ -451,14 +451,17 @@
         }
 
         .thunder-animation-icon {
-            font-size: 100rem; /* Taille encore augmentée */
+            font-size: 5rem; /* Ajusté */
             color: #ffde00; /* Jaune éclair */
-            text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000; /* Lueur rouge intense */
-            position: relative;
-            animation: sonar-effect 1s infinite; /* Plus rapide */
-            margin-top: 10px;
+            text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+            position: absolute; /* Changé en absolute */
+            top: -50px;         /* Positionné au-dessus */
+            left: 50%;
+            transform: translateX(-50%);
+            animation: sonar-effect 1s infinite;
             display: inline-block;
-            z-index: 10000;
+            z-index: 100; /* Z-index élevé pour être au-dessus des cartes */
+            pointer-events: none;
         }
 
         .bet-control {
