@@ -140,12 +140,12 @@
 
 /* 9 positions pour les chaises (autour du tapis) */
 .seat-0 { top: 105%; left: 53%; transform: translateX(-50%); }
-.seat-1 { top: 105%; left: 19%; }
-.seat-2 { top: 60%; left: 3%; transform: translateY(-50%); }
+.seat-1 { top: 105%; left: 29%; }
+.seat-2 { top:70%; left: 3%; transform: translateY(-50%); }
 .seat-3 { bottom: 65%; left: 4%; }
-.seat-4 { bottom: 95%; left: 25%; transform: translateX(-50%); }
-.seat-5 { bottom: 95%; left: 45%; }
-.seat-6 { top: -3%; left: 75%; transform: translateY(-50%); }
+.seat-4 { bottom: 105%; left: 25%; transform: translateX(-50%); }
+.seat-5 { bottom: 105%; left: 45%; }
+.seat-6 { top: -14%; left: 75%; transform: translateY(-50%); }
 .seat-7 { top: 30%; left: 90%; }
 .seat-8 { top: 105%; left: 75%; }
 
@@ -170,7 +170,7 @@
 
 /* Positions précises pour les infos joueurs */
 .player-info-0 { top: 105%; left: 62%; transform: translate(-50%, -50%); }
-.player-info-1 { top: 105%; left: 28%; transform: translate(-50%, -50%); }
+.player-info-1 { top: 105%; left: 38%; transform: translate(-50%, -50%); }
 .player-info-2 { top: 86%; left: 8%; transform: translate(-50%, -50%)rotate(76deg); }
 .player-info-3 { bottom: 82%; left: 10%; transform: translate(-50%, 50%)rotate(120deg); }
 .player-info-4 { bottom: 110%; left: 15%; transform: translate(-50%, 50%); }
