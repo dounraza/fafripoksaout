@@ -49,6 +49,13 @@ const GameView = ({
 
     return (
         <div className="game-view-container">
+            {/* Overlay pour forcer le mode paysage */}
+            <div className="rotate-device-overlay">
+                <div className="rotate-message">
+                    Veuillez tourner votre appareil<br/>en mode paysage pour jouer
+                </div>
+            </div>
+
             {/* Player Actions (Forcé) */}
             <PlayerActions
                 tableState={tableState}

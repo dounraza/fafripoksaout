@@ -1,3 +1,36 @@
+/* Overlay Rotation Mobile */
+.rotate-device-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 999999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-family: sans-serif;
+
+    .rotate-message {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #FFD700;
+    }
+}
+
+@media screen and (orientation: portrait) and (max-width: 768px) {
+    .rotate-device-overlay {
+        display: flex;
+    }
+}
+
 .game-view-container {
     display: flex;
     margin-top: 3%;
