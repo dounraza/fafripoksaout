@@ -121,6 +121,20 @@ const PlayerDetails = ({
                     playerSmileys.find(s => s.seat === i) && <div><img src={playerSmileys.find(s => s.seat === i).smiley} alt="Smiley" style={{ width: '100%', borderRadius: '4pt' }} /></div>
                 )}
             </div>
+
+            {/* Animation tonnerre pour les perdants */}
+            {(() => {
+                const playerWinState = winData?.winStates?.find(w => w.seat === i);
+                const isOccupied = tableState.seats[i] !== null;
+                const isFolded = foldedPlayers.current.has(i);
+                
+                // On affiche l'animation si le siège est occupé, le joueur n'a pas foldé,
+                // il a un état de victoire défini, il n'est pas gagnant, et la révélation est finie.
+                if (isOccupied && !isFolded && playerWinState && playerWinState.isWinner === false && isRevealFinished) {
+                    return <div className="thunder-animation-icon">⚡</div>;
+                }
+                return null;
+            })()}
         </div>
     );
 };

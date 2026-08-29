@@ -332,7 +332,7 @@
     .player-action-container {
         padding: 10px;
         position: absolute;
-        bottom: 20px;
+        bottom: 5px; /* Descendu de 20px à 5px */
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
@@ -399,7 +399,7 @@
         .bet-input-container {
             display: flex;
             align-items: center;
-            background: linear-gradient(180deg, #333333 0%, #000000 100%);
+            background: #000000; /* Fond noir */
             border-radius: 20px; 
             padding: 4px 8px;   
             border: 3px solid rgba(255, 255, 255, 0.4); 
@@ -407,9 +407,44 @@
                 0 2px 4px rgba(0, 0, 0, 0.3),
                 inset 0 2px 3px rgba(255, 255, 255, 0.5),
                 inset 0 -2px 3px rgba(0, 0, 0, 0.3);
-            min-width: 100px;    /* Réduit de 140px à 100px */
+            min-width: 100px;
             height: 30px;        
             justify-content: space-between;
+            
+            input {
+                color: #ffffff; /* Texte blanc */
+            }
+        }
+
+        .player.lost {
+            animation: thunder-shake-center 0.8s cubic-bezier(.36,.07,.19,.97) both;
+            border: 3px solid #ff0000 !important; /* Bordure rouge intense */
+            background-color: rgba(255, 0, 0, 0.5) !important; /* Fond rouge plus visible */
+        }
+
+        /* Animation de secousse pour les perdants (globale au milieu de la table) */
+        @keyframes thunder-shake-center {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-50%, -50%) translateX(-15px); }
+            20%, 40%, 60%, 80% { transform: translate(-50%, -50%) translateX(15px); }
+        }
+
+        /* Effet sonar pour les perdants */
+        @keyframes sonar-effect {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .thunder-animation-icon {
+            font-size: 100rem; /* Taille encore augmentée */
+            color: #ffde00; /* Jaune éclair */
+            text-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000; /* Lueur rouge intense */
+            position: relative;
+            animation: sonar-effect 1s infinite; /* Plus rapide */
+            margin-top: 10px;
+            display: inline-block;
+            z-index: 10000;
         }
 
         .bet-control {

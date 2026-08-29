@@ -92,7 +92,7 @@ const Player = ({
         <>
             <div
                 ref={playerRefs[i]}
-                className={`player seat${i} ${(winData?.winStates ?? []).length > 0 && winData.winStates.find(w => w.seat === i)?.isWinner && isRevealFinished ? 'win' : ''} ${tableState.toAct === i ? 'active' : ''}`}
+                className={`player seat${i} ${(winData?.winStates ?? []).length > 0 && winData.winStates.find(w => w.seat === i)?.isWinner && isRevealFinished ? 'win' : ''} ${tableState.toAct === i ? 'active' : ''} ${(winData?.winStates ?? []).length > 0 && winData.winStates.find(w => w.seat === i)?.isWinner === false && isRevealFinished ? 'lost' : ''}`}
                 style={{ borderRadius: 12 }}
                 key={i}
             >

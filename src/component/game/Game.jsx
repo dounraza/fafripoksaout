@@ -504,6 +504,8 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
 
     return (
         <div key={tableId} className="game-container">
+            {/* Animation de défaite centrale */}
+            
             <ToastContainer />
           
             <GameView
