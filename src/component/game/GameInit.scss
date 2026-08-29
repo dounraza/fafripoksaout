@@ -33,7 +33,7 @@
     .table {
         position: absolute;
         width: 21rem;
-        height: 36rem;
+        height: 38rem; // Augmentation légère
         display: flex;
         align-items: center;
         justify-content: center;
@@ -43,7 +43,7 @@
 
             img {
                 width: 30rem;
-                height: 46rem;
+                height: 48rem; // Ajustement proportionnel
                 background: none;
                 object-fit: contain;
                 mix-blend-mode: normal;
@@ -152,7 +152,7 @@
 
                 &.holdem {
                     .card {
-                        width: 3.8rem; // Plus grand pour Hold'em (2 cartes)
+                        width: 3.8rem; // Restauré
                         margin: 0 -0.4rem;
                         
                         img {
@@ -163,7 +163,7 @@
 
                 &.omaha {
                     .card {
-                        width: 2.6rem; // Augmenté pour Omaha
+                        width: 2.6rem; // Restauré
                         margin: 0 -0.6rem; 
                         
                         img {
@@ -174,7 +174,7 @@
                 }
 
                 .card {
-                    width: 2.6rem;
+                    width: 2.6rem; // Restauré
                     margin: 0 -0.6rem; 
                     transition: transform 0.2s;
                     position: relative;
@@ -347,6 +347,8 @@
             align-items: center;
             flex-direction: column;
             gap: 1rem;
+            position: absolute;
+            top: -15rem; // Déplacé en haut
 
             .principals, .pot {
                 display: flex;
@@ -413,8 +415,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 20rem;
-        height: 4.5rem;
+        width: 22rem; // Légère augmentation
+        height: 5rem; // Légère augmentation
         gap: 0.4rem;
         position: absolute;
         top: 45%;
@@ -422,7 +424,7 @@
         z-index: 3;
 
         .card-community {
-            width: 3.5rem;
+            width: 3.8rem; // Légère augmentation
 
             img {
                 border-radius: 4px;
