@@ -92,7 +92,7 @@ const PlayerDetails = ({
                             {winData.winStates.find(w => w.seat === i).handName}
                         </div>
                     ) : (
-                        <div className="hand-name-result lose-badge" style={{ backgroundColor: '#888888', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
+                        <div className="hand-name-result lose-badge" style={{ backgroundColor: '#888888', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', textTransform: 'uppercase',display:none }}>
                             {foldedPlayers.current.has(i) ? 'Fold' : 'Lose'}
                         </div>
                     )
