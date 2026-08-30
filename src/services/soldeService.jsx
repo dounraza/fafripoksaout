@@ -12,10 +12,16 @@ export const soldeInit = async (data) => {
 
 export const getSolde = async (userId, setSold) => {    
   try {
+    console.log(`[getSolde] Fetching balance for userId: ${userId}`);
     const response = await api.get(API_URL+`/${userId}`);
     
+    console.log("[getSolde] API response:", response);
+    
     if(response.data){
+        console.log("[getSolde] Data received:", response.data);
         setSold(response.data.solde); 
+    } else {
+        console.warn("[getSolde] No data in response.");
     }
   } catch (error) {
     console.error("Erreur getSolde:", error.response ? error.response.data : error.message);

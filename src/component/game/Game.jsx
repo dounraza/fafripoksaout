@@ -17,6 +17,7 @@ import CommunityCards from './CommunityCards';
 import Pots from './Pots';
 import SoundButton from './SoundButton';
 import GameHistoryModal from './GameHistoryModal';
+import RecaveModal from './RecaveModal';
 import { onlineUsersSocket } from '../../engine/socket';
 
 import TableTabs from './TableTabs';
@@ -26,6 +27,8 @@ import GameView from './GameView';
 const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) => {
     const [tableState, setTableState] = useState({});
     const [betSize, setBetSize] = useState(0);
+    const [showRecaveModal, setShowRecaveModal] = useState(false);
+    const [hasRecaved, setHasRecaved] = useState(false);
     const [winData, setWinData] = useState({});
     const [sb, setSb] = useState(-1);
     const [bb, setBb] = useState(-1);
@@ -62,7 +65,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     const [allInArr, setAllInArr] = useState([]);
     const [gameOver, setGameOver] = useState(false);
     const potRef = useRef(null);
-    const [hideStack, setHideStack] = useState(false)
     const [winAllIn, setWinAllIn] = useState(false)
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false)
     const [lastMatchHistory, setLastMatchHistory] = useState(null)
@@ -201,6 +203,11 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             }
         });
 
+        socketRef.current.on('needRecave', (data) => {
+            toast.info(data.message);
+            setShowRecaveModal(true);
+        });
+
         socketRef.current.on('playerActionError', (data) => {
             toast.error(data.message || "Une erreur est survenue.");
         });
@@ -263,6 +270,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             setCommunityShow([]);
             setAllInArr([]);
             foldedPlayers.current = new Set();
+            setHasRecaved(false);
 
             console.log("Start");
             setShouldShareCards(false);
@@ -270,11 +278,16 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
 
         socketRef.current.on('tableState', (data) => {
+            console.log("DEBUG [Socket tableState received]:", data);
             const minBet = data?.legalActions?.chipRange?.min ?? 0;
             setBetSize(minBet);
             setTableState(data);
             setTableSessionId(data.tableId);
             
+            if (!data.handInProgress && data.seats && data.seats[data.seat] && data.seats[data.seat].stack === 0 && !hasRecaved) {
+                setShowRecaveModal(true);
+            }
+
             setAvatars(data.avatars);
 
             if(data.communityCards.length > 0) {
@@ -465,22 +478,44 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
     }
 
-    const quitter = () => {
+    const quitter = (force = false) => {
         socketRef.current.emit("quit", {
             tableId: tableId,
             tableSessionId: tableState.tableId,
             playerSeats: tableState.seat,
+            force: force // Transmettre le flag
         });
         const userId = sessionStorage.getItem('userId');
         onlineUsersSocket.emit('joined-tables:leave', { uid: parseInt(userId), tid: parseInt(tableId) });
         
         // Nettoyage complet du session storage
         sessionStorage.removeItem('lastTableId');
-        // Si vous avez d'autres clés spécifiques aux tables, ajoutez-les ici :
-        // sessionStorage.removeItem('autreCle');
         
         // Dispatch d'un événement pour avertir les autres composants de la sortie
         window.dispatchEvent(new Event('tableLeft'));
+    };
+
+    // ... (rest of the component)
+
+    // Removed redundant useEffect
+
+    const handleRecave = (amount) => {
+        if (hasRecaved) return; // Sécurité : empêcher l'envoi multiple
+        
+        setHasRecaved(true);
+        setShowRecaveModal(false);
+        socketRef.current.emit('recave', { tableId, amount });
+    };
+
+    const handleRecaveTimeout = () => {
+        const userId = sessionStorage.getItem('userId');
+        socketRef.current.emit('leave_table', { tableId, userId });
+        setShowRecaveModal(false);
+        navigate('/acceuil');
+    };
+
+    const handleRecaveClose = () => {
+        setShowRecaveModal(false);
     };
 
     const getSrcCard = (card_id) => {
@@ -504,7 +539,15 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
 
     return (
         <div key={tableId} className="game-container">
-            {/* Animation de défaite centrale */}
+            <RecaveModal 
+                isOpen={showRecaveModal} 
+                onClose={handleRecaveClose} 
+                onRecave={handleRecave} 
+                onTimeout={handleRecaveTimeout}
+                minCave={100} // A ajuster selon vos besoins
+                defaultCave={500} // A ajuster selon vos besoins
+                timer={10}
+            />
             
             <ToastContainer />
           
@@ -530,7 +573,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                 foldedPlayers={foldedPlayers}
                 shouldShareCards={shouldShareCards}
                 sharingCards={sharingCards}
-                hideStack={hideStack}
                 sb={sb}
                 bb={bb}
                 dealer={dealer}

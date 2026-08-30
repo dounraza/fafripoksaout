@@ -37,9 +37,11 @@ const PlayerCards = ({
                                 }}
                             >
                                 {tableState.playerCards.map((card, idx) => (
-                                    <div className="card" key={idx}>
-                                        <img src={getSrcCard(card)} alt="" />
-                                    </div>
+                                    card ? (
+                                        <div className="card" key={idx}>
+                                            <img src={getSrcCard(card)} alt="" />
+                                        </div>
+                                    ) : null
                                 ))}
                             </div>
                         ) : (

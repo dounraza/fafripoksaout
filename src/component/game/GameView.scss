@@ -62,27 +62,28 @@
     position: relative;
 }
 
-
     .table-visual {
+        /* Vue aplatie : rotation légère pour la perspective */
         position: absolute;
-        top: 50%;
+        top: 90%;
         left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%; /* Meilleure forme ovale */
-        aspect-ratio: 2 / 1; /* Forme cohérente */
-        background: radial-gradient(rgb(6, 90, 46) 0%, rgb(4, 61, 32) 100%);
+        transform: translate(-50%, -50%) rotateX(75deg);
+        
+        border-radius: 50%; 
+        aspect-ratio: 1 / 1; 
+        background: radial-gradient(rgb(0, 81, 39) 0%, rgb(4, 61, 32) 100%);
         border: 8px solid rgb(26, 60, 109);
-        box-shadow: rgba(0, 100, 255, 0.5) 0px 0px 20px, rgba(0, 0, 0, 0.5) 0px 0px 50px inset;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 20px, rgba(0, 0, 0, 0.5) 0px 0px 20px inset; 
         z-index: 0;
 
         /* Mobile */
         @media (max-width: 768px) {
-            width: 118vw;
+            width: 130vw;
         }
 
         /* Web */
         @media (min-width: 769px) {
-            width: 800px;
+            width: 950px;
         }
 
         .table-surface {
@@ -102,9 +103,13 @@
         }
     }
 
+    .table-base {
+        display: none; /* Masqué car vue aplatie */
+    }
+
 .table-branding {
     position: absolute;
-    top: 50%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
@@ -212,15 +217,15 @@
 }
 
 /* 9 positions pour les chaises (autour du tapis) */
-.seat-0 { top: 105%; left: 53%; transform: translateX(-50%); }
-.seat-1 { top: 105%; left: 29%; }
-.seat-2 { top:70%; left: 3%; transform: translateY(-50%); }
-.seat-3 { bottom: 65%; left: 4%; }
-.seat-4 { bottom: 100%; left: 25%; transform: translateX(-50%); }
-.seat-5 { bottom: 105%; left: 45%; }
-.seat-6 { top: -9%; left: 75%; transform: translateY(-50%); }
-.seat-7 { top: 30%; left: 90%; }
-.seat-8 { top: 105%; left: 75%; }
+.seat-0 { top: 125%; left: 53%; transform: translateX(-50%); }
+.seat-1 { top: 125%; left: 29%; }
+.seat-2 { top:110%; left: 5%; transform: translateY(-50%); }
+.seat-3 { bottom: 30%; left: 4%; }
+.seat-4 { bottom: 45%; left: 25%; transform: translateX(-50%); }
+.seat-5 { bottom: 45%; left: 45%; }
+.seat-6 { top: 48%; left: 75%; transform: translateY(-50%); }
+.seat-7 { top: 80%; left: 100%; }
+.seat-8 { top: 115%; left: 80%; }
 
 /* Styles pour les infos joueurs (sur le tapis) */
 .player-info-container {
@@ -242,9 +247,9 @@
 }
 
 /* Positions précises pour les infos joueurs */
-.player-info-0 { top: 105%; left: 62%; transform: translate(-50%, -50%); }
-.player-info-1 { top: 105%; left: 38%; transform: translate(-50%, -50%); }
-.player-info-2 { top: 86%; left: 8%; transform: translate(-50%, -50%)rotate(76deg); }
+.player-info-0 { top: 125%; left: 62%; transform: translate(-50%, -50%); }
+.player-info-1 { top: 125%; left: 38%; transform: translate(-50%, -50%); }
+.player-info-2 { top: 96%; left: 8%; transform: translate(-50%, -50%)rotate(76deg); }
 .player-info-3 { bottom: 82%; left: 10%; transform: translate(-50%, 50%)rotate(120deg); }
 .player-info-4 { bottom: 110%; left: 15%; transform: translate(-50%, 50%); }
 .player-info-5 { bottom: 110%; left: 39%; transform: translate(-50%, 50%); }
@@ -255,20 +260,20 @@
 /* Styles spécifiques pour chaque joueur pour les cartes (ajustez les valeurs ici) */
 .card-container-0 { transform: translateY(-10px) rotate(0deg) !important; }
 .card-container-1 { transform: translateY(-10px) !important; }
-.card-container-2 { transform: translateY(-46px) translateX(5px) rotate(0deg) !important; }
-.card-container-3 { transform: translateY(-45px) translateX(0px) rotate(0deg)!important; }
-.card-container-4 { transform: translateY(100px) !important; }
-.card-container-5 { transform: translateY(100px) !important; }
-.card-container-6 { transform: translateY(100px) !important; }
-.card-container-7 { transform: translateY(-5px) translateX(0px) rotate(0deg)!important; }
-.card-container-8 { transform: translateY(-20px) translateX(-18px) rotate(-15deg)!important; }
+.card-container-2 { transform: translateY(-26px) translateX(105px) rotate(-15deg) !important; }
+.card-container-3 { transform: translateY(-55px) translateX(90px) rotate(0deg)!important; }
+.card-container-4 { transform: translateY(190px) !important; }
+.card-container-5 { transform: translateY(190px) !important; }
+.card-container-6 { transform: translateY(210px) !important; }
+.card-container-7 { transform: translateY(75px) translateX(-150px) rotate(0deg)!important; }
+.card-container-8 { transform: translateY(10px) translateX(-3px) rotate(-15deg)!important; }
 
 
 /* Styles spécifiques pour chaque chaise (ajustez ici) */
 .chair-0 {transform: rotate(180deg) !important;//skew(10deg) 
 }
 .chair-1 {transform: rotate(180deg) !important;}
-.chair-2 {transform: rotate(-105deg) !important;}
+.chair-2 {transform: rotate(-135deg) !important;}
 .chair-3 {transform: rotate(-55deg) !important;}
 .chair-4 {}
 .chair-5 {}
@@ -294,10 +299,10 @@
 
 .community-cards-container {
     position: absolute;
-    top: 50%;
-    left: 30%;
-    width: 33%;
-    transform: translateY(-50%);
+    top: 70%;
+    left: 50%;
+    width: 40%;
+    transform: translate(-50%, -50%) rotateX(65deg);
     z-index: 10;
     display: flex;
     justify-content: center;

@@ -10,8 +10,6 @@ const PlayerDetails = ({
     bb, 
     foldedPlayers, 
     chips, 
-    displayStack, 
-    isStackHidden, 
     showResult, 
     isRevealFinished,
     tableId,
@@ -85,21 +83,21 @@ const PlayerDetails = ({
                     }
                 })()}
             </div>
-            <div className="stacks">
-                {isStackHidden ? (
-                    showResult ? (
-                        winData?.winStates?.find(w => w.seat === i)?.isWinner ? (
-                            <div className="hand-name-result" style={{ color: '#00FF99', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                {winData.winStates.find(w => w.seat === i).handName}
-                            </div>
-                        ) : (
-                            <div className="hand-name-result lose-badge" style={{ backgroundColor: '#888888', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
-                                {foldedPlayers.current.has(i) ? 'Fold' : 'Lose'}
-                            </div>
-                        )
-                    ) : null
+
+            {/* Affichage permanent du solde */}
+            <div className="stacks" style={{ opacity: 1, visibility: 'visible', color: '#fff', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                {showResult ? (
+                    winData?.winStates?.find(w => w.seat === i)?.isWinner ? (
+                        <div className="hand-name-result" style={{ color: '#00FF99', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                            {winData.winStates.find(w => w.seat === i).handName}
+                        </div>
+                    ) : (
+                        <div className="hand-name-result lose-badge" style={{ backgroundColor: '#888888', color: 'white', fontSize: '0.7rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
+                            {foldedPlayers.current.has(i) ? 'Fold' : 'Lose'}
+                        </div>
+                    )
                 ) : (
-                    <>{tableState.seats[i] !== null ? (chips != null ? `${displayStack}` : <div className="no-chips" style={{ opacity: 0.7 }}>0</div>) : null}</>
+                    <>{tableState.seats[i] !== null ? (chips != null ? `${chips.stack}` : <div className="no-chips" style={{ opacity: 0.7 }}>0</div>) : null}</>
                 )}
             </div>
 
@@ -128,8 +126,6 @@ const PlayerDetails = ({
                 const isOccupied = tableState.seats[i] !== null;
                 const isFolded = foldedPlayers.current.has(i);
                 
-                // On affiche l'animation si le siège est occupé, le joueur n'a pas foldé,
-                // il a un état de victoire défini, il n'est pas gagnant, et la révélation est finie.
                 if (isOccupied && !isFolded && playerWinState && playerWinState.isWinner === false && isRevealFinished) {
                     return <div className="thunder-animation-icon">⚡</div>;
                 }

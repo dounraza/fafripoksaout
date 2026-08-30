@@ -25,7 +25,6 @@ const Player = ({
     allInArr,
     gameOver,
     isRevealFinished,
-    hideStack,
     tableId,
 }) => {
     const [smileysOpen, setSmileysOpen] = useState(false);
@@ -47,20 +46,23 @@ const Player = ({
         return () => smileySocket.off('receive-smiley', onReceiveSmiley);
     }, [tableId]);
 
-    const [displayStack, setDisplayStack] = useState(chips?.stack ?? 0);
-    const [isStackHidden, setIsStackHidden] = useState(false);
+    useEffect(() => {
+        console.log(`DEBUG [Player i=${i}] Received chips:`, chips);
+    }, [chips, i]);
+
     const [showResult, setShowResult] = useState(false);
 
     useEffect(() => {
         if (!gameOver) {
             setShowResult(false);
-            setIsStackHidden(false);
+        } else {
+            setShowResult(true);
+            const timeout = setTimeout(() => {
+                setShowResult(false);
+            }, 5000);
+            return () => clearTimeout(timeout);
         }
     }, [gameOver]);
-
-    useEffect(() => {
-        if (chips?.stack !== undefined) setDisplayStack(chips.stack);
-    }, [chips?.stack]);
 
     const [posCoords, setPosCoords] = useState({ tx: 0, ty: 0, px: 0, py: 0, zoom: 1 });
     useEffect(() => {
@@ -118,8 +120,6 @@ const Player = ({
                     bb={bb}
                     foldedPlayers={foldedPlayers}
                     chips={chips}
-                    displayStack={displayStack}
-                    isStackHidden={isStackHidden}
                     showResult={showResult}
                     isRevealFinished={isRevealFinished}
                     tableId={tableId}
@@ -135,10 +135,8 @@ const Player = ({
                     isOpen={smileysOpen} 
                     onClose={() => setSmileysOpen(false)} 
                     onSelect={(smiley) => {
-                        setSmiley(smiley);
                         setSmileysOpen(false);
                         sendSmiley(smiley);
-                        setTimeout(() => setSmiley(null), 8000);
                     }}
                 />
             )}

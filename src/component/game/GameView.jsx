@@ -31,7 +31,6 @@ const GameView = ({
     foldedPlayers,
     shouldShareCards,
     sharingCards,
-    hideStack,
     sb,
     bb,
     dealer,
@@ -69,6 +68,8 @@ const GameView = ({
             <div className="table-area" ref={tableRef}>
                 {/* Visualisation de la table (tapis vert + LED) */}
                 <div className="table-visual"></div>
+                {/* Pied de la table */}
+                <div className="table-base"></div>
 
                 {/* Logo and Table Name */}
                 <div className="table-branding" >
@@ -105,7 +106,6 @@ const GameView = ({
                                 allInArr={allInArr}
                                 isRevealFinished={isRevealFinished}
                                 gameOver={gameOver}
-                                hideStack={hideStack}
                                 tableId={tableId}
                             />
                         </PlayerInfo>
