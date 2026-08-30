@@ -65,7 +65,7 @@
     .table-visual {
         /* Vue aplatie : rotation légère pour la perspective */
         position: absolute;
-        top: 90%;
+        top: 85%;
         left: 50%;
         transform: translate(-50%, -50%) rotateX(75deg);
         
@@ -217,15 +217,15 @@
 }
 
 /* 9 positions pour les chaises (autour du tapis) */
-.seat-0 { top: 125%; left: 53%; transform: translateX(-50%); }
-.seat-1 { top: 125%; left: 29%; }
-.seat-2 { top:110%; left: 5%; transform: translateY(-50%); }
+.seat-0 { top: 115%; left: 53%; transform: translateX(-50%); }
+.seat-1 { top: 115%; left: 29%; }
+.seat-2 { top:105%; left: 5%; transform: translateY(-50%); }
 .seat-3 { bottom: 30%; left: 4%; }
 .seat-4 { bottom: 45%; left: 25%; transform: translateX(-50%); }
 .seat-5 { bottom: 45%; left: 45%; }
 .seat-6 { top: 48%; left: 75%; transform: translateY(-50%); }
 .seat-7 { top: 80%; left: 100%; }
-.seat-8 { top: 115%; left: 80%; }
+.seat-8 { top: 110%; left: 80%; }
 
 /* Styles pour les infos joueurs (sur le tapis) */
 .player-info-container {
@@ -247,8 +247,8 @@
 }
 
 /* Positions précises pour les infos joueurs */
-.player-info-0 { top: 125%; left: 62%; transform: translate(-50%, -50%); }
-.player-info-1 { top: 125%; left: 38%; transform: translate(-50%, -50%); }
+.player-info-0 { top: 115%; left: 62%; transform: translate(-50%, -50%); }
+.player-info-1 { top: 115%; left: 38%; transform: translate(-50%, -50%); }
 .player-info-2 { top: 96%; left: 8%; transform: translate(-50%, -50%)rotate(76deg); }
 .player-info-3 { bottom: 82%; left: 10%; transform: translate(-50%, 50%)rotate(120deg); }
 .player-info-4 { bottom: 110%; left: 15%; transform: translate(-50%, 50%); }
