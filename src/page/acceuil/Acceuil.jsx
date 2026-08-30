@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import "./Acceuil.scss";
+import "./acceuil.scss";
 import { getAll } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
 
