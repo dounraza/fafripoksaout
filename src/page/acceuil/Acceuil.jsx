@@ -741,9 +741,7 @@ export default function Accueil() {
             <br />
 
             <a
-              href={`/table?nom=${encodeURIComponent(
-                seat.name
-              )}&play=1`}
+              href={`/game/${seat.tableId}`}
             >
               Reprendre la table
             </a>
