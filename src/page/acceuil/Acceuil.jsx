@@ -414,12 +414,16 @@ export default function Accueil() {
     } catch {
       setUser(null);
     }
+  }, []);
 
+  useEffect(() => {
     try {
       const storedSeat = localStorage.getItem("afripoks.seat");
 
       if (storedSeat) {
-        setSeat(JSON.parse(storedSeat));
+        const parsedSeat = JSON.parse(storedSeat);
+        console.log("DEBUG [Seat object]:", parsedSeat);
+        setSeat(parsedSeat);
       }
     } catch {
       setSeat(null);
@@ -619,7 +623,7 @@ export default function Accueil() {
     <div className="accueil">
       <header>
         <div className="wrap bar">
-          <a className="brand" href="/">
+          <a className="brand" href="/" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>
             <span className="logo">
               <span className="orbit">
                 <i />

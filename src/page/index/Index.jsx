@@ -584,21 +584,21 @@ const Index = () => {
             Accueil
           </Link>
 
-          <Link to="/table">
+          <Link to="/">
             <span className="tag">
               JOUER
             </span>
             Cash games
           </Link>
 
-          <Link to="/table">
+          <Link to="/">
             <span className="tag">
               JOUER
             </span>
             Tournois
           </Link>
 
-          <Link to="/table">
+          <Link to="/">
             Apprendre le poker
           </Link>
 
