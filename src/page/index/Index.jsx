@@ -314,7 +314,7 @@ export default function App() {
         <div className="wrap">
           <h2>Votre siège vous attend</h2>
           <p>Il commence à croire que vous avez peur. 😂</p>
-          <a className="btn btn-gold btn-lg" href="/inscription.html">Créer un compte</a>
+          <a className="btn btn-gold btn-lg" href="/register">Créer un compte</a>
         </div>
       </section>
 
