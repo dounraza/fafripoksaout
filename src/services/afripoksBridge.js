@@ -59,7 +59,7 @@ export function initAuthFormTracking() {
     console.log('Afripoks Bridge: Form submitted', e.target);
     const form = e.target;
     if (!(form instanceof HTMLFormElement)) return;
-    if (!/connexion|inscription|login|register|signup/i.test(window.location.pathname + (form.action || "") + (form.id || ""))) {
+    if (!/login|register|signup/i.test(window.location.pathname + (form.action || "") + (form.id || ""))) {
       if (!form.querySelector("input[type=password]")) return;
     }
     const user = readForm(form);

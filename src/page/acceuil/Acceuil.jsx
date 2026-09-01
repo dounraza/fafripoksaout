@@ -614,7 +614,7 @@ export default function Accueil() {
     setUser(null);
     setMenuOpen(false);
 
-    window.location.href = "/connexion";
+    window.location.href = "/";
   };
 
   const displayName = getUserName(user) || "Joueur";
@@ -706,14 +706,14 @@ export default function Accueil() {
               <>
                 <a
                   className="btn btn-out"
-                  href="/connexion"
+                  href="/login"
                 >
                   Connexion
                 </a>
 
                 <a
                   className="btn btn-gold"
-                  href="/inscription"
+                  href="/register"
                 >
                   S'inscrire
                 </a>
