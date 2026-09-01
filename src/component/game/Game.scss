@@ -382,9 +382,9 @@
             width: 100%;
         }
 
-        .action-container {
+        .main-action-row, .raise-action-row {
             @include flex-center;
-            gap: 6px; /* Espacement réduit */
+            gap: 6px;
             display: flex;
             justify-content: center;
             width: 100%;

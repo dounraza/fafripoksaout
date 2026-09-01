@@ -13,7 +13,7 @@ const PlayerActions = ({
     if (!tableState.handInProgress || tableState.toAct !== tableState.seat) return null;
     return (
    <div className="player-action-container">
-    <div className="action-container">
+    <div className="main-action-row">
         {tableState.legalActions.actions.map((action) => (
             (action !== 'raise' && action !== 'bet') ? (
                 <div 
@@ -25,34 +25,35 @@ const PlayerActions = ({
                 </div>
             ) : null
         ))}
-        {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
-            <>
-                <div className="btn-allin" onClick={() => emitPlayerAction('raise', Number(tableState.legalActions.chipRange.max))}>
-                    Tapis
-                </div>
-                
-                <div className="input-group">
-                    <div className="bet-input-container">
-                        <div className="bet-control button-minus" onClick={minusRange}>
-                            <Minus />
-                        </div>
-                        <input
-                            className='bet-amount'
-                            type="number"
-                            min={tableState.legalActions.chipRange.min}
-                            max={tableState.legalActions.chipRange.max}
-                            value={betSize}
-                            onChange={(e) => setBetSize(Number(e.target.value))}
-                        />
-                        <div className="bet-control button-plus" onClick={addRange}>
-                            <Plus />
-                        </div>
-                    </div>
-                    <div className="btn-raise" onClick={() => emitPlayerAction('raise')}>Relancer</div>
-                </div>
-            </>
-        )}
     </div>
+    
+    {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
+        <div className="raise-action-row">
+            <div className="btn-allin" onClick={() => emitPlayerAction('raise', Number(tableState.legalActions.chipRange.max))}>
+                Tapis
+            </div>
+            
+            <div className="input-group">
+                <div className="bet-input-container">
+                    <div className="bet-control button-minus" onClick={minusRange}>
+                        <Minus />
+                    </div>
+                    <input
+                        className='bet-amount'
+                        type="number"
+                        min={tableState.legalActions.chipRange.min}
+                        max={tableState.legalActions.chipRange.max}
+                        value={betSize}
+                        onChange={(e) => setBetSize(Number(e.target.value))}
+                    />
+                    <div className="bet-control button-plus" onClick={addRange}>
+                        <Plus />
+                    </div>
+                </div>
+                <div className="btn-raise" onClick={() => emitPlayerAction('raise')}>Relancer</div>
+            </div>
+        </div>
+    )}
    </div>
         
     );
