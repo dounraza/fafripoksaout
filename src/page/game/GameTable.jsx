@@ -69,10 +69,31 @@ const GameTable = () => {
     return (
         <>
             <ToastContainer />
-            <div className="table-container" style={{ position: 'relative', minHeight: '100vh', backgroundImage: 'url("/table-bg.jpg")' }}> 
-                <img src="/table-bg.jpg" alt="..." style={{ width: '100%', height: '100vh', objectFit: 'cover', position: 'absolute' }} />
+            <div className="table-container" style={{ position: 'relative', minHeight: '100vh', display: 'flex', justifyContent: 'center', backgroundColor: '#2c0000' }}> 
+                <div className="tp-pillar left"></div>
+                <div className="tp-pillar right"></div>
                 
-                <div className="game-content" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+                {/* Image de fond centrée, entre les rideaux */}
+                <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: '15vw',  /* Même largeur que les rideaux */
+                    right: '15vw', /* Même largeur que les rideaux */
+                    backgroundImage: 'url("/table-bg.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    zIndex: 0
+                }} />
+                
+                {/* Boutons gauche */}
+                <div className="left-menu">
+                    <button className="avatar-btn">👩</button>
+                    <button className="small-btn">☰</button>
+                    
+                </div>
+
+                <div className="game-content" style={{ position: 'relative', width: '100%', zIndex: 1 }}>
                     {cavePlayer !== null && (
                         <Game
                         key={tableid}
@@ -80,6 +101,7 @@ const GameTable = () => {
                         tableSessionIdShared={tableSessionIdShared}
                         setTableSessionId={setTableSessionId}
                         cavePlayer={cavePlayer}
+                        onlyTable={!tableSessionIdShared}
                         />
                     )}
                 </div>

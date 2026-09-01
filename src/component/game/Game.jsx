@@ -23,8 +23,9 @@ import { onlineUsersSocket } from '../../engine/socket';
 import TableTabs from './TableTabs';
 import TableChat from './TableChat';
 import GameView from './GameView';
+import GameViewN from './GameViewN';
 
-const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) => {
+const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noTable = false }) => {
     const [tableState, setTableState] = useState({});
     const [betSize, setBetSize] = useState(0);
     const [showRecaveModal, setShowRecaveModal] = useState(false);
@@ -551,41 +552,76 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             
             <ToastContainer />
           
-            <GameView
-                tableState={tableState}
-                tableId={tableId}
-                game={game}
-                community={community}
-                communityShow={communityShow}
-                communityToShow={communityToShow}
-                communityReversNb={communityReversNb}
-                moveCommCards={moveCommCards}
-                gameOver={gameOver}
-                allInArr={allInArr}
-                winData={winData}
-                getSrcCard={getSrcCard}
-                playSound={playSound}
-                soundMute={soundMute}
-                isRevealFinished={isRevealFinished}
-                playerRefs={playerRefs}
-                tableRef={tableRef}
-                rever={rever}
-                foldedPlayers={foldedPlayers}
-                shouldShareCards={shouldShareCards}
-                sharingCards={sharingCards}
-                sb={sb}
-                bb={bb}
-                dealer={dealer}
-                avatars={avatars}
-                potRef={potRef}
-                // Pass props for PlayerActions
-                betSize={betSize}
-                setBetSize={setBetSize}
-                emitPlayerAction={emitPlayerAction}
-                addRange={addRange}
-                minusRange={minusRange}
-            />
-
+            {noTable ? (
+                <GameViewN
+                    tableState={tableState}
+                    tableId={tableId}
+                    game={game}
+                    community={community}
+                    communityShow={communityShow}
+                    communityToShow={communityToShow}
+                    communityReversNb={communityReversNb}
+                    moveCommCards={moveCommCards}
+                    gameOver={gameOver}
+                    allInArr={allInArr}
+                    winData={winData}
+                    getSrcCard={getSrcCard}
+                    playSound={playSound}
+                    soundMute={soundMute}
+                    isRevealFinished={isRevealFinished}
+                    playerRefs={playerRefs}
+                    tableRef={tableRef}
+                    rever={rever}
+                    foldedPlayers={foldedPlayers}
+                    shouldShareCards={shouldShareCards}
+                    sharingCards={sharingCards}
+                    sb={sb}
+                    bb={bb}
+                    dealer={dealer}
+                    avatars={avatars}
+                    potRef={potRef}
+                    betSize={betSize}
+                    setBetSize={setBetSize}
+                    emitPlayerAction={emitPlayerAction}
+                    addRange={addRange}
+                    minusRange={minusRange}
+                />
+            ) : (
+                <GameView
+                    tableState={tableState}
+                    tableId={tableId}
+                    game={game}
+                    community={community}
+                    communityShow={communityShow}
+                    communityToShow={communityToShow}
+                    communityReversNb={communityReversNb}
+                    moveCommCards={moveCommCards}
+                    gameOver={gameOver}
+                    allInArr={allInArr}
+                    winData={winData}
+                    getSrcCard={getSrcCard}
+                    playSound={playSound}
+                    soundMute={soundMute}
+                    isRevealFinished={isRevealFinished}
+                    playerRefs={playerRefs}
+                    tableRef={tableRef}
+                    rever={rever}
+                    foldedPlayers={foldedPlayers}
+                    shouldShareCards={shouldShareCards}
+                    sharingCards={sharingCards}
+                    sb={sb}
+                    bb={bb}
+                    dealer={dealer}
+                    avatars={avatars}
+                    potRef={potRef}
+                    betSize={betSize}
+                    setBetSize={setBetSize}
+                    emitPlayerAction={emitPlayerAction}
+                    addRange={addRange}
+                    minusRange={minusRange}
+                />
+            )}
+            
             {!tableState.handInProgress && (
                 <div 
                     className="menu-button" 
