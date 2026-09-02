@@ -11,20 +11,11 @@ const Depot = () => {
         <>
             <ToastContainer />
             <Nav />
-            <div className="depot-container">
-                
-                <div className="depot-content">
-                    <div className="title">Deposit</div>
-                    <Tracking>
+           
                         <div className="form-container">
                             <DepotMobileInput />     
                         </div>
-                        <div className="form-container">
-                            <DepotCryptoInput />
-                        </div>
-                    </Tracking>
-                </div>    
-            </div>
+                
         </>
         
     );

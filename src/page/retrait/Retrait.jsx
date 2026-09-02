@@ -11,20 +11,11 @@ const Retrait = () => {
         <>
             <ToastContainer />
             <Nav />
-            <div className="depot-container">
-                
-                <div className="depot-content">
-                    <div className="title">Retrait</div>
-                    <Tracking>
+            
                         <div className="form-container">
                             <RetraitMobileInput />     
                         </div>
-                        <div className="form-container cm">
-                            <RetraitCryptoInput />
-                        </div>
-                    </Tracking>
-                </div>    
-            </div>
+                        
         </>
         
     );
