@@ -429,7 +429,7 @@
             align-items: center;
             justify-content: center;
             gap: 7px;
-            background: #0bdb00;
+            background: #e0b84a;
             color: #000;
             font-weight: 700;
             padding: 11px 0;
@@ -440,10 +440,10 @@
             transition: all 0.1s ease;
             position: relative;
             box-shadow: 
-                0 4px 0 #089A00,
+                0 4px 0 #e0b84a,
                 0 6px 10px rgba(0, 0, 0, 0.4);
 
-            &:hover { background: #0bdb00; transform: translateY(-1px); }
+            &:hover { background: #e0b84a; transform: translateY(-1px); }
             &:active { transform: translateY(3px); box-shadow: 0 1px 0 #089A00; }
         }
 

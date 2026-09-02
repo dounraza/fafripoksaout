@@ -4,6 +4,7 @@ import { getAll } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Users, Wallet, RotateCcw } from 'lucide-react';
 
 // Table welcome messages mapping
 const WELCOME = {
@@ -358,6 +359,7 @@ export default function Accueil() {
   const [enterOpen, setEnterOpen] = useState(false);
   const [enterShow, setEnterShow] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lastTableId, setLastTableId] = useState(sessionStorage.getItem('lastTableId'));
 
   // Fetch tables on component mount
   useEffect(() => {
@@ -365,6 +367,12 @@ export default function Accueil() {
       console.error("Error fetching tables:", err)
     );
   }, []);
+
+  const lastTable = useMemo(() => {
+    return lastTableId && tables.length > 0 
+        ? tables.find(t => Number(t.id) === Number(lastTableId)) 
+        : null;
+  }, [lastTableId, tables]);
 
   // Fetch balance when user changes
   useEffect(() => {
@@ -636,8 +644,7 @@ export default function Accueil() {
               </span>
 
               <span className="disc">
-                <span className="mini red">A♥</span>
-                <span className="mini blk">A♠</span>
+                <img src="/logo.ico" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </span>
             </span>
 
@@ -733,7 +740,36 @@ export default function Accueil() {
       </div>
 
       <main className="wrap">
-        {seat && (
+        {lastTable && (
+            <div className="rejoin-banner" style={{ marginBottom: '20px' }}>
+                <div className="rejoin-banner-left">
+
+                     Tu t’es levé, mais tu restes à{" "}
+                          
+                    <div className="rejoin-table-name">
+                      {lastTable.name}
+                      
+                      </div>
+                      Tes blindes tournent
+                       encore
+                    <div className="rejoin-meta">
+                        <span><Users size={13} /> {sitCounts.get(String(lastTable.id)) || 0} joueurs</span>
+                        <span>SB {(lastTable?.smallBlind ?? 0).toLocaleString()} / BB {(lastTable?.bigBlind ?? 0).toLocaleString()} Ar</span>
+                        <span><Wallet size={13} /> {(lastTable?.cave ?? 0).toLocaleString()} Ar</span>
+                    </div>
+                </div>
+                <div className="rejoin-banner-right">
+                    <button
+                        className="rejoin-main-btn"
+                        onClick={() => openTable(lastTable)}
+                    >
+                        <RotateCcw size={15} />
+                        Rejoindre
+                    </button>
+                </div>
+            </div>
+        )}
+        {/* {seat && (
           <div className="seated">
             Tu t’es levé, mais tu restes à{" "}
             <b>{seat.name}</b>. Tes blindes tournent
@@ -753,7 +789,7 @@ export default function Accueil() {
               Reprendre la table
             </a>
           </div>
-        )}
+        )} */}
 
         <div className="tools">
           <input

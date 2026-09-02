@@ -13,6 +13,7 @@ export default function TableTabs() {
   const verifyCave = async (id) => {
     const caveMin = await getById(id);
 
+    sessionStorage.setItem('lastTableId', String(id));
     navigate(`/game/${id}`, {
       state: { cave: caveMin },
       replace: true,

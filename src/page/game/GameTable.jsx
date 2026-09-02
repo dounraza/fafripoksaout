@@ -7,13 +7,26 @@ import { getById } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
 import { JoinedTableContext } from "../../contexts/JoinedTableContext";
 import InfoIcon from '@mui/icons-material/Info';
+import { Users, Wallet, RotateCcw } from 'lucide-react';
 
 import "./GameTable.scss";
 
 const GameTable = () => {
+    // ... (rest of the state declarations)
+    // Adding placeholder for lastTable/sitCounts for integration
+    const lastTable = null; // Replace with actual logic to fetch last table
+    const sitCounts = new Map(); // Replace with actual sit counts
+    const openCaveModal = (table) => { /* Implement modal logic */ };
     const { tableid } = useParams();
     const { tableSessionIdShared } = useParams();
     const [tableSessionId, setTableSessionId] = useState();
+    
+    useEffect(() => {
+        if (tableid) {
+            sessionStorage.setItem('lastTableId', String(tableid));
+        }
+    }, [tableid]);
+
     const navigate = useNavigate();
     const { joinedTables } = useContext(JoinedTableContext);
 
@@ -146,8 +159,31 @@ const GameTable = () => {
                 <div className="left-menu">
                     <button className="avatar-btn" onClick={handleAvatarClick}>👩</button>
                     <button className="small-btn" onClick={handleGuideClick}><InfoIcon /></button>
-                    
                 </div>
+                
+                {lastTable && (
+                    <div className="rejoin-banner" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
+                        <div className="rejoin-banner-left">
+                            <div className="rejoin-table-name">{lastTable.name}</div>
+                            <div className="rejoin-meta">
+                                <span><Users size={13} /> {sitCounts.get(String(lastTable.id)) || 0} joueurs</span>
+                                <span>SB {(lastTable?.smallBlind ?? 0).toLocaleString()} / BB {(lastTable?.bigBlind ?? 0).toLocaleString()} Ar</span>
+                                <span><Wallet size={13} /> {(lastTable?.cave ?? 0).toLocaleString()} Ar</span>
+                            </div>
+                        </div>
+                        <div className="rejoin-banner-right">
+                            <button
+                                className="rejoin-main-btn"
+                                onClick={() => {
+                                    openCaveModal(lastTable);
+                                }}
+                            >
+                                <RotateCcw size={15} />
+                                Rejoindre
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <div className="game-content" style={{ position: 'relative', width: '100%', zIndex: 1 }}>
                     {cavePlayer !== null && (
