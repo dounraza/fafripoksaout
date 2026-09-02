@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { getById } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
 import { JoinedTableContext } from "../../contexts/JoinedTableContext";
+import InfoIcon from '@mui/icons-material/Info';
 
 import "./GameTable.scss";
 
@@ -17,7 +18,27 @@ const GameTable = () => {
     const { joinedTables } = useContext(JoinedTableContext);
 
     const [cavePlayer, setCavePlayer] = useState(null);
+    const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showGuideModal, setShowGuideModal] = useState(false);
+    const [userBalance, setUserBalance] = useState(0);
     const routeLocation = useLocation();
+    const userId = sessionStorage.getItem('userId');
+    const user = JSON.parse(localStorage.getItem('afripoks.user'));
+    const pseudo = user?.name || "Joueur";
+
+    useEffect(() => {
+        if (userId && userId !== "null" && userId !== "undefined") {
+            getSolde(userId, setUserBalance).catch(console.error);
+        }
+    }, [userId]);
+
+    const handleAvatarClick = () => {
+        setShowProfileModal(true);
+    };
+
+    const handleGuideClick = () => {
+        setShowGuideModal(true);
+    };
 
     useEffect(() => {
         const userId = sessionStorage.getItem('userId');
@@ -69,6 +90,41 @@ const GameTable = () => {
     return (
         <>
             <ToastContainer />
+            {showProfileModal && (
+                <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div className="avatar-big">👤</div>
+                            <h2>{pseudo}</h2>
+                        </div>
+                        <div className="modal-body">
+                            <div className="stat-item">
+                                <span className="label">Solde</span>
+                                <span className="value">{userBalance.toLocaleString("fr-FR")} Ar</span>
+                            </div>
+                            <div className="stat-item">
+                                <span className="label">ID</span>
+                                <span className="value">{userId}</span>
+                            </div>
+                        </div>
+                        <button className="close-btn" onClick={() => setShowProfileModal(false)}>Fermer</button>
+                    </div>
+                </div>
+            )}
+            
+            {showGuideModal && (
+                <div className="modal-overlay" onClick={() => setShowGuideModal(false)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <h2>Guide de la Table</h2>
+                        <div className="modal-body" style={{ textAlign: 'left' }}>
+                            <p>• <b>Auto-quitter :</b> Si vous ne recavez pas après 10 secondes, vous serez automatiquement retiré de la table.</p>
+                            <p>• <b>Restriction :</b> Vous ne pouvez pas quitter la table avant 45 minutes.</p>
+                            <p>• <b>Rake :</b> Le rake calculé est de 5 %.</p>
+                        </div>
+                        <button className="close-btn" onClick={() => setShowGuideModal(false)}>Fermer</button>
+                    </div>
+                </div>
+            )}
             <div className="table-container" style={{ position: 'relative', minHeight: '100vh', display: 'flex', justifyContent: 'center', backgroundColor: '#2c0000' }}> 
                 <div className="tp-pillar left"></div>
                 <div className="tp-pillar right"></div>
@@ -88,8 +144,8 @@ const GameTable = () => {
                 
                 {/* Boutons gauche */}
                 <div className="left-menu">
-                    <button className="avatar-btn">👩</button>
-                    <button className="small-btn">☰</button>
+                    <button className="avatar-btn" onClick={handleAvatarClick}>👩</button>
+                    <button className="small-btn" onClick={handleGuideClick}><InfoIcon /></button>
                     
                 </div>
 
