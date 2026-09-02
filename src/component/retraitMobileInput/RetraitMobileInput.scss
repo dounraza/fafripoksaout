@@ -529,3 +529,8 @@
         font-size: 34px;
     }
 }
+  .retrait-header {
+    border-bottom: 1px solid var(--line);
+    background: rgba(28, 5, 9, 0.8);
+    backdrop-filter: blur(10px);
+}

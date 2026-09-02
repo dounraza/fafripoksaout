@@ -10,7 +10,6 @@ const Depot = () => {
     return (
         <>
             <ToastContainer />
-            <Nav />
            
                         <div className="form-container">
                             <DepotMobileInput />     

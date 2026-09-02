@@ -10,7 +10,7 @@ const Retrait = () => {
     return (
         <>
             <ToastContainer />
-            <Nav />
+          
             
                         <div className="form-container">
                             <RetraitMobileInput />     

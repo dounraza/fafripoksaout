@@ -337,10 +337,26 @@ const RetraitMobileInput = () => {
 
     return (
         <>
+      
+   <header className="retrait-header">
+                    <div className="depot-wrap depot-bar">
+                        <div className="depot-brand">
+                            Afripoks
+                        </div>
+
+                        <button
+                            type="button"
+                            className="depot-btn depot-btn-out"
+                            onClick={() => navigate("/acceuil")}
+                        >
+                            Accueil
+                        </button>
+                    </div>
+                </header>
             <div className="retrait-page">
                 <div className="retrait-container">
 
-                    <h1>Dépôt</h1>
+                    <h1>RETRAIT</h1>
 
                     <p className="retrait-sub">
                         Récupère tes jetons sur ton Mobile Money.
