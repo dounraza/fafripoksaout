@@ -5,7 +5,7 @@ import { getSolde } from "../../services/soldeService";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Users, Wallet, RotateCcw } from 'lucide-react';
-
+import { getFullAvatarUrl } from '../../services/api';
 // Table welcome messages mapping
 const WELCOME = {
   "La Table des Mauvaises Décisions": "Bienvenue. Mauvaise idée ?",
@@ -571,13 +571,13 @@ export default function Accueil() {
     setCave("");
   };
 
+const userId=sessionStorage.getItem('userId');
   const confirmCave = () => {
     if (!selectedTable) return;
 
     if (selectedTable.blocked) return;
 
     const amount = Number(cave);
-
     if (
       !Number.isFinite(amount) ||
       amount < selectedTable.buy
@@ -588,7 +588,7 @@ export default function Accueil() {
 
     // Save cave amount for the session/table if needed (optional based on your requirement)
     sessionStorage.setItem(`player_stack_${selectedTable.id}_${sessionStorage.getItem('userId')}`, amount);
-
+  
     // Redirect to /game/{id}
     window.location.href = `/game/${selectedTable.id}`;
   };
@@ -627,9 +627,9 @@ export default function Accueil() {
 
     window.location.href = "/";
   };
-
+ const userIdAvatar = `avatar_${userId}`;
   const displayName = getUserName(user) || "Joueur";
-
+ const [selectedAvatar, setSelectedAvatar] = useState(sessionStorage.getItem(userIdAvatar));
   return (
     <div className="accueil">
       <header>
@@ -680,9 +680,10 @@ export default function Accueil() {
                       setMenuOpen((value) => !value);
                     }}
                   >
-                    {user.photo ? (
+                    
+                    {user.avatar_url ? (
                       <img
-                        src={user.photo}
+                        src={getFullAvatarUrl(user.avatar_url)} 
                         alt=""
                       />
                     ) : (
