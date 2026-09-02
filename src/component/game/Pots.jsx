@@ -74,9 +74,9 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
             <div className="pots-container">
                 <div className="pots">
                     {/* Overlay pour les pots animés */}
-                    {potsAnimation.map(({ key, startX, startY, endX, endY }) => (
+                    {potsAnimation.map(({ key, startX, startY, endX, endY }, index) => (
                         <div
-                            key={key}
+                            key={`pot-${key}-${index}`}
                             style={{
                                 position: 'fixed',
                                 left: startX,
@@ -95,6 +95,7 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
                             {/* <img src={jetonMany} alt="" style={{ width: '56px', height: '56px', objectFit: 'contain' }} /> */}
                             {[singleJeton, singleJeton1, singleJeton2].map((jeton, i) => (
                               <div
+                                key={`jeton-${key}-${index}-${i}`}
                                 style={{
                                   width: '24px',
                                   height: '24px',

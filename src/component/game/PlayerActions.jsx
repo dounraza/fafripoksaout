@@ -25,14 +25,13 @@ const PlayerActions = ({
                 </div>
             ) : null
         ))}
-    </div>
-    
-    {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
-        <div className="raise-action-row">
+        
             <div className="btn-allin" onClick={() => emitPlayerAction('raise', Number(tableState.legalActions.chipRange.max))}>
                 Tapis
             </div>
             
+    {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
+        <div className="raise-action-row">
             <div className="input-group">
                 <div className="bet-input-container">
                     <div className="bet-control button-minus" onClick={minusRange}>
@@ -54,8 +53,9 @@ const PlayerActions = ({
             </div>
         </div>
     )}
+    </div>
+    
    </div>
-        
     );
 };
 

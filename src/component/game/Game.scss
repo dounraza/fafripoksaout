@@ -358,28 +358,27 @@
     .player-action-container {
         padding: 10px;
         position: absolute;
-        bottom: -12px; /* Descendu de 20px à 5px */
-        left: 50%;
+        bottom: 5px; /* Move up slightly from bottom */
+        left: 52%;
         transform: translateX(-50%);
         z-index: 1000;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        gap: 12px;
-        border-radius: .3rem;
-        width: 100%;
+        gap: 6px; /* Compact spacing between rows */
+        width: fit-content; /* Only as wide as buttons */
+        min-width: 300px;
         pointer-events: auto;
 
         /* Fixation en bas sur mobile */
         @media (max-width: 768px) {
             position: fixed;
-            bottom: -12px;
-            left: 0;
-            transform: none;
-            padding: 10px 5px;
-            background: transparent; /* Fond supprimé */
-            width: 100%;
+            bottom: 5px;
+            left: 52%;
+            transform: translateX(-50%);
+            padding: 5px;
+            width: 95%;
         }
 
         .main-action-row, .raise-action-row {
@@ -387,8 +386,8 @@
             gap: 6px;
             display: flex;
             justify-content: center;
-            width: 100%;
-            flex-wrap: wrap;
+            width: 80%;
+            flex-wrap: nowrap; /* Ensure single line */
         }
         .poker-button {
             padding: 5px 10px; /* Padding encore réduit */
@@ -493,13 +492,18 @@
             border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
-        .bet-amount {
-            font-size: 14px;     
-            font-weight: 600;
-            color: #FFF;
-            min-width: 50px;     
-            text-align: center;
-        }
+        
+    .bet-amount {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #FFF !important;
+    width: 50px !important;
+    min-width: 18VH !important;
+    text-align: center !important;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+}
         .bet-control svg {
             width: 18px;
             height: 18px;
@@ -514,7 +518,7 @@
             padding: 6px 16px;
             color: white;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -529,7 +533,7 @@
             padding: 6px 16px;
             color: #78350f;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -559,7 +563,7 @@
             padding: 6px 16px;
             color: white;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;

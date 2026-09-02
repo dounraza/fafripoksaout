@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import { retrait as retraitService } from "../../services/RetraitMobileService";
 import { isUserInTable } from "../../services/tableServices";
+import { getSolde, fetchSolde } from "../../services/soldeService";
 
 import "react-phone-number-input/style.css";
 import "./RetraitMobileInput.scss";
-
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -24,16 +24,15 @@ const RetraitMobileInput = () => {
 
     /*
      * Récupération du solde disponible.
-     * On garde cette partie car elle correspond au comportement
-     * de ton nouveau HTML.
      */
     useEffect(() => {
-        const available = Math.max(
-            0,
-            Number(localStorage.getItem("afripoks.bankroll") || 0)
-        );
-
-        setBalance(available);
+        const userId = sessionStorage.getItem("userId");
+        if (userId) {
+            getSolde(userId, setBalance);
+        } else {
+            console.error("No userId found in sessionStorage");
+            setBalance(0);
+        }
     }, []);
 
     /*
@@ -223,32 +222,25 @@ const RetraitMobileInput = () => {
         }
 
         const amountNumber = Number(amount);
-
-        /*
-         * Vérification du solde local comme dans le nouveau HTML.
-         */
-        const currentBalance = Math.max(
-            0,
-            Number(localStorage.getItem("afripoks.bankroll") || 0)
-        );
-
-        if (amountNumber > currentBalance) {
-            setBalance(currentBalance);
-
-            toast.error(
-                `Impossible. Ton solde est de ${currentBalance.toLocaleString(
-                    "fr-FR"
-                )} Ar.`
-            );
-
-            return;
-        }
+        const userId = sessionStorage.getItem("userId");
 
         try {
+            // Fetch fresh balance for validation
+            const currentBalance = await fetchSolde(userId);
+            
+            if (amountNumber > currentBalance) {
+                setBalance(currentBalance);
+                toast.error(
+                    `Impossible. Ton solde actuel est de ${currentBalance.toLocaleString(
+                        "fr-FR"
+                    )} Ar.`
+                );
+                return;
+            }
+
             /*
              * Vérification si le joueur est encore à une table.
              */
-            const userId = sessionStorage.getItem("userId");
             const userInTable = await isUserInTable(userId);
 
             if (userInTable) {
@@ -270,49 +262,9 @@ const RetraitMobileInput = () => {
              */
             await retraitService(data);
 
-            /*
-             * Mise à jour du solde local.
-             */
-            const newBalance = Math.max(
-                0,
-                currentBalance - amountNumber
-            );
-
-            localStorage.setItem(
-                "afripoks.bankroll",
-                String(newBalance)
-            );
-
+            // Fetch again after update to ensure accuracy
+            const newBalance = await fetchSolde(userId);
             setBalance(newBalance);
-
-            /*
-             * Mise à jour éventuelle des balances par pseudo.
-             */
-            try {
-                const bals = JSON.parse(
-                    localStorage.getItem(
-                        "afripoks.balances"
-                    ) || "{}"
-                );
-
-                const map = Array.isArray(bals) ? {} : bals;
-                const key = pseudo || "Joueur";
-
-                map[key] = Math.max(
-                    0,
-                    (Number(map[key]) || 0) - amountNumber
-                );
-
-                localStorage.setItem(
-                    "afripoks.balances",
-                    JSON.stringify(map)
-                );
-            } catch (error) {
-                console.error(
-                    "Erreur mise à jour balance :",
-                    error
-                );
-            }
 
             setAmount("");
             setPhoneNumber("");
@@ -337,22 +289,21 @@ const RetraitMobileInput = () => {
 
     return (
         <>
-      
-   <header className="retrait-header">
-                    <div className="depot-wrap depot-bar">
-                        <div className="depot-brand">
-                            Afripoks
-                        </div>
-
-                        <button
-                            type="button"
-                            className="depot-btn depot-btn-out"
-                            onClick={() => navigate("/acceuil")}
-                        >
-                            Accueil
-                        </button>
+            <header className="retrait-header">
+                <div className="depot-wrap depot-bar">
+                    <div className="depot-brand">
+                        Afripoks
                     </div>
-                </header>
+
+                    <button
+                        type="button"
+                        className="depot-btn depot-btn-out"
+                        onClick={() => navigate("/acceuil")}
+                    >
+                        Accueil
+                    </button>
+                </div>
+            </header>
             <div className="retrait-page">
                 <div className="retrait-container">
 
@@ -434,22 +385,7 @@ const RetraitMobileInput = () => {
                             />
                         </div>
 
-                        <div className="retrait-actions">
-                            <button
-                                type="button"
-                                className="cancel-btn"
-                                onClick={cancelTransac}
-                            >
-                                Annuler
-                            </button>
-
-                            <button
-                                type="submit"
-                                className="go"
-                            >
-                                Demander le retrait
-                            </button>
-                        </div>
+                        <div className="retrait-actions"><button type="button" className="cancel-btn" onClick={cancelTransac}>Annuler</button><button type="submit" className="go">Demander le retrait</button></div>
 
                         <p className="help">
                             Le retrait part vers le numéro
