@@ -839,8 +839,78 @@ const userId=sessionStorage.getItem('userId');
           )}
         </div>
       </main>
+{selectedTable && (
+  <div className="cavebox">
+    <div className="cardx">
+      <p className="eyebrow">
+        S'asseoir
+      </p>
 
-      {selectedTable && (
+      <h3>{selectedTable.name}</h3>
+
+      <p className="cave-min">
+        Cave minimum{" "}
+        {selectedTable.cave?.toLocaleString("fr-MG") || 0} Ar · 
+        Blindes{" "}
+        {selectedTable.smallBlind ||
+          (selectedTable.blinds ? selectedTable.blinds[0] : 0)}{" "}
+        /{" "}
+        {selectedTable.bigBlind ||
+          (selectedTable.blinds ? selectedTable.blinds[1] : 0)}
+      </p>
+
+      <label htmlFor="cave-amt">
+        Montant de ta cave
+      </label>
+
+      <input
+        id="cave-amt"
+        type="number"
+        min={selectedTable.buy || 0}
+        step="100"
+        value={cave}
+        className={
+          Number(cave) < (selectedTable.buy || 0) && cave !== ""
+            ? "error"
+            : ""
+        }
+        onChange={(e) => setCave(e.target.value)}
+      />
+
+      <p className="cave-err">
+        {Number(cave) < (selectedTable.buy || 0) && cave !== ""
+          ? `Minimum ${
+              selectedTable.buy?.toLocaleString("fr-MG") || 0
+            } Ar`
+          : ""}
+      </p>
+
+      <div className="modal-row">
+        <button
+          type="button"
+          className="cancel"
+          onClick={closeCave}
+        >
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          className="confirm"
+          onClick={confirmCave}
+          disabled={
+            cave === "" ||
+            Number(cave) < Number(selectedTable.cave)
+          }
+        >
+          S'asseoir
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+      {/* {selectedTable && (
         <div className="cavebox">
           <div className="cardx">
             <p className="eyebrow">
@@ -929,7 +999,8 @@ const userId=sessionStorage.getItem('userId');
             )}
           </div>
         </div>
-      )}
+      )} */}
+
 
       {enter && (
       <div

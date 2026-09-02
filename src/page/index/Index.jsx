@@ -267,7 +267,7 @@ export default function App() {
           </h1>
           <div className="rule" />
           <div className="cta-row">
-            <a className="btn btn-gold btn-lg" href="/inscription.html">Créer un compte</a>
+            <a className="btn btn-gold btn-lg" href="/register">Créer un compte</a>
             <a className="btn btn-white btn-lg" href="#telecharger">Télécharger l'application</a>
           </div>
           <p className="fineprint">
@@ -330,9 +330,15 @@ export default function App() {
           <p className="legal">
             <span className="age">18+</span>
             Afripoks est réservé aux personnes majeures. Le jeu d'argent peut entraîner
-            une dépendance : fixez-vous des limites de dépôt et de temps de jeu.
-            Numéro de licence et autorité de régulation à afficher ici avant toute
-            ouverture au public.
+            une dépendance : fixez-vous des limites de dépôt et de temps de jeu.<br/>
+           🔒***Votre sécurité avant tout***<br/>
+           ✅Site Verifié et fonctionnant  dans un cadre légal  <br/>
+           📄Informations et documents officiels disponibles<br/>
+           📍Jeu Transaparent.Sans triche<br/>
+           🛡️ Vos Transactions et votre compte sont protégé<br/>
+            En cas de problème ou de litige,vous pouvez contacter notre service client et,si nécessaire,
+            vous adresser aux autorités comptétentes dans le domaine des jeux.
+            *** Jouez en toute confiance avec Afripoks.***
           </p>
         </div>
       </footer>
