@@ -218,20 +218,13 @@
 @media (max-width: 768px) {
     .login-container {
         padding: 20px;
+        overflow-y: auto; /* Permettre le défilement si nécessaire */
+        
         .login-card {
-            padding: 2rem;
-
-            .card-header {
-                .logo-container {
-                    h1 {
-                        font-size: 2.2rem;
-                    }
-                    .logo-chip {
-                        width: 60px;
-                        height: 60px;
-                    }
-                }
-            }
+            padding: 1.5rem;
+            max-height: 90vh; /* Limiter la hauteur */
+            overflow-y: auto; /* Défilement interne si le contenu est trop grand */
+            margin: auto; /* Centrer verticalement */
         }
     }
 }

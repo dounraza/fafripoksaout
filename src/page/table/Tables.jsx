@@ -21,9 +21,18 @@ const Tables = () => {
     const [showModalCave, setShowModalCave] = useState(false);
     const [selectedTableId, setSelectedTableId] = useState(null);
     const [cave, setCave] = useState("");
+    const [caveMin, setCaveMin] = useState(0); // ✅ Ajouter cet état
     const [solde, setSolde] = useState(0);
     const [loading, setLoading] = useState(true);
     const isNavigatingRef = useRef(false);
+
+    const openCaveModal = (table) => {
+        console.log("Table object clicked:", table);
+        console.log("Table cave value:", table.cave);
+        setSelectedTableId(table.id);
+        setCaveMin(table.cave || 0);
+        setShowModalCave(true);
+    }
     
     // ✅ ÉTATS POUR LES STATS DE CONNEXION
     const [tableUsersCount, setTableUsersCount] = useState({});
@@ -200,8 +209,7 @@ const Tables = () => {
                                         <button
                                             className="rejoin-main-btn"
                                             onClick={() => {
-                                                setSelectedTableId(lastTable.id);
-                                                setShowModalCave(true);
+                                                openCaveModal(lastTable);
                                             }}
                                         >
                                             <RotateCcw size={15} />
@@ -243,8 +251,7 @@ const Tables = () => {
                                             if (isRejoin) {
                                                 goToTable(tables[0].id, null, true);
                                             } else {
-                                                setSelectedTableId(tables[0].id);
-                                                setShowModalCave(true);
+                                                openCaveModal(tables[0]);
                                             }
                                         }}
                                     >
@@ -302,8 +309,7 @@ const Tables = () => {
                                                 <button
                                                     className="lobby-play-btn"
                                                     onClick={() => {
-                                                        setSelectedTableId(table.id);
-                                                        setShowModalCave(true);
+                                                        openCaveModal(table);
                                                     }}
                                                 >
                                                     Jouer
@@ -323,13 +329,14 @@ const Tables = () => {
                         <div className="modal-card" onClick={(e) => e.stopPropagation()}>
                             <div className="modal-header">
                                 <h3>Entrez votre cave</h3>
+                                <p>Minimum: {Number(caveMin).toLocaleString()} Ar</p>
                             </div>
                             <div className="modal-body">
                                 <input
                                     type="number"
                                     value={cave}
                                     onChange={(e) => setCave(e.target.value)}
-                                    placeholder="Montant en Ar"
+                                    placeholder={`Minimum ${Number(caveMin).toLocaleString()} Ar`}
                                     className="cave-input"
                                 />
                             </div>

@@ -456,7 +456,8 @@ footer{padding:44px 0;font-size:13px;color:var(--muted);background:#150205}
   .bigchip::after{width:72px;height:72px;font-size:32px;border-width:3px}
   .grid{grid-template-columns:1fr}
   .topbar-inner{gap:16px}
-  .account .btn-ghost{display:none}
+  .account { gap: 8px; }
+  .account .btn-ghost { padding: 8px 16px; font-size: 13px; }
 }
 @media (prefers-reduced-motion:reduce){
   .big,.rings,.ring-out,.ring-in,.pitch,.flash,.wave{animation:none!important}

@@ -1281,6 +1281,11 @@
     padding: 0 16px;
 
     outline: none;
+
+    &.error {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 1px #c0392b;
+    }
   }
 
   .cave-err {

@@ -47,7 +47,7 @@
     right: 20px;
     width: 274px;
     max-width: 90vw; /* Responsivité: ne pas dépasser 90% de la largeur de l'écran */
-    max-height: 410px;
+    max-height: 99vh;
     /* Design Glassmorphism */
     background: rgba(10, 10, 10, 0.7);
     backdrop-filter: blur(20px);
@@ -64,7 +64,8 @@
     @media (max-width: 480px) {
         width: 90vw;
         right: 5vw;
-        max-height: 50vh;
+        max-height: 70vh; /* Augmenté pour donner plus d'espace */
+        bottom: 10px; /* Ajout d'une marge bottom */
     }
 
     &.minimized {
@@ -120,8 +121,12 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        min-height: 300px;
+        min-height: 200px; /* Réduit de 300px pour mobile */
         max-height: 400px;
+
+        @media (max-width: 480px) {
+            min-height: 150px; /* Encore réduit pour mobile */
+        }
 
         &::-webkit-scrollbar {
             width: 4px;
@@ -141,7 +146,7 @@
 
             &.own-message {
                 align-self: flex-end;
-                background: linear-gradient(135deg, #FFD700, #FFA500);
+                background: linear-gradient(135deg, #0aa674, #0aa674);
                 color: #000;
 
                 .message-username, .message-time, .message-content {

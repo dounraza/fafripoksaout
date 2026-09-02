@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./acceuil.scss";
 import { getAll } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Table welcome messages mapping
 const WELCOME = {
@@ -325,7 +327,7 @@ function TableCard({ table, onEnter }) {
         <div className="meta">
           <div>
             Cave
-            <b>{formatAr(table.buy || table.cave)}</b>
+            <b>{formatAr(table.cave || table.buy)}</b>
           </div>
 
           <div>
@@ -553,7 +555,7 @@ export default function Accueil() {
     }
 
     setSelectedTable(table);
-    setCave(table.buy);
+    setCave(table.cave);
   };
 
   const closeCave = () => {
@@ -572,6 +574,7 @@ export default function Accueil() {
       !Number.isFinite(amount) ||
       amount < selectedTable.buy
     ) {
+      toast.error("Montant insuffisant pour s'asseoir à cette table");
       return;
     }
 
@@ -687,7 +690,7 @@ export default function Accueil() {
                   </button>
 
                   <div className="who-menu">
-                    <a href="/account">
+                    <a href="/profile">
                       Mon compte
                     </a>
 
@@ -835,7 +838,7 @@ export default function Accueil() {
             ) : (
               <>
                 <p className="cave-min">
-                  Cave minimum {selectedTable.buy?.toLocaleString("fr-MG") || 0} Ar · 
+                  Cave minimum {selectedTable.cave?.toLocaleString("fr-MG") || 0} Ar · 
                   Blindes {selectedTable.smallBlind || (selectedTable.blinds ? selectedTable.blinds[0] : 0)} / {selectedTable.bigBlind || (selectedTable.blinds ? selectedTable.blinds[1] : 0)}
                 </p>
 
@@ -849,6 +852,7 @@ export default function Accueil() {
                   min={selectedTable.buy || 0}
                   step="100"
                   value={cave}
+                  className={Number(cave) < (selectedTable.buy || 0) && cave !== "" ? "error" : ""}
                   onChange={(e) =>
                     setCave(e.target.value)
                   }
@@ -877,8 +881,8 @@ export default function Accueil() {
                     className="confirm"
                     onClick={confirmCave}
                     disabled={
-                      Number(cave) <
-                      selectedTable.buy
+                      cave === "" ||
+                      Number(cave) < Number(selectedTable.cave)
                     }
                   >
                     S'asseoir
@@ -891,42 +895,43 @@ export default function Accueil() {
       )}
 
       {enter && (
-        <div
-          className={`enter ${
-            enterOpen ? "open" : ""
-          } ${enterShow ? "show" : ""}`}
-        >
-          <img
-            className="room"
-            src="/tables/hero-room.jpg"
-            alt=""
-          />
+      <div
+        className={`enter ${
+          enterOpen ? "open" : ""
+        } ${enterShow ? "show" : ""}`}
+      >
+        <img
+          className="room"
+          src="/tables/hero-room.jpg"
+          alt=""
+        />
 
-          <div className="cL" />
-          <div className="cR" />
+        <div className="cL" />
+        <div className="cR" />
 
-          <div className="copy">
-            <p className="enter-name">
-              {selectedTable?.name || seat?.name}
-            </p>
+        <div className="copy">
+          <p className="enter-name">
+            {selectedTable?.name || seat?.name}
+          </p>
 
-            <h2>
-              {WELCOME[
-                selectedTable?.name ||
-                  seat?.name
-              ] || "Bienvenue."}
-            </h2>
+          <h2>
+            {WELCOME[
+              selectedTable?.name ||
+                seat?.name
+            ] || "Bienvenue."}
+          </h2>
 
-            <button
-              type="button"
-              className="go"
-              onClick={goToTable}
-            >
-              Entrer à la table
-            </button>
-          </div>
+          <button
+            type="button"
+            className="go"
+            onClick={goToTable}
+          >
+            Entrer à la table
+          </button>
         </div>
+      </div>
       )}
-    </div>
-  );
-}
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      </div>
+      );
+      }
