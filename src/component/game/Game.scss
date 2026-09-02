@@ -358,7 +358,7 @@
     .player-action-container {
         padding: 10px;
         position: absolute;
-        bottom: 5px; /* Move up slightly from bottom */
+        bottom: -5px; /* Move up slightly from bottom */
         left: 52%;
         transform: translateX(-50%);
         z-index: 1000;
@@ -374,7 +374,7 @@
         /* Fixation en bas sur mobile */
         @media (max-width: 768px) {
             position: fixed;
-            bottom: 5px;
+            bottom: -5px;
             left: 52%;
             transform: translateX(-50%);
             padding: 5px;
