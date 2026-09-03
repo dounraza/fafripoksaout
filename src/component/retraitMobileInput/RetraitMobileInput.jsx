@@ -9,7 +9,7 @@ import "./RetraitMobileInput.scss";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const RetraitMobileInput = () => {
+const RetraitMobileInput = ({ isVerified }) => {
     const [pseudo, setPseudo] = useState(
         sessionStorage.getItem("userName") || ""
     );
@@ -309,12 +309,24 @@ const RetraitMobileInput = () => {
 
                     <h1>RETRAIT</h1>
 
+                    {!isVerified && (
+                        <div className="alert-message-red" style={{marginBottom: '20px', padding: '10px', backgroundColor: '#f8d7da', color: '#721c24', textAlign: 'center'}}>
+                            <p>Votre compte n'est pas encore vérifié. Veuillez le vérifier pour effectuer un retrait.</p>
+                            <button
+                                onClick={() => navigate("/verify-code", { state: { type: 'account-verification' } })}
+                                style={{marginTop: '10px', padding: '5px 10px'}}
+                            >
+                                Vérifier mon compte
+                            </button>
+                        </div>
+                    )}
+
                     <p className="retrait-sub">
                         Récupère tes jetons sur ton Mobile Money.
                     </p>
 
                     <form
-                        className="retrait-form"
+                        className={`retrait-form ${!isVerified ? "depot-form-disabled" : ""}`}
                         onSubmit={(e) => {
                             e.preventDefault();
                             saveTransac();
@@ -385,7 +397,7 @@ const RetraitMobileInput = () => {
                             />
                         </div>
 
-                        <div className="retrait-actions"><button type="button" className="cancel-btn" onClick={cancelTransac}>Annuler</button><button type="submit" className="go">Demander le retrait</button></div>
+                        <div className="retrait-actions"><button type="button" className="cancel-btn" onClick={cancelTransac}>Annuler</button><button type="submit" className="go" disabled={!isVerified}>Demander le retrait</button></div>
 
                         <p className="help">
                             Le retrait part vers le numéro

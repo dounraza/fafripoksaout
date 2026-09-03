@@ -16,7 +16,16 @@ const VerifyCode = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const email = location.state?.email || "";
+    // Récupérer l'email depuis location.state ou le sessionStorage
+    const [storedEmail, setStoredEmail] = useState("");
+
+    useEffect(() => {
+        const emailFromSession = sessionStorage.getItem('userEmail');
+        console.log("DEBUG - sessionStorage email:", emailFromSession);
+        setStoredEmail(location.state?.email || emailFromSession || "");
+    }, [location.state?.email]);
+
+    const email = storedEmail;
     const inputRefs = useRef([]);
 
     /*
@@ -141,6 +150,7 @@ const VerifyCode = () => {
      */
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log("DEBUG - handleSubmit triggered");
 
         const codeValue = code.join("");
 
@@ -156,17 +166,23 @@ const VerifyCode = () => {
 
         setLoading(true);
 
+        window.alert("Type de vérification : " + (location.state?.type || "Non défini"));
+
         try {
-            await verifyCode(email, codeValue);
+            await verifyCode(email, codeValue, location.state?.type);
 
             toast.success("Code valide !");
 
-            navigate("/reset-password", {
-                state: {
-                    email,
-                    code: codeValue,
-                },
-            });
+            if (location.state?.type === 'account-verification') {
+                navigate("/acceuil");
+            } else {
+                navigate("/reset-password", {
+                    state: {
+                        email,
+                        code: codeValue,
+                    },
+                });
+            }
         } catch (error) {
             console.error("Erreur vérification code :", error);
 

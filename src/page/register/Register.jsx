@@ -502,7 +502,7 @@ const Register = () => {
                         Accueil
                     </a>
 
-                    <a href="/lobby">
+                    <a href="/login">
                         <span className="tag">
                             JOUER
                         </span>

@@ -42,9 +42,9 @@ export const forgotPassword = async (email) => {
     }
 };
 
-export const verifyCode = async (email, code) => {
+export const verifyCode = async (email, code, type) => {
     try {
-        await axios.post(`${BASE_URL}/api/auth/verify-code`, { email, code });
+        await axios.post(`${BASE_URL}/api/auth/verify-code`, { email, code, type });
         return true;
     } catch (error) {
         throw error;
@@ -64,11 +64,12 @@ export const login = async (email, password) => {
   try {
     const data= { email: email, password: password }
     const response = await axios.post(API_URL, data);
-     const { accessToken, name, id, avatar_url } = response.data;
+     const { accessToken, name, id, avatar_url, email: userEmail } = response.data;
 
     sessionStorage.setItem('accessToken', accessToken);
     sessionStorage.setItem('userName', name);
     sessionStorage.setItem('userId', id);
+    sessionStorage.setItem('userEmail', userEmail);
      
     if (avatar_url) {
       sessionStorage.setItem(`avatar_${id}`, avatar_url);
@@ -92,4 +93,5 @@ export const logout = () => {
   sessionStorage.removeItem("accessToken");
   sessionStorage.removeItem("userName");
   sessionStorage.removeItem("userId");
+  sessionStorage.removeItem("userEmail");
 };

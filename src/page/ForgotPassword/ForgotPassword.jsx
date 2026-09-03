@@ -325,7 +325,7 @@ const ForgotPassword = () => {
                         Accueil
                     </a>
 
-                    <a href="/lobby">
+                    <a href="/acceuil">
                         <span className="tag">
                             JOUER
                         </span>
@@ -333,7 +333,7 @@ const ForgotPassword = () => {
                         Cash games
                     </a>
 
-                    <a href="/lobby#tournois">
+                    <a href="/acceuil">
                         <span className="tag">
                             JOUER
                         </span>

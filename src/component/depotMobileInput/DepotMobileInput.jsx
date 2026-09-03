@@ -8,7 +8,7 @@ import "./DepotMobileInput.scss";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const DepotMobileInput = () => {
+const DepotMobileInput = ({ isVerified }) => {
     const [pseudo, setPseudo] = useState(sessionStorage.getItem("userName") || "");
     const [amount, setAmount] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -36,17 +36,18 @@ const DepotMobileInput = () => {
 
     const isValid = () => {
         if (
-            pseudo.trim() !== "" &&
-            amount !== "" &&
-            Number(amount) > 0 &&
-            phoneNumber &&
-            name.trim() !== "" &&
-            ref.trim() !== ""
+            !isVerified || // Disable if not verified
+            pseudo.trim() === "" ||
+            amount === "" ||
+            Number(amount) <= 0 ||
+            !phoneNumber ||
+            name.trim() === "" ||
+            ref.trim() === ""
         ) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     };
 
     const createConfetti = () => {
@@ -270,6 +271,18 @@ const DepotMobileInput = () => {
                         Recharge ta cave. Mobile Money uniquement.
                     </p>
 
+                    {!isVerified && (
+                        <div className="alert-message-red">
+                            <p>Votre compte n'est pas encore vérifié. Veuillez le vérifier pour effectuer un dépôt.</p>
+                            <button
+                                className="btn-verify"
+                                onClick={() => navigate("/verify-code", { state: { type: 'account-verification' } })}
+                            >
+                                Vérifier mon compte
+                            </button>
+                        </div>
+                    )}
+
                     {/* Informations Mobile Money */}
                     <div className="nums">
 
@@ -290,7 +303,7 @@ const DepotMobileInput = () => {
 
                     </div>
 
-                    <div className="depot-form">
+                    <div className={`depot-form ${!isVerified ? "depot-form-disabled" : ""}`}>
 
                         {/* Pseudo */}
                         <div className="input-group">
@@ -397,12 +410,12 @@ const DepotMobileInput = () => {
                                 type="button"
                                 className="submit"
                                 onClick={saveTransac}
-                                disabled={isLoading}
+                                disabled={isLoading || !isVerified}
                             >
                                 {isLoading ? (
                                     <span className="depot-spinner"></span>
                                 ) : (
-                                    "Envoyer le dépôt"
+                                    isVerified ? "Envoyer le dépôt" : "Compte non vérifié"
                                 )}
                             </button>
 

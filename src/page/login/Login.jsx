@@ -679,7 +679,7 @@ const Login = () => {
                     <div className="cta">
 
                         <Link
-                            to="/lobby"
+                            to="/login"
                             className="btn btn-gold"
                         >
                             Rejoindre une table

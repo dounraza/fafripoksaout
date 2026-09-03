@@ -634,7 +634,7 @@ const userId=sessionStorage.getItem('userId');
     <div className="accueil">
       <header>
         <div className="wrap bar">
-          <a className="brand" href="/" onClick={(e) => { e.preventDefault(); window.location.href = '/'; }}>
+          <a className="brand" href="/acceuil" onClick={(e) => { e.preventDefault(); window.location.href = '/acceuil'; }}>
             <span className="logo">
               <span className="orbit">
                 <i />
