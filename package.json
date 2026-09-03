@@ -1,6 +1,7 @@
 {
   "name": "poker",
   "version": "0.1.0",
+  "proxy": "https://afripoks-backend-production.up.railway.app",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
