@@ -286,7 +286,7 @@ function Stage({ fx }) {
   }
 }
 
-function TableCard({ table, onEnter }) {
+function TableCard({ table, onEnter, sitCount }) {
   return (
     <button
       type="button"
@@ -315,7 +315,7 @@ function TableCard({ table, onEnter }) {
           {table.v === "omaha" ? "Omaha" : "Texas Hold'em"}
         </span>
 
-        <span className="seats">0 / 9</span>
+        <span className="seats">{sitCount || 0} / 9</span>
       </div>
 
       <div className="bottom">
@@ -829,6 +829,7 @@ const userId=sessionStorage.getItem('userId');
               <TableCard
                 key={table.id}
                 table={table}
+                sitCount={sitCounts.get(String(table.id))}
                 onEnter={openTable}
               />
             ))
