@@ -10,6 +10,9 @@ import GameTable from './page/game/GameTable';
 import Register from './page/register/Register';
 import Profile from './page/profile/Profile';
 import Index from './page/index/Index'; // Import Index
+import ForgotPassword from './page/ForgotPassword/ForgotPassword';
+import VerifyCode from './page/ForgotPassword/VerifyCode';
+import ResetPassword from './page/ForgotPassword/ResetPassword';
 
 import './App.scss';
 import Transaction from './page/admin/transaction/Transaction';
@@ -44,6 +47,9 @@ function App() {
           <Route path="/retrait" element={<Retrait />} />
           <Route path="/game/:tableid" element={<GameTable />} />
           <Route path="/game/:tableid/:tableSessionIdShared" element={<GameTable />} />
+         <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+         <Route path="/verify-code" element={<VerifyCode />} />
+         <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* admin  */}
           <Route path="/" element={<Dashboard />}>

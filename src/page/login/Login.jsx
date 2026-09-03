@@ -516,12 +516,10 @@ const Login = () => {
                         className=""
                     />
 
-                    <Link
-                        to="/mot-de-passe-oublie"
-                        className="retour"
-                    >
+                    <Link to="/mot-de-passe-oublie">
                         Mot de passe oublié ?
                     </Link>
+
 
                     <Link
                         to="/register"

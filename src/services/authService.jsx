@@ -1,8 +1,9 @@
 import axios from 'axios';
 import api from './api';
 import { onlineUsersSocket } from '../engine/socket';
+// process.env.REACT_APP_BASE_URL ||
+const BASE_URL =  'http://localhost:5000';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 const API_URL = `${BASE_URL}/api/auth/login`; 
 
 export const uploadAvatar = async (file) => {
@@ -28,6 +29,33 @@ export const updateProfile = async (userId, name, avatar) => {
         return response.data;
     } catch (error) {
         console.error("Erreur lors de la mise à jour du profil :", error);
+        throw error;
+    }
+};
+
+export const forgotPassword = async (email) => {
+    try {
+        await axios.post(`${BASE_URL}/api/auth/forgot-password`, { email });
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const verifyCode = async (email, code) => {
+    try {
+        await axios.post(`${BASE_URL}/api/auth/verify-code`, { email, code });
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const resetPassword = async (email, code, password) => {
+    try {
+        await axios.post(`${BASE_URL}/api/auth/reset-password`, { email, code, password });
+        return true;
+    } catch (error) {
         throw error;
     }
 };
