@@ -116,8 +116,10 @@
 .nums {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 18px;
+    width:70%;
+        margin-left: 15%;
 }
 
 .nums div {
@@ -178,7 +180,8 @@
     border: 1px solid var(--line);
     border-radius: 20px;
     padding: 20px;
-
+    width:70%;
+        margin-left: 15%;
     background: rgba(18, 3, 7, 0.4);
     box-shadow:
         0 20px 50px rgba(0, 0, 0, 0.22),
@@ -625,6 +628,8 @@
     .depot-form {
         padding: 16px;
         border-radius: 18px;
+        width:70%;
+            margin-left: 15%;
     }
 
     .depot-actions {
