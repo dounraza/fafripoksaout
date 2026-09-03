@@ -337,7 +337,7 @@ export default function App() {
            📍Jeu Transaparent.Sans triche<br/>
            🛡️ Vos Transactions et votre compte sont protégé<br/>
             En cas de problème ou de litige,vous pouvez contacter notre service client et,si nécessaire,
-            vous adresser aux autorités comptétentes dans le domaine des jeux.
+            vous adresser aux autorités comptétentes dans le domaine des jeux.<br/>
             *** Jouez en toute confiance avec Afripoks.***
           </p>
         </div>

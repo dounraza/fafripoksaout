@@ -198,18 +198,30 @@ const ForgotPassword = () => {
         setResultType('');
 
         try {
-            const response = await fetch(
-                '/api/auth/forgot-password',
+            // const response = await fetch(
+            //     '/api/auth/forgot-password',
+            //     {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify({
+            //             email: email.trim()
+            //         })
+            //     }
+            // );
+            const response = await fetch('https://afripoks-backend-production.up.railway.app/api/auth/forgot-password', // URL COMPLÈTE
                 {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+                        headers: {
+                            'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         email: email.trim()
-                    })
-                }
-            );
+                        })
+                    }
+                );
+
 
             if (response.status === 404) {
                 setResult(
