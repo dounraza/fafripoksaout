@@ -25,9 +25,23 @@ import TableChat from './TableChat';
 import GameView from './GameView';
 import GameViewN from './GameViewN';
 
-const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noTable = false }) => {
+const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noTable = false, onActionsReady }) => {
     const [tableState, setTableState] = useState({});
     const [betSize, setBetSize] = useState(0);
+    // ...
+    
+    useEffect(() => {
+        if (onActionsReady) {
+            onActionsReady({
+                tableState,
+                betSize,
+                setBetSize,
+                emitPlayerAction,
+                addRange,
+                minusRange
+            });
+        }
+    }, [tableState, betSize, onActionsReady]);
     const [showRecaveModal, setShowRecaveModal] = useState(false);
     const [hasRecaved, setHasRecaved] = useState(false);
     const [winData, setWinData] = useState({});

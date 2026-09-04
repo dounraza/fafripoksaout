@@ -55,14 +55,14 @@ const GameView = ({
             </div>
 
             {/* Player Actions (Forcé) */}
-            <PlayerActions
+            {/* <PlayerActions
                 tableState={tableState}
                 betSize={betSize}
                 setBetSize={setBetSize}
                 emitPlayerAction={emitPlayerAction}
                 addRange={addRange}
                 minusRange={minusRange}
-            />
+            /> */}
 
             <TableAreaView
                 tableState={tableState}

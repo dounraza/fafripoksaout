@@ -50,7 +50,124 @@
             font-size: 20px;
         }
     }
+.btn-call {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 50px;
+  padding: 6px 24px;
+  color: black;
+  font-weight: bold;
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 
+    0 5px 0 #d97706,
+    0 8px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+  min-width: 100px;
+  margin-bottom:30%;
+}
 
+.btn-call:active {
+  transform: translateY(3px);
+  box-shadow: 
+    0 2px 0 #d97706,
+    0 4px 6px rgba(0, 0, 0, 0.4);
+}
+.btn-fold {
+  background: linear-gradient(180deg, #fb243d 0%, #f50b0b 100%);
+  border: none;
+  border-radius: 50px;
+  padding: 6px 24px;
+  color: black;
+  font-weight: bold;
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 
+    0 5px 0 #f43232,
+    0 8px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+  min-width: 100px;
+  margin-bottom:30%;
+}
+.main-action-row{
+    margin-left:-3vh!important;
+}
+.btn-fold:active {
+  transform: translateY(3px);
+  box-shadow: 
+    0 2px 0 #d97706,
+    0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+ 
+.btn-allin {
+  background: linear-gradient(180deg, #000000 0%, #1c1915 100%);
+  border: none;
+  border-radius: 50px;
+  padding: 6px 24px;
+  color: fff;
+  font-weight: bold;
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 
+    0 5px 0 #33302e,
+    0 8px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+  min-width: 100px;
+   margin-bottom:30%;
+}
+
+.btn-allin:active {
+  transform: translateY(3px);
+  box-shadow: 
+    0 2px 0 #7f7972,
+    0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-raise {
+  background: linear-gradient(180deg, #0c6e91 0%, #0c6e91 100%);
+  border: none;
+  border-radius: 50px;
+  padding: 6px 24px;
+  color: fff;
+  font-weight: bold;
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 
+    0 5px 0 #699ba8,
+    0 8px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+  min-width: 100px;
+   margin-bottom:30%;
+}
+.bet-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+.bet-amount{
+        width: 29vh;
+        text-align: center;
+        height: 9vh;
+}
+.bet-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-raise:active {
+  transform: translateY(3px);
+  box-shadow: 
+    0 2px 0 #699ba8,
+    0 4px 6px rgba(0, 0, 0, 0.4);
+}
     .game-content {
         width: 100%;
         height: 100%;
@@ -73,7 +190,10 @@
     z-index: 1000;
     backdrop-filter: blur(5px);
 }
-
+.btn-plus{
+    
+    margin-left: 12vh!important;
+}
 .modal-content {
     background: linear-gradient(145deg, #2c070e, #1c0509);
     color: #f6ecd4;

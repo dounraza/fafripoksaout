@@ -34,9 +34,7 @@ const PlayerActions = ({
         <div className="raise-action-row">
             <div className="input-group">
                 <div className="bet-input-container">
-                    <div className="bet-control button-minus" onClick={minusRange}>
-                        <Minus />
-                    </div>
+                    
                     <input
                         className='bet-amount'
                         type="number"
@@ -45,9 +43,22 @@ const PlayerActions = ({
                         value={betSize}
                         onChange={(e) => setBetSize(Number(e.target.value))}
                     />
+                    {/* <div className="bet-control button-minus" onClick={minusRange}>
+                        <Minus />
+                    </div>
+                    <div className="bet-control button-plus" onClick={addRange}>
+                        <Plus />
+                    </div> */}
+                    <div className="bet-controls">
+                    <div className="bet-control button-minus" onClick={minusRange}>
+                        <Minus />
+                    </div>
+
                     <div className="bet-control button-plus" onClick={addRange}>
                         <Plus />
                     </div>
+                </div>
+
                 </div>
                 <div className="btn-raise" onClick={() => emitPlayerAction('raise')}>Relancer</div>
             </div>

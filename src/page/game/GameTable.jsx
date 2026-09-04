@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import Nav from "../../component/nav/Nav";
 import Game from "../../component/game/Game";
+import PlayerActions from "../../component/game/PlayerActions";
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from "react-toastify";
 import { getById } from "../../services/tableServices";
@@ -13,6 +14,7 @@ import "./GameTable.scss";
 
 const GameTable = () => {
     // ... (rest of the state declarations)
+    const [actionHandlers, setActionHandlers] = useState(null);
     // Adding placeholder for lastTable/sitCounts for integration
     const lastTable = null; // Replace with actual logic to fetch last table
     const sitCounts = new Map(); // Replace with actual sit counts
@@ -157,31 +159,17 @@ const GameTable = () => {
                 
                 {/* Boutons gauche */}
                 <div className="left-menu">
+                    <div className="left-action">
+                        {actionHandlers && <PlayerActions {...actionHandlers} />}
+                    </div>
+                    <br/>
                     <button className="avatar-btn" onClick={handleAvatarClick}>👩</button>
                     <button className="small-btn" onClick={handleGuideClick}><InfoIcon /></button>
                 </div>
                 
                 {lastTable && (
                     <div className="rejoin-banner" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
-                        <div className="rejoin-banner-left">
-                            <div className="rejoin-table-name">{lastTable.name}</div>
-                            <div className="rejoin-meta">
-                                <span><Users size={13} /> {sitCounts.get(String(lastTable.id)) || 0} joueurs</span>
-                                <span>SB {(lastTable?.smallBlind ?? 0).toLocaleString()} / BB {(lastTable?.bigBlind ?? 0).toLocaleString()} Ar</span>
-                                <span><Wallet size={13} /> {(lastTable?.cave ?? 0).toLocaleString()} Ar</span>
-                            </div>
-                        </div>
-                        <div className="rejoin-banner-right">
-                            <button
-                                className="rejoin-main-btn"
-                                onClick={() => {
-                                    openCaveModal(lastTable);
-                                }}
-                            >
-                                <RotateCcw size={15} />
-                                Rejoindre
-                            </button>
-                        </div>
+                        {/* ... */}
                     </div>
                 )}
 
@@ -194,6 +182,7 @@ const GameTable = () => {
                         setTableSessionId={setTableSessionId}
                         cavePlayer={cavePlayer}
                         onlyTable={!tableSessionIdShared}
+                        onActionsReady={setActionHandlers}
                         />
                     )}
                 </div>
