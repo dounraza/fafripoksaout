@@ -585,6 +585,8 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
                     emitPlayerAction={emitPlayerAction}
                     addRange={addRange}
                     minusRange={minusRange}
+                    jeton={jeton}
+                    jetonMany={jetonMany}
                 />
             ) : (
                 <GameView
@@ -619,6 +621,8 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
                     emitPlayerAction={emitPlayerAction}
                     addRange={addRange}
                     minusRange={minusRange}
+                    jeton={jeton}
+                    jetonMany={jetonMany}
                 />
             )}
             

@@ -131,7 +131,7 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
                                 <img src={jetonMany} alt=""
                                     style={{
                                         zIndex: -1,
-                                        width: '56px',
+                                        width: '33px',
                                         height: '56px',
                                         objectFit: 'contain',
                                     }} />

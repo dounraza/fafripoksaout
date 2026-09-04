@@ -38,7 +38,9 @@ const GameView = ({
     setBetSize,
     emitPlayerAction,
     addRange,
-    minusRange
+    minusRange,
+    jeton,
+    jetonMany
 }) => {
     console.log("GameView rendering. tableState:", tableState);
     console.log("Condition for PlayerActions:", tableState.handInProgress, tableState.toAct, tableState.seat);
@@ -98,6 +100,8 @@ const GameView = ({
                 winnerSeats={winData?.winStates?.filter(w => w.isWinner).map(w => w.seat) || []}
                 playSound={playSound}
                 shouldShareCards={shouldShareCards}
+                jeton={jeton}
+                jetonMany={jetonMany}
             />
         </div>
     );
