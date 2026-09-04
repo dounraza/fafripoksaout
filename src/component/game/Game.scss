@@ -114,8 +114,9 @@
                 box-shadow: none;
             }
 
-            &.p_1{ top: .7rem; left: 110px; } 
-            &.p_2, &.p_0 { top: 1.7rem; }
+            &.p_1{ top: -6.3rem; left: 10vh; } 
+            &.p_2 { top: -6.3rem;left:7vh; } 
+            &.p_0 { top: -6.3rem;left:7vh; }
             &.p_3 { left: 3rem; top: 5.5rem; }
             &.p_5 { top: .7rem; left: -80px; }
             &.p_6, &.p_4 { left: -70px; top: 1.7rem; }
@@ -144,6 +145,7 @@
                     .card {
                         width: 3.5rem; 
                         margin: 0 -0.3rem;
+                        
                         img { box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
                     }
                 }
@@ -164,6 +166,7 @@
                     margin: 0 -0.5rem; /* Ajusté */
                     transition: transform 0.2s;
                     position: relative;
+                    height: 3vh;
                     &:hover { transform: translateY(-5px); z-index: 5; }
                     img {
                         width: 100%;

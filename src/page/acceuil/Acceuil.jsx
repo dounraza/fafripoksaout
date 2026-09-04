@@ -287,6 +287,16 @@ function Stage({ fx }) {
 }
 
 function TableCard({ table, onEnter, sitCount }) {
+  // Liste des images disponibles
+  const fondImages = [
+     '1.jpg','2.jpg', '3.jpg', '4.jpg', 
+    '5.jpg', '6.jpg'
+  ];
+  
+  // Sélectionner une image en fonction de l'ID de la table pour qu'elle soit stable
+  const bgImage = fondImages[Number(table.id) % fondImages.length];
+  const bgUrl = `/table/${bgImage}`;
+
   return (
     <button
       type="button"
@@ -303,6 +313,12 @@ function TableCard({ table, onEnter, sitCount }) {
         onError={(e) => {
           e.currentTarget.style.display = "none";
         }}
+      />
+      
+      {/* New background layer with dynamic image */}
+      <div 
+        className="background-layer" 
+        style={{ backgroundImage: `url('${bgUrl}')` }} 
       />
 
       <Stage fx={table.fx} />
