@@ -115,13 +115,15 @@
             }
 
             &.p_1{ top: -6.3rem; left: 10vh; } 
-            &.p_2 { top: -6.3rem;left:7vh; } 
+            &.p_2 { top: -5.3rem;left:0vh; } 
             &.p_0 { top: -6.3rem;left:7vh; }
-            &.p_3 { left: 3rem; top: 5.5rem; }
-            &.p_5 { top: .7rem; left: -80px; }
-            &.p_6, &.p_4 { left: -70px; top: 1.7rem; }
-            &.p_7 { left: -1.5rem; top: -3rem; }
-            &.p_8 { left: 4.5rem; top: -3rem; }
+            &.p_3 { left: 0rem; top: -3.5rem; }
+            &.p_5 { top: 4.7rem; left: 1vh; }
+            &.p_6 { left: -15vh; top: 2.7rem; }
+            &.p_4 { left: 2vh; top: 4.7rem; }
+            &.p_7 { left: 3.5rem; top: -5rem; }
+            &.p_8 { left: -0.5rem; top: -6rem; }
+ 
         }
 
         .player-cards {
@@ -264,7 +266,7 @@
             100% { background-position: 0% 0%; }
         }
    
-        &.seat8 { top: -18vh; left: -49%; }
+        &.seat8 { top: -25vh; left: -49%; }
         &.seat7 { top: -20vh; left: 36%; }
         &.seat6 { top: 11vh; left: 81%; }
         &.seat5 { top: 4.5%; left: 86%; }

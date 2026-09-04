@@ -69,6 +69,10 @@ const PlayerDetails = ({
 
             {/* Tapis/Stack - masqué si le siège est vide */}
             <div className={`amount p_${i}`}>
+                {/* TEST: Force display for debugging */}
+                {/* <div key={i} style={{ color: 'yellow', fontWeight: 600, border: '1px solid yellow' }}>
+                    TEST_{i}
+                </div> */}
                 {tableState.seats[i] !== null && (() => {
                     const playerAction = tableState.actions?.find(item => item.playerId === i);
                     if (playerAction) {
