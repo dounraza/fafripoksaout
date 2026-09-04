@@ -231,6 +231,7 @@
     color: var(--cream);
 
     border: 1px solid rgba(224, 184, 74, 0.45);
+    height: 0%;
   }
 
   .tools {
@@ -1089,7 +1090,7 @@
 
     gap: 8px;
 
-    height: 40px;
+    height: 2%;
 
     padding: 0 8px 0 4px;
 
@@ -1164,7 +1165,7 @@
 
     align-items: center;
 
-    height: 40px;
+    height: 2%;
 
     padding: 0 16px;
 
@@ -1180,7 +1181,7 @@
 
     font-weight: 800;
 
-    font-size: 13px;
+    font-size: 9px;
 
     user-select: none;
   }
@@ -1866,7 +1867,7 @@
     .btn,
     .who-btn,
     .solde-btn {
-      height: 42px;
+      height: 2%;
 
       font-size: 13px;
     }

@@ -311,7 +311,20 @@
 .seat-0 { top: 85%; left: 47%; transform: translateX(-50%); }
 .seat-1 { top: 82%; left: 32%; }
 .seat-2 { top:55%; left: 19%; transform: translateY(-50%); }
-.seat-3 { bottom: 70vh; left: 18%; }
+/* Mobile */
+@media (max-width: 768px) {
+    .seat-3 {
+        bottom:73vh;
+        left:18%;
+    }
+}
+/* Web */
+@media (min-width: 769px) {
+    .seat-3{
+       bottom:37vh;
+       left:18%
+    }
+}
 .seat-4 { top: -16%; left: 38%; transform: translateX(-50%); }
 .seat-5 { bottom: 93%; left: 55%; }
 .seat-6 { top: 8%; left: 73%; transform: translateY(-40%); }
@@ -366,7 +379,7 @@
         .card-container-4 { transform: translateY(43px) !important; }
         .card-container-5 { transform: translateY(34px) !important; }
         .card-container-6 { transform: translateY(29px) !important; }
-        .card-container-7 { transform: translateY(55px) translateX(-7px) rotate(0deg)!important; }
+        .card-container-7 { transform: translateY(28px) translateX(-7px) rotate(0deg)!important; }
         .card-container-8 { transform: translateY(10px) translateX(-3px) rotate(-15deg)!important; }
 
 /* Styles spécifiques pour chaque chaise (ajustez ici) */
