@@ -312,17 +312,13 @@
 .seat-1 { top: 82%; left: 32%; }
 .seat-2 { top:55%; left: 19%; transform: translateY(-50%); }
 /* Mobile */
-@media (max-width: 768px) {
-    .seat-3 {
-        bottom:73vh;
-        left:18%;
-    }
-}
+
 /* Web */
-@media (min-width: 769px) {
+@media (min-width: 950px) {
     .seat-3{
-       bottom:37vh;
-       left:18%
+       bottom:103vh;
+       left:18%;
+       transform: translateY(50%);
     }
 }
 .seat-4 { top: -16%; left: 38%; transform: translateX(-50%); }
@@ -387,7 +383,7 @@
 }
 .chair-1 {transform: rotate(180deg) !important;}
 .chair-2 {transform: rotate(-135deg) !important;}
-.chair-3 {transform: rotate(-55deg) !important;}
+.chair-3 {  transform:translateX(41vh) translateY(2vh) rotate(-55deg) !important;}
 .chair-4 {}
 .chair-5 {}
 .chair-6 {}

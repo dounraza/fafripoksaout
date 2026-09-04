@@ -4,7 +4,7 @@ import Game from "../../component/game/Game";
 import PlayerActions from "../../component/game/PlayerActions";
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from "react-toastify";
-import { getById } from "../../services/tableServices";
+import { getAll, getById } from "../../services/tableServices";
 import { getSolde } from "../../services/soldeService";
 import { JoinedTableContext } from "../../contexts/JoinedTableContext";
 import InfoIcon from '@mui/icons-material/Info';
@@ -13,11 +13,30 @@ import { Users, Wallet, RotateCcw } from 'lucide-react';
 import "./GameTable.scss";
 
 const GameTable = () => {
-    // ... (rest of the state declarations)
     const [actionHandlers, setActionHandlers] = useState(null);
-    // Adding placeholder for lastTable/sitCounts for integration
-    const lastTable = null; // Replace with actual logic to fetch last table
-    const sitCounts = new Map(); // Replace with actual sit counts
+    const [lastTable, setLastTable] = useState(null);
+    const [sitCounts, setSitCounts] = useState(new Map());
+
+    useEffect(() => {
+        const fetchLastTable = async () => {
+            const lastTableId = sessionStorage.getItem('lastTableId');
+            if (lastTableId) {
+                try {
+                    await getAll(
+                        (tables) => {
+                            const table = tables.find(t => String(t.id) === lastTableId);
+                            setLastTable(table || null);
+                        },
+                        setSitCounts
+                    );
+                } catch (e) {
+                    console.error("Error fetching last table:", e);
+                }
+            }
+        };
+        fetchLastTable();
+    }, []);
+
     const openCaveModal = (table) => { /* Implement modal logic */ };
     const { tableid } = useParams();
     const { tableSessionIdShared } = useParams();
@@ -166,12 +185,6 @@ const GameTable = () => {
                     <button className="avatar-btn" onClick={handleAvatarClick}>👩</button>
                     <button className="small-btn" onClick={handleGuideClick}><InfoIcon /></button>
                 </div>
-                
-                {lastTable && (
-                    <div className="rejoin-banner" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
-                        {/* ... */}
-                    </div>
-                )}
 
                 <div className="game-content" style={{ position: 'relative', width: '100%', zIndex: 1 }}>
                     {cavePlayer !== null && (
