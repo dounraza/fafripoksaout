@@ -57,7 +57,7 @@ const GameTable = () => {
                     const minCave = await getById(tableid);
                     const cave = Number(minCave);
                     setCavePlayer(cave);
-                    alert("Cave détectée : " + cave);
+                  
                 } catch (e) {
                     toast.error("Erreur de chargement de la table.");
                 }

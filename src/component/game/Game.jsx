@@ -718,8 +718,8 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                     socketRef.current.emit('recave', { tableId, userId: currentUserId, amount });
                     setShowRecaveModal(false);
                 }}
-                minCave={tableState.buy || 100}
-                defaultCave={tableState.buy || 100}
+                minCave={tableState.cave || 100}
+                defaultCave={tableState.cave || 100}
             />
         </div>
     );
