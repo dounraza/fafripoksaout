@@ -467,16 +467,35 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
 
     const emitPlayerAction = (action, betSizeParam = undefined) => {
         const userId = sessionStorage.getItem('userId');
-        if (!isPossibleAction.current) return;
+        console.log("DEBUG [emitPlayerAction]:", { action, betSizeParam, betSize, tableState }); // DEBUG LOG
+
+        if (!isPossibleAction.current) {
+            console.warn("DEBUG: Action skipped, not possible current turn.");
+            return;
+        }
 
         isPossibleAction.current = false;
 
         const betSizeSend = betSizeParam ? betSizeParam : betSize;
-        const { min, max } = tableState.legalActions.chipRange;
+        
+        // Use defaults if legalActions or chipRange are missing
+        const min = tableState.legalActions?.chipRange?.min ?? 0;
+        // Fallback to player stack if max is not available
+        const max = tableState.legalActions?.chipRange?.max ?? (tableState.seats?.[tableState.seat]?.stack ?? 0);
+        
         const clampedBet = Math.max(min, Math.min(betSizeSend, max));
         const key= `players_stacks_${tableId}_${tableState.seat}_${userId}`;
         sessionStorage.setItem(key, (parseInt(tableState.seats[tableState.seat].stack)));
         let actionTrue = action;
+        
+        console.log("DEBUG [Socket Emitting]:", {
+            tableId: tableId,
+            tableSessionId: tableState.tableId, 
+            playerSeats: tableState.seat, 
+            action: actionTrue, 
+            bet: clampedBet
+        });
+
         socketRef.current.emit('playerAction', {
             tableId: tableId,
             tableSessionId: tableState.tableId, 
@@ -516,11 +535,13 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     };
 
     const addRange = () => {
-        setBetSize(Math.min((betSize + 10 ), tableState.legalActions.chipRange.max));
+        const max = tableState.legalActions?.chipRange?.max ?? (tableState.seats?.[tableState.seat]?.stack ?? 0);
+        setBetSize(Math.min((betSize + 10 ), max));
     }
 
     const minusRange = () => {
-        setBetSize(Math.max((betSize - 1 ), tableState.legalActions.chipRange.min));
+        const min = tableState.legalActions?.chipRange?.min ?? 0;
+        setBetSize(Math.max((betSize - 1 ), min));
     }
 
     return (

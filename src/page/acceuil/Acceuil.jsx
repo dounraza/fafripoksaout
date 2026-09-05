@@ -375,6 +375,7 @@ export default function Accueil() {
   const [enterOpen, setEnterOpen] = useState(false);
   const [enterShow, setEnterShow] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [burgerOpen, setBurgerOpen] = useState(false);
   const [lastTableId, setLastTableId] = useState(sessionStorage.getItem('lastTableId'));
 
   // Fetch tables on component mount
@@ -518,7 +519,10 @@ export default function Accueil() {
   }, [user]);
 
   useEffect(() => {
-    const closeMenu = () => setMenuOpen(false);
+    const closeMenu = () => {
+        setMenuOpen(false);
+        setBurgerOpen(false);
+    };
 
     document.addEventListener("click", closeMenu);
 
@@ -648,7 +652,7 @@ const userId=sessionStorage.getItem('userId');
  const [selectedAvatar, setSelectedAvatar] = useState(sessionStorage.getItem(userIdAvatar));
   return (
     <div className="accueil">
-      <header>
+      <header className="header-wrapper">
         <div className="wrap bar">
           <a className="brand" href="/acceuil" onClick={(e) => { e.preventDefault(); window.location.href = '/acceuil'; }}>
             <span className="logo">
@@ -668,21 +672,36 @@ const userId=sessionStorage.getItem('userId');
           </a>
 
           <div className="actions">
-            <a className="btn btn-out" href="/depot">
+            <a className="btn btn-out desktop-only" href="/depot">
               Dépôt
             </a>
 
-            <a className="btn btn-out" href="/retrait">
+            <a className="btn btn-out desktop-only" href="/retrait">
               Retrait
             </a>
+            
+            <div className={`burger-menu ${burgerOpen ? "open" : ""}`}>
+                <button className="burger-btn" onClick={(e) => { e.stopPropagation(); setBurgerOpen(!burgerOpen); }}>
+                    <span></span><span></span><span></span>
+                </button>
+                <div className="burger-dropdown">
+                    {user ? (
+                        <>
+                            <a href="/depot">Dépôt</a>
+                            <a href="/retrait">Retrait</a>
+                            <a href="/profile">Mon compte</a>
+                            <button onClick={logout}>Se déconnecter</button>
+                        </>
+                    ) : (
+                        <>
+                            <a href="/login">Connexion</a>
+                            <a href="/register">S'inscrire</a>
+                        </>
+                    )}
+                </div>
+            </div>
 
             {user && (
-              <>
-                <span className="solde-btn">
-                  Votre solde :{" "}
-                  {balance.toLocaleString("fr-FR")} Ar
-                </span>
-
                 <div
                   className={`who ${
                     menuOpen ? "open" : ""
@@ -709,8 +728,7 @@ const userId=sessionStorage.getItem('userId');
                           .toUpperCase()}
                       </span>
                     )}
-
-                    <span>{displayName}</span>
+                    <span className="user-name-text">{displayName}</span>
                   </button>
 
                   <div className="who-menu">
@@ -726,28 +744,17 @@ const userId=sessionStorage.getItem('userId');
                     </button>
                   </div>
                 </div>
-              </>
-            )}
-
-            {!user && (
-              <>
-                <a
-                  className="btn btn-out"
-                  href="/login"
-                >
-                  Connexion
-                </a>
-
-                <a
-                  className="btn btn-gold"
-                  href="/register"
-                >
-                  S'inscrire
-                </a>
-              </>
             )}
           </div>
         </div>
+        
+        {user && (
+            <div className="mobile-balance-row">
+                <span className="solde-btn">
+                    Votre solde : {balance.toLocaleString("fr-FR")} Ar
+                </span>
+            </div>
+        )}
       </header>
 
       <div className="rotate-banner">

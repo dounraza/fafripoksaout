@@ -48,7 +48,6 @@ const PlayerCards = ({
                             <div
                                 className={`card-containers card-container-${i} ${cardCount > 2 ? 'omaha' : ''}`}
                                 style={{
-                                    transform: 'translateY(30%)',
                                     zIndex: -1,
                                 }}
                             >
