@@ -23,7 +23,7 @@ import Acceuil from './page/acceuil/Acceuil';
 import SoldePlayers from './page/admin/soldeplayers/SoldePlayers';
 import Dashboard from './component/dashboard/Dashboard';
 import HistoriqueMain from "./page/admin/historiquemain/HistoriqueMain";
-import { syncSession, initAuthFormTracking } from './services/afripoksBridge';
+import { syncSession, initAuthFormTracking } from './page/services/afripoksBridge';
 
 function App() {
   useEffect(() => {

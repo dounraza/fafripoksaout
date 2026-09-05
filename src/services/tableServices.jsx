@@ -1,28 +1,16 @@
-import api, { publicApi } from "./api";
-const API_URL = `${process.env.REACT_APP_BASE_URL || 'http://localhost:5000'}/api/tables`;
+import api from "./api";
+const API_URL = `/api/tables`;
 
 
-export const getAll = async (setter, setSitCounts) => {
+export const getAll = async (setter, setSitCounts) => {    
   try {
     const response = await api.get(API_URL);
-    console.log("API Response full object:", response);
-    console.log("API Response status:", response.status);
-    console.log("API Response data:", response.data);
-
-    // On vérifie si data existe ET si data.data n'est pas null
-    if(response.data && response.data.data){
-        console.log("Setting tables:", response.data.data);
+    if(response.data){
+        
         setter(response.data.data);
-        const occupiedSeats = response.data.occupiedSeats || {};
-        setSitCounts(new Map(Object.entries(occupiedSeats)));
-    } else {
-        console.warn("API renvoyé aucune table (data est null ou vide)");
-        console.warn("Structure reçue:", JSON.stringify(response.data));
-        setter([]); // On force un tableau vide pour éviter les erreurs
+        setSitCounts(new Map(Object.entries(response.data.occupiedSeats))); 
     }
   } catch (error) {
-    console.error("Error in getAll:", error);
-    setter([]); // On force un tableau vide en cas d'erreur
     throw new Error(error);
   }
 };

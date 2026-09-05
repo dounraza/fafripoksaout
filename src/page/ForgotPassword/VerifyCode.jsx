@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { verifyCode, forgotPassword } from "../../services/authService";
+import { verifyCode, forgotPassword } from "../../page/services/authService";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./VerifyCode.scss";

@@ -1,0 +1,700 @@
+:root {
+    --ink: #120307;
+    --felt: #1c0509;
+    --gold: #e0b84a;
+    --gold-light: #f6d98a;
+    --cream: #f3e6c8;
+    --dim: #c4b089;
+    --line: rgba(243, 230, 200, 0.14);
+    --red: #a5121a;
+}
+
+.depot-form-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(100%);
+}
+
+.alert-message-red {
+    color: #ff4d4d;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ff4d4d;
+    border-radius: 8px;
+    background: rgba(255, 77, 77, 0.1);
+    font-size: 14px;
+    width: 70%;
+    margin-left: 15%;
+
+    .btn-verify {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #ff4d4d;
+        color: white !important;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        z-index: 10;
+        position: relative;
+    }
+
+
+    font-family: "Manrope", sans-serif;
+    color: var(--cream);
+
+    background:
+        radial-gradient(
+            ellipse 80% 55% at 50% -10%,
+            rgba(224, 184, 74, 0.18),
+            transparent 55%
+        ),
+        linear-gradient(
+            180deg,
+            #5a101c 0%,
+            #2a070d 42%,
+            #140307 100%
+        );
+}
+
+.depot-page *,
+.depot-page *::before,
+.depot-page *::after {
+    box-sizing: border-box;
+}
+
+.depot-wrap {
+    width: min(560px, 92vw);
+    margin: 0 auto;
+}
+
+.depot-header {
+    border-bottom: 1px solid var(--line);
+    background: rgba(28, 5, 9, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.depot-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+}
+
+.depot-brand {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 30px;
+    letter-spacing: 0.05em;
+    color: #fff;
+}
+
+.depot-btn {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.depot-btn:active {
+    transform: translateY(1px);
+}
+
+.depot-btn-out {
+    border: 1px solid rgba(224, 184, 74, 0.45);
+    background: transparent;
+    color: var(--cream);
+}
+
+.depot-btn-out:hover {
+    background: rgba(224, 184, 74, 0.1);
+    border-color: var(--gold);
+}
+
+.depot-main {
+    padding-top: 28px;
+    padding-bottom: 40px;
+}
+
+.depot-main h1 {
+    margin: 0;
+    text-align: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 52px;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+}
+
+.depot-sub {
+    text-align: center;
+    color: var(--dim);
+    margin: 4px 0 22px;
+    font-size: 14px;
+}
+
+/* =========================================
+   NUMÉROS MOBILE MONEY
+========================================= */
+
+.nums {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 18px;
+    width:70%;
+        margin-left: 15%;
+}
+
+.nums div {
+    border: 1px solid rgba(224, 184, 74, 0.3);
+    border-radius: 14px;
+    padding: 12px 10px;
+    text-align: center;
+    background: rgba(18, 3, 7, 0.4);
+
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nums div:hover {
+    border-color: rgba(224, 184, 74, 0.7);
+    background: rgba(224, 184, 74, 0.07);
+    transform: translateY(-2px);
+}
+
+.nums small {
+    display: block;
+    margin-bottom: 4px;
+
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: var(--gold);
+    font-weight: 800;
+}
+
+@media (min-width: 560px) {
+    .nums {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .nums div {
+        min-height: 70px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* =========================================
+   FORMULAIRE
+========================================= */
+
+.depot-form {
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 20px;
+    width:70%;
+        margin-left: 15%;
+    background: rgba(18, 3, 7, 0.4);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.input-group {
+    margin-bottom: 14px;
+}
+
+.label {
+    display: block;
+    margin: 12px 0 6px;
+
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: var(--dim);
+    font-weight: 800;
+}
+
+.input input {
+    width: 100%;
+    height: 44px;
+
+    border-radius: 999px;
+    border: 1px solid var(--line);
+
+    background: rgba(18, 3, 7, 0.45);
+    color: var(--cream);
+
+    padding: 0 16px;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.input input::placeholder {
+    color: rgba(196, 176, 137, 0.55);
+}
+
+.input input:focus {
+    border-color: var(--gold);
+    background: rgba(18, 3, 7, 0.65);
+
+    box-shadow:
+        0 0 0 3px rgba(224, 184, 74, 0.08);
+}
+
+.input input:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* =========================================
+   PHONE INPUT
+========================================= */
+
+.phone-input {
+    width: 100%;
+}
+
+.phone-input .PhoneInput {
+    width: 100%;
+    height: 44px;
+
+    border-radius: 999px;
+    border: 1px solid var(--line);
+
+    background: rgba(18, 3, 7, 0.45);
+
+    padding: 0 16px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.phone-input .PhoneInput:focus-within {
+    border-color: var(--gold);
+    background: rgba(18, 3, 7, 0.65);
+
+    box-shadow:
+        0 0 0 3px rgba(224, 184, 74, 0.08);
+}
+
+.phone-input .PhoneInputCountry {
+    margin-right: 8px;
+}
+
+.phone-input .PhoneInputCountrySelect {
+    background: transparent;
+    color: var(--cream);
+}
+
+.phone-input .PhoneInputCountrySelectArrow {
+    color: var(--gold);
+}
+
+.phone-input .PhoneInputInput {
+    height: 40px;
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+    color: var(--cream);
+
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.phone-input .PhoneInputInput:focus {
+    box-shadow: none;
+}
+
+/* =========================================
+   BOUTONS
+========================================= */
+
+.depot-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.depot-actions button {
+    height: 46px;
+    border-radius: 999px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        filter 0.2s ease,
+        background 0.2s ease;
+}
+
+.depot-actions button:active {
+    transform: translateY(1px);
+}
+
+.depot-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.cancel {
+    border: 1px solid rgba(243, 230, 200, 0.2);
+    background: transparent;
+    color: var(--dim);
+}
+
+.cancel:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--cream);
+}
+
+.submit {
+    border: 0;
+    background: linear-gradient(
+        135deg,
+        #f0cd72,
+        #e0b84a
+    );
+
+    color: var(--ink);
+
+    box-shadow:
+        0 8px 24px rgba(224, 184, 74, 0.18);
+}
+
+.submit:hover {
+    filter: brightness(1.08);
+}
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.depot-spinner {
+    width: 18px;
+    height: 18px;
+
+    display: inline-block;
+
+    border: 2px solid rgba(18, 3, 7, 0.25);
+    border-top-color: var(--ink);
+
+    border-radius: 50%;
+
+    animation: depotSpin 0.7s linear infinite;
+}
+
+@keyframes depotSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================
+   AIDE
+========================================= */
+
+.help {
+    margin-top: 16px;
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: var(--dim);
+}
+
+.punch {
+    margin-top: 18px;
+
+    text-align: center;
+
+    font-weight: 800;
+    color: var(--gold-light);
+    font-size: 15px;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.depot-footer {
+    text-align: center;
+    padding: 22px 0 10px;
+}
+
+.depot-footer button {
+    border: 0;
+    background: transparent;
+
+    color: var(--gold);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.depot-footer button:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   ÉCRAN DE SUCCÈS
+========================================= */
+
+.depot-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            rgba(90, 16, 28, 0.92),
+            rgba(18, 3, 7, 0.98) 70%
+        );
+
+    animation: splashAppear 0.35s ease-out;
+}
+
+@keyframes splashAppear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.depot-splash .glitter {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+.success-message {
+    position: relative;
+    z-index: 2;
+
+    width: min(520px, 90vw);
+
+    text-align: center;
+
+    padding: 30px 20px;
+
+    animation: successPop 0.7s
+        cubic-bezier(0.2, 1.4, 0.35, 1);
+}
+
+@keyframes successPop {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.success-chip {
+    width: 112px;
+    height: 112px;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        repeating-conic-gradient(
+            #a5121a 0 22deg,
+            #e7c879 22deg 28deg
+        );
+
+    border: 4px solid #fff4c4;
+
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 48px;
+    letter-spacing: 0.04em;
+
+    color: var(--ink);
+
+    box-shadow:
+        0 12px 40px rgba(224, 184, 74, 0.35),
+        0 0 70px rgba(224, 184, 74, 0.2);
+
+    animation: chipPop 0.9s
+        cubic-bezier(0.2, 1.5, 0.35, 1);
+}
+
+@keyframes chipPop {
+    from {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+.success-message h2 {
+    margin: 0;
+
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(34px, 7vw, 48px);
+    line-height: 0.95;
+
+    letter-spacing: 0.03em;
+
+    color: var(--gold-light);
+
+    text-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.success-message p {
+    margin-top: 18px;
+
+    color: var(--cream);
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.success-button {
+    margin-top: 24px;
+
+    height: 44px;
+    padding: 0 24px;
+
+    border: 0;
+    border-radius: 999px;
+
+    background: var(--gold);
+    color: var(--ink);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        filter 0.2s ease,
+        transform 0.15s ease;
+}
+
+.success-button:hover {
+    filter: brightness(1.08);
+}
+
+.success-button:active {
+    transform: translateY(1px);
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+    .depot-main {
+        padding-top: 22px;
+    }
+
+    .depot-main h1 {
+        font-size: 44px;
+    }
+
+    .depot-form {
+        padding: 16px;
+        border-radius: 18px;
+        width:70%;
+            margin-left: 15%;
+    }
+
+    .depot-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .cancel {
+        order: 2;
+    }
+
+    .submit {
+        order: 1;
+    }
+
+    .success-chip {
+        width: 96px;
+        height: 96px;
+        font-size: 40px;
+    }
+}
+
+/* =========================================
+   ACCESSIBILITÉ
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .depot-page *,
+    .depot-page *::before,
+    .depot-page *::after,
+    .depot-splash *,
+    .depot-splash *::before,
+    .depot-splash *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

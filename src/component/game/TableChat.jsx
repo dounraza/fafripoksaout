@@ -163,7 +163,7 @@ const TableChat = ({ socketRef, tableId, tableState, currentUserId, playerNames 
                     <div className="chat-header">
                         <div className="chat-title">
                             <MessageCircle size={18} />
-                            <span>Chat entre Joueurs</span>
+                            <span>Chat</span>
                             {unreadCount > 0 && isMinimized && (
                                 <span className="unread-badge-header">{unreadCount}</span>
                             )}
@@ -185,7 +185,7 @@ const TableChat = ({ socketRef, tableId, tableState, currentUserId, playerNames 
                                 {messages.length === 0 ? (
                                     <div className="chat-empty">
                                         <MessageCircle size={32} opacity={0.3} />
-                                        <p>Aucun message pour le moment</p>
+                                        <p>Aucun message</p>
                                     </div>
                                 ) : (
                                     messages.map((msg) => {
@@ -219,7 +219,7 @@ const TableChat = ({ socketRef, tableId, tableState, currentUserId, playerNames 
                                     type="text"
                                     value={inputMessage}
                                     onChange={(e) => setInputMessage(e.target.value)}
-                                    placeholder="Tapez votre message..."
+                                    placeholder="Votre message..."
                                     maxLength={200}
                                     className="chat-input"
                                 />

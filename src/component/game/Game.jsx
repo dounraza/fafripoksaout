@@ -22,28 +22,9 @@ import { onlineUsersSocket } from '../../engine/socket';
 
 import TableTabs from './TableTabs';
 import TableChat from './TableChat';
-import GameView from './GameView';
-import GameViewN from './GameViewN';
-
-const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noTable = false, onActionsReady }) => {
+const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) => {
     const [tableState, setTableState] = useState({});
     const [betSize, setBetSize] = useState(0);
-    // ...
-    
-    useEffect(() => {
-        if (onActionsReady) {
-            onActionsReady({
-                tableState,
-                betSize,
-                setBetSize,
-                emitPlayerAction,
-                addRange,
-                minusRange
-            });
-        }
-    }, [tableState, betSize, onActionsReady]);
-    const [showRecaveModal, setShowRecaveModal] = useState(false);
-    const [hasRecaved, setHasRecaved] = useState(false);
     const [winData, setWinData] = useState({});
     const [sb, setSb] = useState(-1);
     const [bb, setBb] = useState(-1);
@@ -80,9 +61,32 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
     const [allInArr, setAllInArr] = useState([]);
     const [gameOver, setGameOver] = useState(false);
     const potRef = useRef(null);
+    const [hideStack, setHideStack] = useState(false)
     const [winAllIn, setWinAllIn] = useState(false)
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false)
     const [lastMatchHistory, setLastMatchHistory] = useState(null)
+    const [showRecaveModal, setShowRecaveModal] = useState(false);
+
+    useEffect(() => {
+        // Only trigger if stack is 0 and no hand is currently in progress
+        if (tableState.seats && tableState.seat !== undefined && tableState.seats[tableState.seat]?.stack === 0 && !tableState.handInProgress) {
+            console.log("Triggering RecaveModal, stack is 0 and hand not in progress");
+            setShowRecaveModal(true);
+        } else {
+            setShowRecaveModal(false);
+        }
+    }, [tableState]);
+
+    useEffect(() => {
+        let timer;
+        if (showRecaveModal) {
+            timer = setTimeout(() => {
+                quitter();
+                toast.info("Temps écoulé, vous avez quitté la table.");
+            }, 10000);
+        }
+        return () => clearTimeout(timer);
+    }, [showRecaveModal]);
 
     
     useEffect(() => {
@@ -218,11 +222,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
             }
         });
 
-        socketRef.current.on('needRecave', (data) => {
-            toast.info(data.message);
-            setShowRecaveModal(true);
-        });
-
         socketRef.current.on('playerActionError', (data) => {
             toast.error(data.message || "Une erreur est survenue.");
         });
@@ -285,7 +284,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
             setCommunityShow([]);
             setAllInArr([]);
             foldedPlayers.current = new Set();
-            setHasRecaved(false);
 
             console.log("Start");
             setShouldShareCards(false);
@@ -293,16 +291,11 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
         });
 
         socketRef.current.on('tableState', (data) => {
-            console.log("DEBUG [Socket tableState received]:", data);
             const minBet = data?.legalActions?.chipRange?.min ?? 0;
             setBetSize(minBet);
             setTableState(data);
             setTableSessionId(data.tableId);
             
-            if (!data.handInProgress && data.seats && data.seats[data.seat] && data.seats[data.seat].stack === 0 && !hasRecaved) {
-                setShowRecaveModal(true);
-            }
-
             setAvatars(data.avatars);
 
             if(data.communityCards.length > 0) {
@@ -493,44 +486,22 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
         });
     }
 
-    const quitter = (force = false) => {
+    const quitter = () => {
         socketRef.current.emit("quit", {
             tableId: tableId,
             tableSessionId: tableState.tableId,
             playerSeats: tableState.seat,
-            force: force // Transmettre le flag
         });
         const userId = sessionStorage.getItem('userId');
         onlineUsersSocket.emit('joined-tables:leave', { uid: parseInt(userId), tid: parseInt(tableId) });
         
         // Nettoyage complet du session storage
         sessionStorage.removeItem('lastTableId');
+        // Si vous avez d'autres clés spécifiques aux tables, ajoutez-les ici :
+        // sessionStorage.removeItem('autreCle');
         
         // Dispatch d'un événement pour avertir les autres composants de la sortie
         window.dispatchEvent(new Event('tableLeft'));
-    };
-
-    // ... (rest of the component)
-
-    // Removed redundant useEffect
-
-    const handleRecave = (amount) => {
-        if (hasRecaved) return; // Sécurité : empêcher l'envoi multiple
-        
-        setHasRecaved(true);
-        setShowRecaveModal(false);
-        socketRef.current.emit('recave', { tableId, amount });
-    };
-
-    const handleRecaveTimeout = () => {
-        const userId = sessionStorage.getItem('userId');
-        socketRef.current.emit('leave_table', { tableId, userId });
-        setShowRecaveModal(false);
-        navigate('/acceuil');
-    };
-
-    const handleRecaveClose = () => {
-        setShowRecaveModal(false);
     };
 
     const getSrcCard = (card_id) => {
@@ -554,117 +525,135 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
 
     return (
         <div key={tableId} className="game-container">
-            <RecaveModal 
-                isOpen={showRecaveModal} 
-                onClose={handleRecaveClose} 
-                onRecave={handleRecave} 
-                onTimeout={handleRecaveTimeout}
-                minCave={100} // A ajuster selon vos besoins
-                defaultCave={500} // A ajuster selon vos besoins
-                timer={10}
-            />
-            
             <ToastContainer />
           
-            {noTable ? (
-                <GameViewN
+            {tableState.handInProgress && tableState.toAct === tableState.seat && ( 
+                <PlayerActions
                     tableState={tableState}
-                    tableId={tableId}
-                    game={game}
-                    community={community}
-                    communityShow={communityShow}
-                    communityToShow={communityToShow}
-                    communityReversNb={communityReversNb}
-                    moveCommCards={moveCommCards}
-                    gameOver={gameOver}
-                    allInArr={allInArr}
-                    winData={winData}
-                    getSrcCard={getSrcCard}
-                    playSound={playSound}
-                    soundMute={soundMute}
-                    isRevealFinished={isRevealFinished}
-                    playerRefs={playerRefs}
-                    tableRef={tableRef}
-                    rever={rever}
-                    foldedPlayers={foldedPlayers}
-                    shouldShareCards={shouldShareCards}
-                    sharingCards={sharingCards}
-                    sb={sb}
-                    bb={bb}
-                    dealer={dealer}
-                    avatars={avatars}
-                    potRef={potRef}
                     betSize={betSize}
                     setBetSize={setBetSize}
                     emitPlayerAction={emitPlayerAction}
                     addRange={addRange}
                     minusRange={minusRange}
-                    jeton={jeton}
-                    jetonMany={jetonMany}
-                />
-            ) : (
-                <GameView
-                    tableState={tableState}
-                    tableId={tableId}
-                    game={game}
-                    community={community}
-                    communityShow={communityShow}
-                    communityToShow={communityToShow}
-                    communityReversNb={communityReversNb}
-                    moveCommCards={moveCommCards}
-                    gameOver={gameOver}
-                    allInArr={allInArr}
-                    winData={winData}
-                    getSrcCard={getSrcCard}
-                    playSound={playSound}
-                    soundMute={soundMute}
-                    isRevealFinished={isRevealFinished}
-                    playerRefs={playerRefs}
-                    tableRef={tableRef}
-                    rever={rever}
-                    foldedPlayers={foldedPlayers}
-                    shouldShareCards={shouldShareCards}
-                    sharingCards={sharingCards}
-                    sb={sb}
-                    bb={bb}
-                    dealer={dealer}
-                    avatars={avatars}
-                    potRef={potRef}
-                    betSize={betSize}
-                    setBetSize={setBetSize}
-                    emitPlayerAction={emitPlayerAction}
-                    addRange={addRange}
-                    minusRange={minusRange}
-                    jeton={jeton}
-                    jetonMany={jetonMany}
                 />
             )}
+
+            <CommunityCards
+                key={tableId}
+                community={community}
+                communityShow={communityShow}
+                communityToShow={communityToShow}
+                communityReversNb={communityReversNb}
+                moveCommCards={moveCommCards}
+                gameOver={gameOver}
+                allInArr={allInArr}
+                winData={winData}
+                getSrcCard={getSrcCard}
+                playSound={playSound}
+                soundMute={soundMute}
+                isRevealFinished={isRevealFinished}
+                tableId={tableId}
+            />
             
-            {!tableState.handInProgress && (
+            <Pots
+                tableState={tableState}
+                jetonMany={jetonMany}
+                jeton={jeton}
+                potRef={potRef}
+                playerRefs={playerRefs}
+                animatePotToWinner={isRevealFinished && winData?.winStates?.some(w => w.isWinner)}
+                winnerSeats={winData?.winStates?.filter(w => w.isWinner).map(w => w.seat) || []}
+                playSound={playSound}
+                shouldShareCards={shouldShareCards}
+            />
+
+            <div 
+                className="table"
+                ref={tableRef}
+                style={{
+                  marginTop: 10,
+                }}
+            >
                 <div 
-                    className="menu-button" 
-                    onClick={() => quitter()}
+                    className="table-surface"
                     style={{
-                        position: 'absolute',
-                        top: '5%',
-                        left: '0%',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px',
-                        padding: '1px 15px',
-                        borderRadius: '7px',
-                        cursor: 'pointer',
-                        background: '#ff2e2e0f',
-                        color: '#FFF',
-                        backdropFilter: 'blur(5px)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        transition: 'all 0.3s ease',
-                        zIndex: 999,
+                        justifyContent: 'center',
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255, 48, 48, 0.4)'}
-                    onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255, 48, 48, 0.2)'}
                 >
-                    <ArrowBigLeft size={24} />
+                    <img 
+                        src={tableTexture} 
+                        alt=""
+                        style={{
+                            width: 'calc(408px)',
+                            height: 'calc(650px)',
+                            objectFit: 'contain',
+                            padding: '1rem',
+                            mixBlendMode: 'multiply', // Retire le blanc
+                            filter: 'contrast(1.1)' // Améliore le contraste
+                        
+                        }}
+                    />
+                    {shouldShareCards && (
+                        <div style={{
+                            position: 'absolute',
+                            width: '40pt',
+                            height: '56pt',
+                            backgroundColor: '#fff',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 10,
+                            boxShadow: '2px 2px 5px rgba(0,0,0,0.3)'
+                        }}>
+                            <img src={rever} alt="Deck" style={{width: '100%', height: '100%'}} />
+                        </div>
+                    )}
+                    
+                </div>
+                {tableState.seats && (tableState.seats).map((chips, i) => {
+                    return (
+                        <Player
+                            key={i}
+                            i={i}
+                            chips={chips}
+                            tableState={tableState}
+                            winData={winData}
+                            sb={sb}
+                            bb={bb}
+                            dealer={dealer}
+                            avatars={avatars}
+                            playerRefs={playerRefs}
+                            tableRef={tableRef}
+                            getSrcCard={getSrcCard}
+                            rever={rever}
+                            foldedPlayers={foldedPlayers}
+                            shouldShareCards={shouldShareCards}
+                            sharingCards={sharingCards}
+                            allInArr={allInArr}
+                            isRevealFinished={isRevealFinished}
+                            gameOver={gameOver}
+                            hideStack={hideStack}
+                            tableId={tableId}
+                        />
+                    );
+                })}
+            </div>
+
+            {!tableState.handInProgress && (
+                <div 
+                    className="exit" 
+                    onClick={() => quitter()}
+                    style={{
+                      padding: '4px 8px 4px 8px', 
+                      background: '#ff3030ff',
+                      color: '#FFF',
+                    }}
+                >
+                    <ArrowBigLeft size={24} style={{ marginRight: 0 }} />
                     Quitter
                 </div>
             )}
@@ -672,42 +661,39 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
             <div
                 style={{
                     position: 'absolute',
-                    top: '5%',
-                    right: '-1%',
+                    top: '2%',
+                    right: '5%',
                     display: 'flex',
-                    gap: '5px',
+                    gap: '12px',
                     zIndex: 999,
-                    background: 'rgba(0, 0, 0, 0.3)',
-                    padding: '0px 2px',
-                    borderRadius: '0px',
-                    backdropFilter: 'blur(5px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
                 }}
             >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{
+                    display: 'flex'
+                }}>
                     <TableTabs />
                 </div>
 
                 <SoundButton soundMute={soundMute} setSoundMute={setSoundMute} />
                 
                 <div 
-                    className="menu-button"
+                    className="" 
                     onClick={() => setIsHistoryModalOpen(true)}
                     style={{
                         color: '#FFD700',
                         cursor: 'pointer',
+                        borderRadius: 4,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: '8px',
-                        borderRadius: '50%',
-                        transition: 'all 0.3s ease',
-                        background: 'rgba(255, 255, 255, 0.05)',
+                        width: 32,
+                        paddingTop: 4,
+                        paddingBottom: 4,
+                        border: '2px solid #FFD700',
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
-                    onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'}
                 >
-                    <History size={24} />
+                    <History size={20} />
+                    {/* <span>Historique</span> */}
                 </div>
             </div>
             <GameHistoryModal 
@@ -717,16 +703,26 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer, noT
                 getSrcCard={getSrcCard}
                 playerNames={tableState.playerNames || []}
             />
+            {/* Ajoutez le chat ici */}
                 <TableChat 
                     socketRef={socketRef}
                     tableId={tableId}
-                    tableState={tableState}
+                    tableState={tableState} // Ajoutez ceci
                     currentUserId={currentUserId}
                     playerNames={tableState.playerNames || []}
                 />
+            <RecaveModal
+                isOpen={showRecaveModal}
+                onClose={() => setShowRecaveModal(false)}
+                onRecave={(amount) => {
+                    socketRef.current.emit('recave', { tableId, userId: currentUserId, amount });
+                    setShowRecaveModal(false);
+                }}
+                minCave={tableState.buy || 100}
+                defaultCave={tableState.buy || 100}
+            />
         </div>
     );
-
 };
 
 export default Game;

@@ -58,6 +58,11 @@
     margin: 0 auto;
   }
 
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
   header {
     position: sticky;
     top: 0;
@@ -312,6 +317,7 @@
     display: grid;
 
     grid-template-columns: repeat(4, 1fr);
+    align-items: start; /* Ensure consistent alignment */
 
     gap: 14px;
 

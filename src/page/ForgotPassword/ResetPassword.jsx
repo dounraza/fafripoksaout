@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { resetPassword } from "../../services/authService";
+import { resetPassword } from "../../page/services/authService";
 import { toast, ToastContainer } from "react-toastify";
 import "./ResetPassword.scss";
 

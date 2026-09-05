@@ -1,0 +1,1463 @@
+:root {
+    --ink: #150205;
+    --red: #a5121a;
+    --white: #ffffff;
+    --cream: #fff6e2;
+    --gold: #d9ae4b;
+    --gold-hi: #f5da92;
+    --gold-deep: #8a6416;
+    --muted: #d9b8a8;
+    --line: rgba(217, 174, 75, 0.28);
+}
+
+/* --------------------------------------------------
+   RESET
+-------------------------------------------------- */
+
+.register-page {
+    min-height: 100vh;
+    background-color: var(--ink);
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    font-family:
+        "Manrope",
+        system-ui,
+        -apple-system,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+    position: relative;
+    overflow-x: hidden;
+}
+
+.register-page *,
+.register-page *::before,
+.register-page *::after {
+    box-sizing: border-box;
+}
+
+.register-page a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.register-page button,
+.register-page input {
+    font-family: inherit;
+}
+
+.register-page :focus-visible {
+    outline: 2px solid var(--gold-hi);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* --------------------------------------------------
+   OVERLAY
+-------------------------------------------------- */
+
+.register-bg-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+
+    background:
+        linear-gradient(
+            rgba(21, 2, 5, 0.55),
+            rgba(21, 2, 5, 0.8)
+        );
+
+    pointer-events: none;
+}
+
+/* --------------------------------------------------
+   WRAP
+-------------------------------------------------- */
+
+.register-page .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* --------------------------------------------------
+   TOP BAR
+-------------------------------------------------- */
+
+.register-page .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+
+    background:
+        linear-gradient(
+            180deg,
+            #6e0c13,
+            #4a080d
+        );
+
+    border-bottom: 1px solid var(--line);
+}
+
+.register-page .topbar .wrap {
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 38px;
+}
+
+.register-page .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: white;
+
+    font-family:
+        "Anton",
+        Impact,
+        sans-serif;
+
+    font-size: 26px;
+
+    letter-spacing: 0.5px;
+}
+
+.register-page .logo b {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            160deg,
+            #f5da92,
+            #c79a2e
+        );
+
+    border: 1px solid #8a6416;
+
+    color: #5c0a10;
+
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+.register-page .account {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+
+.register-page .btn {
+    display: inline-block;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    padding: 11px 24px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 14.5px;
+    font-weight: 800;
+
+    transition:
+        transform 0.15s ease,
+        filter 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.register-page .btn:active {
+    transform: translateY(1px);
+}
+
+.register-page .btn-ghost {
+    color: white;
+
+    border-color:
+        rgba(255, 255, 255, 0.6);
+
+    background: transparent;
+}
+
+.register-page .btn-ghost:hover {
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border-color: white;
+}
+
+.register-page .btn-gold {
+    background:
+        linear-gradient(
+            170deg,
+            #f0d28a,
+            #c79a2e
+        );
+
+    color: #3a2405;
+
+    border-color: #8a6416;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.35);
+}
+
+.register-page .btn-gold:hover {
+    filter: brightness(1.08);
+}
+
+.register-page .btn-gold:disabled {
+    opacity: 0.6;
+    cursor: default;
+    filter: none;
+}
+
+/* --------------------------------------------------
+   SUB NAV
+-------------------------------------------------- */
+
+.register-page .subnav {
+    position: relative;
+    z-index: 50;
+
+    background:
+        linear-gradient(
+            180deg,
+            #e7c879,
+            #c79a2e
+        );
+
+    border-bottom: 1px solid #8a6416;
+
+    box-shadow:
+        0 2px 10px
+        rgba(0, 0, 0, 0.3);
+}
+
+.register-page .subnav .wrap {
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.register-page .subnav .wrap::-webkit-scrollbar {
+    display: none;
+}
+
+.register-page .subnav a {
+    position: relative;
+
+    color: #4a2e06;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 46px;
+
+    white-space: nowrap;
+
+    border-bottom: 2px solid transparent;
+}
+
+.register-page .subnav a:hover {
+    color: #1a0205;
+}
+
+.register-page .tag {
+    position: absolute;
+
+    top: 2px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    padding: 1px 6px;
+
+    background: #8e1219;
+
+    color: var(--gold-hi);
+
+    border-radius: 3px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------
+   STAGE
+-------------------------------------------------- */
+
+.register-page .stage {
+    position: relative;
+    z-index: 5;
+
+    min-height:
+        calc(100vh - 118px);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 56px 20px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            #c0161e 0%,
+            #9a1017 20%,
+            #6e0a11 42%,
+            #48060c 64%,
+            #2a0407 84%,
+            #150205 100%
+        );
+}
+
+.register-page .stage::before {
+    content: "";
+
+    position: absolute;
+    inset: -20%;
+
+    pointer-events: none;
+
+    opacity: 0.38;
+
+    background:
+        repeating-conic-gradient(
+            from 0deg at 50% 42%,
+            rgba(245, 218, 146, 0.28)
+                0deg 2.2deg,
+            transparent
+                2.2deg 9deg
+        );
+
+    mask-image:
+        radial-gradient(
+            circle at 50% 42%,
+            transparent 10%,
+            #000 34%,
+            transparent 76%
+        );
+
+    -webkit-mask-image:
+        radial-gradient(
+            circle at 50% 42%,
+            transparent 10%,
+            #000 34%,
+            transparent 76%
+        );
+}
+
+.register-page .stage::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            rgba(70, 4, 10, 0.4)
+                0 24%,
+            transparent 52%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 62%,
+            rgba(21, 2, 5, 0.9)
+                100%
+        );
+}
+
+/* --------------------------------------------------
+   PANEL
+-------------------------------------------------- */
+
+.register-page .panel {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    max-width: 460px;
+
+    padding: 38px 34px 34px;
+
+    background:
+        linear-gradient(
+            170deg,
+            rgba(58, 6, 11, 0.94),
+            rgba(21, 2, 5, 0.96)
+        );
+
+    border:
+        2px solid var(--gold);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 30px 70px
+            rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px
+            rgba(245, 218, 146, 0.18);
+
+    animation:
+        registerRise
+        0.8s
+        cubic-bezier(0.2, 0.8, 0.3, 1)
+        backwards;
+}
+
+@keyframes registerRise {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+}
+
+/* --------------------------------------------------
+   TITLE
+-------------------------------------------------- */
+
+.register-page .panel h1 {
+    margin: 0;
+
+    text-align: center;
+
+    font-family:
+        "Anton",
+        Impact,
+        sans-serif;
+
+    text-transform: uppercase;
+
+    font-size:
+        clamp(28px, 4.4vw, 40px);
+
+    line-height: 0.96;
+
+    letter-spacing: 0.5px;
+
+    transform:
+        skewX(-8deg);
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff8dc 6%,
+            #f0d28a 44%,
+            #d9ae4b 78%,
+            #f5da92 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.register-page .panel .sub {
+    margin-top: 10px;
+    margin-bottom: 26px;
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+/* --------------------------------------------------
+   FORM
+-------------------------------------------------- */
+
+.register-page .register-form {
+    width: 100%;
+}
+
+.register-page .register-form > label {
+    display: block;
+
+    margin-top: 16px;
+
+    color: var(--gold-hi);
+
+    font-size: 12.5px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+
+    text-transform: uppercase;
+}
+
+/* --------------------------------------------------
+   INPUT WRAPPER
+-------------------------------------------------- */
+
+.register-page .input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+.register-page .field-icon {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        rgba(245, 218, 146, 0.75);
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+.register-page .input-wrapper input {
+    width: 100%;
+
+    margin-top: 7px;
+
+    padding:
+        12px
+        44px
+        12px
+        42px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid
+        rgba(217, 174, 75, 0.45);
+
+    background:
+        rgba(255, 246, 226, 0.06);
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.register-page
+    .input-wrapper
+    input::placeholder {
+    color: #b99a94;
+}
+
+.register-page
+    .input-wrapper
+    input:focus {
+    outline: none;
+
+    border-color:
+        var(--gold-hi);
+
+    background:
+        rgba(255, 246, 226, 0.11);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(245, 218, 146, 0.08);
+}
+
+.register-page
+    .input-wrapper
+    input[type="date"] {
+    color-scheme: dark;
+}
+
+/* --------------------------------------------------
+   PASSWORD TOGGLE
+-------------------------------------------------- */
+
+.register-page .toggle-password {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+
+    transform:
+        translateY(-38%);
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    background: transparent;
+
+    color:
+        rgba(245, 218, 146, 0.8);
+
+    cursor: pointer;
+
+    border-radius: 50%;
+}
+
+.register-page
+    .toggle-password:hover {
+    color: white;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------
+   AGE
+-------------------------------------------------- */
+
+.register-page .age-confirmation {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 22px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 246, 226, 0.04);
+
+    border:
+        1px solid
+        rgba(217, 174, 75, 0.16);
+}
+
+.register-page
+    .age-confirmation
+    .toggle-container {
+    position: relative;
+
+    flex-shrink: 0;
+
+    width: 44px;
+    height: 24px;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+.register-page
+    .toggle-container
+    input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+}
+
+.register-page .toggle-slider {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border:
+        1px solid
+        rgba(245, 218, 146, 0.4);
+
+    border-radius: 999px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.register-page
+    .toggle-slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    top: 2px;
+    left: 2px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    box-shadow:
+        0 2px 5px
+        rgba(0, 0, 0, 0.35);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.register-page
+    .toggle-container
+    input:checked
+    + .toggle-slider {
+    background:
+        linear-gradient(
+            135deg,
+            #f5da92,
+            #c79a2e
+        );
+
+    border-color:
+        var(--gold-hi);
+}
+
+.register-page
+    .toggle-container
+    input:checked
+    + .toggle-slider::before {
+    transform:
+        translateX(20px);
+
+    background: #5c0a10;
+}
+
+.register-page .age-text {
+    color: #fbe6dc;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+/* --------------------------------------------------
+   SUBMIT
+-------------------------------------------------- */
+
+.register-page .submit-button {
+    width: 100%;
+
+    margin-top: 26px;
+
+    padding: 15px;
+
+    font-size: 16px;
+}
+
+/* --------------------------------------------------
+   SPINNER
+-------------------------------------------------- */
+
+.register-page .spinner {
+    display: inline-block;
+
+    width: 19px;
+    height: 19px;
+
+    border:
+        2px solid
+        rgba(58, 36, 5, 0.3);
+
+    border-top-color:
+        #3a2405;
+
+    border-radius: 50%;
+
+    animation:
+        spinnerRotate
+        0.7s
+        linear
+        infinite;
+}
+
+@keyframes spinnerRotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --------------------------------------------------
+   RETOUR
+-------------------------------------------------- */
+
+.register-page .retour {
+    display: block;
+
+    margin-top: 22px;
+
+    color: var(--muted);
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+.register-page .retour:hover {
+    color: var(--gold-hi);
+
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------
+   CANVAS CONFETTIS
+-------------------------------------------------- */
+
+.register-page #fx {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 95;
+
+    pointer-events: none;
+}
+
+/* --------------------------------------------------
+   VICTORY SCREEN
+-------------------------------------------------- */
+
+.register-page .victory {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 90;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at 50% 46%,
+            rgba(154, 16, 23, 0.96)
+                0%,
+            rgba(46, 5, 10, 0.98)
+                55%,
+            rgba(10, 1, 2, 0.99)
+                100%
+        );
+}
+
+/* --------------------------------------------------
+   JETONS
+-------------------------------------------------- */
+
+.register-page .jetons {
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+}
+
+.register-page .jet {
+    position: absolute;
+
+    top: 46%;
+    left: 50%;
+
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    background:
+        repeating-conic-gradient(
+            #a5121a 0 22deg,
+            #e7c879 22deg 28deg
+        );
+
+    box-shadow:
+        0 22px 50px
+            rgba(0, 0, 0, 0.65),
+        inset 0 0 0 7px
+            rgba(217, 174, 75, 0.95);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    animation:
+        jetIn
+        1.25s
+        cubic-bezier(0.45, 0, 0.7, 0.5)
+        forwards;
+
+    animation-delay:
+        var(--t);
+}
+
+.register-page .jet::after {
+    content: "♠";
+
+    width: 88px;
+    height: 88px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            160deg,
+            #8e1219,
+            #48060c
+        );
+
+    border:
+        4px solid
+        #d9ae4b;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--gold-hi);
+
+    font-size: 38px;
+}
+
+@keyframes jetIn {
+    0% {
+        transform:
+            translate(
+                calc(-50% + var(--fx)),
+                calc(-50% + var(--fy))
+            )
+            rotate(var(--r0))
+            scale(1.2);
+
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg)
+            scale(0.45);
+
+        opacity: 1;
+    }
+}
+
+.register-page
+    .jetons.gone
+    .jet {
+    animation: none;
+
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+/* --------------------------------------------------
+   FLASH
+-------------------------------------------------- */
+
+.register-page .vflash,
+.register-page .vwave {
+    position: absolute;
+
+    top: 46%;
+    left: 50%;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    opacity: 0;
+}
+
+.register-page .vflash {
+    width: 460px;
+    height: 460px;
+
+    margin:
+        -230px
+        0
+        0
+        -230px;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff 0 14%,
+            #fff3c9 30%,
+            rgba(245, 218, 146, 0.6)
+                50%,
+            rgba(217, 174, 75, 0)
+                74%
+        );
+}
+
+.register-page .vwave {
+    width: 240px;
+    height: 240px;
+
+    margin:
+        -120px
+        0
+        0
+        -120px;
+
+    border:
+        4px solid
+        rgba(245, 218, 146, 0.9);
+}
+
+.register-page .boom .vflash {
+    animation:
+        victoryFlash
+        1.2s
+        ease-out
+        forwards;
+}
+
+.register-page .boom .vwave {
+    animation:
+        victoryWave
+        1.8s
+        cubic-bezier(0.08, 0.8, 0.3, 1)
+        forwards;
+}
+
+.register-page
+    .boom
+    .vwave.w2 {
+    animation-delay: 0.22s;
+
+    border-color:
+        rgba(217, 174, 75, 0.5);
+}
+
+.register-page
+    .boom
+    .vwave.w3 {
+    animation-delay: 0.46s;
+
+    border-color:
+        rgba(255, 243, 201, 0.32);
+}
+
+@keyframes victoryFlash {
+    0% {
+        transform: scale(0.08);
+        opacity: 0;
+    }
+
+    12% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
+}
+
+@keyframes victoryWave {
+    0% {
+        transform: scale(0.12);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(8);
+        opacity: 0;
+    }
+}
+
+/* --------------------------------------------------
+   MESSAGE VICTOIRE
+-------------------------------------------------- */
+
+.register-page .vmsg {
+    position: relative;
+
+    z-index: 3;
+
+    max-width: 620px;
+
+    opacity: 0;
+}
+
+.register-page .boom .vmsg {
+    animation:
+        riseIn
+        1s
+        cubic-bezier(0.2, 0.8, 0.3, 1)
+        forwards;
+
+    animation-delay: 0.75s;
+}
+
+@keyframes riseIn {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+/* --------------------------------------------------
+   GROS JETON
+-------------------------------------------------- */
+
+.register-page .grosjeton {
+    width: 170px;
+    height: 170px;
+
+    margin:
+        0 auto 30px;
+
+    border-radius: 50%;
+
+    background:
+        repeating-conic-gradient(
+            #a5121a 0 22deg,
+            #e7c879 22deg 28deg
+        );
+
+    box-shadow:
+        0 24px 60px
+            rgba(0, 0, 0, 0.6),
+        inset 0 0 0 9px
+            rgba(217, 174, 75, 0.95),
+        0 0 70px
+            rgba(245, 218, 146, 0.55);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    animation:
+        jetonPop
+        1s
+        cubic-bezier(0.2, 1.5, 0.35, 1)
+        backwards;
+
+    animation-delay: 0.75s;
+}
+
+.register-page
+    .grosjeton
+    span {
+    width: 104px;
+    height: 104px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            160deg,
+            #8e1219,
+            #48060c
+        );
+
+    border:
+        5px solid
+        #d9ae4b;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-family:
+        "Anton",
+        Impact,
+        sans-serif;
+
+    font-size: 34px;
+
+    color: var(--gold-hi);
+
+    letter-spacing: 1px;
+}
+
+@keyframes jetonPop {
+    from {
+        transform:
+            scale(0)
+            rotate(-200deg);
+
+        opacity: 0;
+    }
+}
+
+/* --------------------------------------------------
+   TEXTE
+-------------------------------------------------- */
+
+.register-page .vmsg h2 {
+    margin: 0;
+
+    font-family:
+        "Anton",
+        Impact,
+        sans-serif;
+
+    text-transform: uppercase;
+
+    font-size:
+        clamp(28px, 4.6vw, 54px);
+
+    line-height: 1;
+
+    letter-spacing: 0.5px;
+
+    transform:
+        skewX(-8deg);
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff8dc 6%,
+            #f0d28a 44%,
+            #d9ae4b 78%,
+            #f5da92 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.register-page .vmsg p {
+    margin-top: 20px;
+
+    color: #fbe6dc;
+
+    font-size:
+        clamp(15px, 2vw, 19px);
+
+    line-height: 1.55;
+}
+
+.register-page .vmsg .emo {
+    display: block;
+
+    margin-top: 14px;
+
+    font-size: 1.5em;
+}
+
+.register-page .vmsg .cta {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 34px;
+
+    flex-wrap: wrap;
+}
+
+.register-page
+    .vmsg
+    .cta
+    .btn {
+    padding:
+        15px 36px;
+
+    font-size: 16px;
+}
+
+/* --------------------------------------------------
+   MOBILE
+-------------------------------------------------- */
+
+@media (max-width: 760px) {
+    .register-page .topbar .wrap {
+        height: 62px;
+    }
+
+    .register-page .logo {
+        font-size: 22px;
+    }
+
+    .register-page .logo b {
+        width: 29px;
+        height: 29px;
+    }
+
+    .register-page .account .btn {
+        padding:
+            9px 14px;
+
+        font-size: 12px;
+    }
+
+    .register-page .stage {
+        min-height:
+            calc(100vh - 110px);
+
+        padding:
+            36px 16px;
+    }
+
+    .register-page .panel {
+        padding:
+            30px 22px 26px;
+    }
+
+    .register-page .subnav .wrap {
+        gap: 22px;
+    }
+
+    .register-page .jet {
+        width: 104px;
+        height: 104px;
+    }
+
+    .register-page .jet::after {
+        width: 60px;
+        height: 60px;
+
+        font-size: 26px;
+
+        border-width: 3px;
+    }
+
+    .register-page .grosjeton {
+        width: 132px;
+        height: 132px;
+    }
+
+    .register-page
+        .grosjeton
+        span {
+        width: 82px;
+        height: 82px;
+
+        font-size: 26px;
+    }
+
+    .register-page .vmsg h2 {
+        font-size:
+            clamp(
+                30px,
+                9vw,
+                42px
+            );
+    }
+
+    .register-page .vmsg p {
+        font-size: 15px;
+    }
+}
+
+/* --------------------------------------------------
+   ACCESSIBILITÉ / REDUCED MOTION
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .register-page .panel,
+    .register-page .jet,
+    .register-page .vflash,
+    .register-page .vwave,
+    .register-page .vmsg,
+    .register-page .grosjeton {
+        animation: none !important;
+    }
+
+    .register-page .vmsg {
+        opacity: 1;
+    }
+
+    .register-page .jetons,
+    .register-page #fx {
+        display: none;
+    }
+
+    .register-page * {
+        transition: none !important;
+    }
+}

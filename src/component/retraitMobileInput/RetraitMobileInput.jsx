@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import { retrait as retraitService } from "../../services/RetraitMobileService";
 import { isUserInTable } from "../../services/tableServices";
-import { getSolde, fetchSolde } from "../../services/soldeService";
+import { getSolde, fetchSolde } from "../../page/services/soldeService";
 
 import "react-phone-number-input/style.css";
 import "./RetraitMobileInput.scss";
