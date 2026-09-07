@@ -37,7 +37,7 @@ const PlayerHandHoldem = ({
                         i === tableState.seat && tableState.playerCards != null ? (
                             <div className="card-containers holdem"
                                 style={{
-                                    transform: 'translateY(50%)',
+                                   // transform: 'translateY(50%)',
                                     zIndex: -1,
                                 }}
                             >
@@ -51,7 +51,7 @@ const PlayerHandHoldem = ({
                             <div
                                 className="card-containers holdem"
                                 style={{
-                                    transform: 'translateY(50%)',
+                                  //  transform: 'translateY(50%)',
                                     zIndex: -1,
                                 }}
                             >
@@ -66,7 +66,7 @@ const PlayerHandHoldem = ({
                         <div
                             className="card-containers holdem"
                             style={{
-                                transform: 'translateY(50%)',
+                                // transform: 'translateY(50%)',
                                 zIndex: -1,
                             }}
                         >

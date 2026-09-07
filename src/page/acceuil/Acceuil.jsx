@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Users, Wallet, RotateCcw } from 'lucide-react';
 import { getFullAvatarUrl } from '../../services/api';
+
+import {  useNavigate } from "react-router-dom";
 // Table welcome messages mapping
 const WELCOME = {
   "La Table des Mauvaises Décisions": "Bienvenue. Mauvaise idée ?",
@@ -360,6 +362,7 @@ function TableCard({ table, onEnter, sitCount }) {
 }
 
 export default function Accueil() {
+   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   
@@ -431,15 +434,16 @@ export default function Accueil() {
   }, [query, filter, tables]);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("afripoks.user");
-
-      if (storedUser) {
-        const parsed = JSON.parse(storedUser);
-        setUser(parsed);
-      }
-    } catch {
-      setUser(null);
+    // Récupération de l'utilisateur depuis sessionStorage
+    const userId = sessionStorage.getItem('userId');
+    const userName = sessionStorage.getItem('userName');
+    
+    if (userId) {
+      setUser({
+        id: userId,
+        username: userName,
+        name: userName
+      });
     }
   }, []);
 
@@ -608,9 +612,9 @@ const userId=sessionStorage.getItem('userId');
 
     // Save cave amount for the session/table if needed (optional based on your requirement)
     sessionStorage.setItem(`player_stack_${selectedTable.id}_${sessionStorage.getItem('userId')}`, amount);
-  
+    
     // Redirect to /game/{id}
-    window.location.href = `/game/${selectedTable.id}`;
+    navigate(`/game/${selectedTable.id}`, { state: { cave: amount } });
   };
 
   const goToTable = () => {
@@ -672,6 +676,12 @@ const userId=sessionStorage.getItem('userId');
           </a>
 
           <div className="actions">
+            
+            {user && (
+              <div className="user-info" style={{ marginRight: '15px', color: 'var(--gold)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                 <span>Solde : {balance.toLocaleString("fr-FR")} Ar</span>
+              </div>
+            )}
             <a className="btn btn-out desktop-only" href="/depot">
               Dépôt
             </a>
@@ -694,8 +704,9 @@ const userId=sessionStorage.getItem('userId');
                         </>
                     ) : (
                         <>
-                            <a href="/login">Connexion</a>
-                            <a href="/register">S'inscrire</a>
+                           <a href="/depot">Se connecter</a>
+                            <a href="/retrait">S'inscrire</a>
+                        
                         </>
                     )}
                 </div>
@@ -747,17 +758,10 @@ const userId=sessionStorage.getItem('userId');
             )}
           </div>
         </div>
-        
-        {user && (
-            <div className="mobile-balance-row">
-                <span className="solde-btn">
-                    Votre solde : {balance.toLocaleString("fr-FR")} Ar
-                </span>
-            </div>
-        )}
-      </header>
+        </header>
 
-      <div className="rotate-banner">
+        <div className="rotate-banner">
+
         Vous jouez sur téléphone ? Tournez l'écran à
         l'horizontale et mettez en plein écran pour
         profiter pleinement de l'expérience.

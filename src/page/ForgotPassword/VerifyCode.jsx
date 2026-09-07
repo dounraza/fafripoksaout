@@ -166,10 +166,12 @@ const VerifyCode = () => {
 
         setLoading(true);
 
-        window.alert("Type de vérification : " + (location.state?.type || "Non défini"));
-
+       // window.alert("Type de vérification : " + (location.state?.type || "Non défini"));
+       const type = location.state?.type || 'password-reset';
+       
         try {
-            await verifyCode(email, codeValue, location.state?.type);
+            
+            await verifyCode(email, codeValue, type);
 
             toast.success("Code valide !");
 

@@ -45,8 +45,22 @@ const Tables = () => {
     const loadData = async () => {
         setLoading(true);
         try {
-            await getAll(setTables, setSitCounts);
-            
+            // Remplacement de `await getAll(setTables, setSitCounts);` par un fetch direct
+            const response = await fetch('https://afripoks-back-production.up.railway.app/api/tables', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('DEBUG: Fetch tables status:', response.status);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('DEBUG: Fetch tables data:', data);
+            setTables(data.data);
+            setSitCounts(new Map(Object.entries(data.occupiedSeats)));
+
             const userId = sessionStorage.getItem('userId');
             if (userId) {
                 // await getSolde(userId, setSolde);

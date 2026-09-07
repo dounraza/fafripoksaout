@@ -17,9 +17,9 @@ import CommunityCards from './CommunityCards';
 import Pots from './Pots';
 import SoundButton from './SoundButton';
 import GameHistoryModal from './GameHistoryModal';
-import RecaveModal from './RecaveModal';
 import { onlineUsersSocket } from '../../engine/socket';
 
+import RecaveModal from './RecaveModal';
 import TableTabs from './TableTabs';
 import TableChat from './TableChat';
 const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) => {
@@ -40,6 +40,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     const isPossibleAction = useRef(true);
     const [soundMute, setSoundMute] = useState(false);
     const [avatars, setAvatars] = useState([]);
+    const [showRecaveModal, setShowRecaveModal] = useState(false);
     const tableRef = useRef(null);
     const playerRefs = [
         useRef(null),
@@ -65,28 +66,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     const [winAllIn, setWinAllIn] = useState(false)
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false)
     const [lastMatchHistory, setLastMatchHistory] = useState(null)
-    const [showRecaveModal, setShowRecaveModal] = useState(false);
-
-    useEffect(() => {
-        // Only trigger if stack is 0 and no hand is currently in progress
-        if (tableState.seats && tableState.seat !== undefined && tableState.seats[tableState.seat]?.stack === 0 && !tableState.handInProgress) {
-            console.log("Triggering RecaveModal, stack is 0 and hand not in progress");
-            setShowRecaveModal(true);
-        } else {
-            setShowRecaveModal(false);
-        }
-    }, [tableState]);
-
-    useEffect(() => {
-        let timer;
-        if (showRecaveModal) {
-            timer = setTimeout(() => {
-                quitter();
-                toast.info("Temps écoulé, vous avez quitté la table.");
-            }, 10000);
-        }
-        return () => clearTimeout(timer);
-    }, [showRecaveModal]);
 
     
     useEffect(() => {
@@ -108,6 +87,27 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             socket.disconnect(); // ✅ Pas socket.emit('disconnect')
         };
     }, [tableId]);
+    // Gérer l'ouverture de la modal quand le stack est 0
+    useEffect(() => {
+        const currentSeat = tableState.seats && tableState.seat !== undefined ? tableState.seats[tableState.seat] : null;
+        
+        console.log("Checking RecaveModal condition:", {
+            seatIndex: tableState.seat,
+            seatData: currentSeat,
+            handInProgress: tableState.handInProgress,
+            stack: currentSeat ? currentSeat.stack : 'N/A'
+        });
+
+        const isStackZero = currentSeat && currentSeat.stack === 0;
+
+        if (isStackZero && !tableState.handInProgress) {
+            console.log("Stack is 0 and hand not in progress, setting showRecaveModal to true");
+            setShowRecaveModal(true);
+        } else {
+            console.log("Conditions for RecaveModal not met.");
+        }
+    }, [tableState.seats, tableState.seat, tableState.handInProgress]);
+
     /**
      * Plays sound
      * 
@@ -467,35 +467,16 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
 
     const emitPlayerAction = (action, betSizeParam = undefined) => {
         const userId = sessionStorage.getItem('userId');
-        console.log("DEBUG [emitPlayerAction]:", { action, betSizeParam, betSize, tableState }); // DEBUG LOG
-
-        if (!isPossibleAction.current) {
-            console.warn("DEBUG: Action skipped, not possible current turn.");
-            return;
-        }
+        if (!isPossibleAction.current) return;
 
         isPossibleAction.current = false;
 
         const betSizeSend = betSizeParam ? betSizeParam : betSize;
-        
-        // Use defaults if legalActions or chipRange are missing
-        const min = tableState.legalActions?.chipRange?.min ?? 0;
-        // Fallback to player stack if max is not available
-        const max = tableState.legalActions?.chipRange?.max ?? (tableState.seats?.[tableState.seat]?.stack ?? 0);
-        
+        const { min, max } = tableState.legalActions.chipRange;
         const clampedBet = Math.max(min, Math.min(betSizeSend, max));
         const key= `players_stacks_${tableId}_${tableState.seat}_${userId}`;
         sessionStorage.setItem(key, (parseInt(tableState.seats[tableState.seat].stack)));
         let actionTrue = action;
-        
-        console.log("DEBUG [Socket Emitting]:", {
-            tableId: tableId,
-            tableSessionId: tableState.tableId, 
-            playerSeats: tableState.seat, 
-            action: actionTrue, 
-            bet: clampedBet
-        });
-
         socketRef.current.emit('playerAction', {
             tableId: tableId,
             tableSessionId: tableState.tableId, 
@@ -535,13 +516,11 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     };
 
     const addRange = () => {
-        const max = tableState.legalActions?.chipRange?.max ?? (tableState.seats?.[tableState.seat]?.stack ?? 0);
-        setBetSize(Math.min((betSize + 10 ), max));
+        setBetSize(Math.min((betSize + 10 ), tableState.legalActions.chipRange.max));
     }
 
     const minusRange = () => {
-        const min = tableState.legalActions?.chipRange?.min ?? 0;
-        setBetSize(Math.max((betSize - 1 ), min));
+        setBetSize(Math.max((betSize - 1 ), tableState.legalActions.chipRange.min));
     }
 
     return (
@@ -724,6 +703,17 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                 getSrcCard={getSrcCard}
                 playerNames={tableState.playerNames || []}
             />
+            <RecaveModal
+                isOpen={showRecaveModal}
+                onClose={() => setShowRecaveModal(false)}
+                onRecave={(cave) => {
+                    // Logique pour envoyer la demande de recave au serveur
+                    socketRef.current.emit('recave', { tableId: tableId, cave: cave });
+                    setShowRecaveModal(false);
+                }}
+                minCave={tableState.minCave || 0}
+                defaultCave={tableState.defaultCave || 0}
+            />
             {/* Ajoutez le chat ici */}
                 <TableChat 
                     socketRef={socketRef}
@@ -732,16 +722,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                     currentUserId={currentUserId}
                     playerNames={tableState.playerNames || []}
                 />
-            <RecaveModal
-                isOpen={showRecaveModal}
-                onClose={() => setShowRecaveModal(false)}
-                onRecave={(amount) => {
-                    socketRef.current.emit('recave', { tableId, userId: currentUserId, amount });
-                    setShowRecaveModal(false);
-                }}
-                minCave={tableState.cave || 100}
-                defaultCave={tableState.cave || 100}
-            />
         </div>
     );
 };

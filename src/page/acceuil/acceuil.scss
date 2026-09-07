@@ -366,6 +366,7 @@
   .burger-menu {
     display: none;
     position: relative;
+    margin-top: -10vh !important;
   }
 
   .burger-btn {
@@ -511,9 +512,7 @@
         color: var(--ink);
       }
 
-      &:hover {
-        transform: translateY(-1px);
-      }
+      
     }
   }
 
@@ -534,6 +533,7 @@
     width: 100%;
 
     padding-bottom: 80px;
+    margin-top: 15vh;
   }
 
   .empty {
@@ -579,7 +579,6 @@
       border-color 0.2s ease;
 
     &:hover {
-      transform: translateY(-2px);
 
       border-color: rgba(224, 184, 74, 0.55);
     }
@@ -751,7 +750,7 @@
 
       font-family: "Bebas Neue", sans-serif;
 
-      font-size: 25px;
+      font-size: 19px;
       line-height: 0.92;
 
       letter-spacing: 0.03em;
@@ -1374,6 +1373,7 @@
   @media (max-width: 900px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
+      margin-top: 10vh
     }
   }
 
@@ -1449,6 +1449,7 @@
 
     .burger-menu {
       display: block;
+      margin-top: -11vh !important;
     }
 
     .tools {
@@ -1463,11 +1464,9 @@
     }
 
     .grid {
-      grid-template-columns: 1fr;
-
-      gap: 12px;
-
-      padding-bottom: 28px;
+        padding-bottom: 28px;
+        gap: 12px;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .card {

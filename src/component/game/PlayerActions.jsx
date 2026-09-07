@@ -12,9 +12,9 @@ const PlayerActions = ({
 }) => {
     if (!tableState.handInProgress || tableState.toAct !== tableState.seat) return null;
     return (
-    <div className="player-action-container">
+   <div className="player-action-container">
     <div className="action-container">
-        {tableState.legalActions?.actions?.map((action) => (
+        {tableState.legalActions.actions.map((action) => (
             (action !== 'raise' && action !== 'bet') ? (
                 <div 
                     key={action} 
@@ -25,10 +25,13 @@ const PlayerActions = ({
                 </div>
             ) : null
         ))}
-        <div className="btn-allin" onClick={() => emitPlayerAction('raise', Number(tableState.legalActions?.chipRange?.max || 0))}>
-            Tapis
-        </div>
+        {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
+            <div className="btn-allin" onClick={() => emitPlayerAction('raise', Number(tableState.legalActions.chipRange.max))}>
+                Tapis
+            </div>
+        )}
     </div>
+    {(tableState.legalActions.actions.includes('raise') || tableState.legalActions.actions.includes('bet')) && (
     <div className="input-group">
         <div className="bet-input-container">
             <div className="bet-control button-minus" onClick={minusRange}>
@@ -41,8 +44,8 @@ const PlayerActions = ({
                     border: '1px solid transparent'
                 }}
                 type="number"
-                min={tableState.legalActions?.chipRange?.min || 0}
-                max={tableState.legalActions?.chipRange?.max || 0}
+                min={tableState.legalActions.chipRange.min}
+                max={tableState.legalActions.chipRange.max}
                 value={betSize}
                 onChange={(e) => setBetSize(Number(e.target.value))}
             />
@@ -52,6 +55,7 @@ const PlayerActions = ({
         </div>
         <div className="btn-raise" onClick={() => emitPlayerAction('raise')}>Miser/Relancer</div>
     </div>
+    )}
    </div>
         
     );

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "./Index.scss";
+import "./IndexPage.scss";
 
 const outerCards = [
   [0, "400px", "back"], [30, "400px", "back"], [60, "400px", "face spades"],
@@ -223,6 +223,7 @@ export default function App() {
 
   return (
     <>
+    <div className="index-page">
       <header className="topbar">
         <div className="wrap topbar-inner">
           <a className="logo" href="#">
@@ -342,6 +343,7 @@ export default function App() {
           </p>
         </div>
       </footer>
+      </div>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Smile } from "lucide-react";
+import { Smile, Zap } from "lucide-react";
 import SmileyModal from './SmileyModal';
 import { smileySocket } from '../../engine/socket';
 import { getFullAvatarUrl } from '../../services/api';
@@ -204,17 +204,6 @@ const Player = ({
         }
     }, [shouldShareCards, i, playerRefs, tableRef]);
 
-    const isLoser = (winData?.winStates ?? []).length > 0 && 
-                    (winData.winStates.find(w => w.seat === i) && 
-                    !winData.winStates.find(w => w.seat === i).isWinner && 
-                    !foldedPlayers.current.has(i) && 
-                    isRevealFinished);
-    
-    // Log uniquement pour debug
-    useEffect(() => {
-        if (isLoser) console.log(`Player ${i} is Loser, applying loser-shiny`);
-    }, [isLoser, i]);
-
     if (!tableState.playerNames[i]) return null;
 
     const avatarJson = avatars?.find(avt => avt.userId === tableState.playerIds[i]);
@@ -244,6 +233,9 @@ const Player = ({
         return 2; // Default to 2 if unknown
     };
 
+    const winner = winData?.winStates?.find(w => w.seat === i);
+    const isLoser = winner && !winner.isWinner && !foldedPlayers.current.has(i);
+
     const cardCount = getCardCount();
 
     return (
@@ -254,12 +246,24 @@ const Player = ({
                     player 
                     seat${i} 
                     ${(winData?.winStates ?? []).length > 0 && winData.winStates.find(w => w.seat === i)?.isWinner && isRevealFinished ?'win': '' }
-                    ${isLoser ? 'loser-shiny' : ''}
+                    ${isLoser && isRevealFinished ? 'thunder-animation' : ''}
                     ${tableState.toAct === i ?'active': '' }`
                 }
                 style={{ borderRadius: 12 }}
                 key={i}
             >
+                <style>{`
+                    @keyframes thunder {
+                        0%, 100% { filter: brightness(1) saturate(1); transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0); }
+                        10%, 30%, 50%, 70%, 90% { filter: brightness(3) contrast(2) saturate(2); transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
+                        20%, 40%, 60%, 80% { filter: brightness(1) saturate(1); transform: scale(1); box-shadow: 0 0 0px rgba(255,255,255,0); }
+                    }
+                    .thunder-animation {
+                        animation: thunder 5.8s ease-in-out infinite;
+                        z-index: 20;
+                    }
+                `}</style>
+
                 <div
                     style={{
                         position: 'absolute',
@@ -330,6 +334,7 @@ const Player = ({
                                 i === tableState.seat && tableState.playerCards != null ? (
                                     <div className={`card-containers ${cardCount > 2 ? 'omaha' : ''}`}
                                         style={{
+                                          
                                             zIndex: -1,
                                         }}
                                     >
@@ -343,7 +348,7 @@ const Player = ({
                                     <div
                                         className={`card-containers ${cardCount > 2 ? 'omaha' : ''}`}
                                         style={{
-
+                                           
                                             zIndex: -1,
                                         }}
                                     >
@@ -358,7 +363,7 @@ const Player = ({
                                 <div
                                     className={`card-containers ${cardCount > 2 ? 'omaha' : ''}`}
                                     style={{
-                                        transform: 'translateY(50%)',
+
                                         zIndex: -1,
                                     }}
                                 >
@@ -425,6 +430,12 @@ const Player = ({
                                 return (
                                     <div className={`action-badge ${badgeClass}`} key={i}>
                                         {label}
+                                    </div>
+                                );
+                            } else if (isLoser && isRevealFinished) {
+                                return (
+                                    <div className="action-badge badge-lose" key={i}>
+                                        <Zap size={16} />
                                     </div>
                                 );
                             }

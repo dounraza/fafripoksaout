@@ -1,12 +1,10 @@
 @use "../../styles/variable.scss" as *;
-@use "./GameView.scss" as *;
 
 @keyframes animatedCoin {
   0%   { transform: translate(-50%, -50%) translateY(0); }
   50%  { transform: translate(-50%, -50%) translateY(-200%); }
   100% { transform: translate(-50%, -50%) translateY(0); }
 }
-
 .game-container {
     display: flex;
     justify-content: center;
@@ -22,7 +20,7 @@
         top: 2%;
         left: 0%;
        // width: 4rem;
-      //  height: 2rem;
+      //  height: 2resm;
         @include flex-center;
         border-radius: 3px;
         background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.95));
@@ -93,39 +91,87 @@
                 border: none;
                 box-shadow: none;
             }
+        //  &.p_0 {
+        //          top: -3vh;
+        //         left: 13vh;
+        //     }
+        //     &.p_1{
+        //         top: -6vh;
+        //         left: 14vh;
+        //     } 
+          
+        //     &.p_2 {
+        //         top: 0vh;
+        //         left:13vh;
+        //     }
 
+        //     &.p_3 {
+        //         left: 4vh;
+        //         top: 8vh;
+        //     }
+
+        //     &.p_5 {
+        //         top: .7rem;
+        //         left: -5vh;
+        //     }
+        //     &.p_4 {
+        //         left: -5vh;
+        //         top: 3vh;
+        //     }
+        //     &.p_6 {
+        //         left: -5vh;
+        //         top: -0.3rem;
+        //     }
+
+        //     &.p_7 {
+        //         left: -7vh;
+        //         top: -11vh;
+        //     }
+
+        //     &.p_8 {
+        //         left: 10vh;
+        //         top: -11vh;
+        //     }
+           &.p_0 {
+                  top: 2vh;
+    		left: 13vh;
+            }
             &.p_1{
-                top: .7rem;
-                left: 110px;
+                top: 2vh;
+                left: 13vh;
             } 
-
-            &.p_2, &.p_0 {
-                top: 1.7rem;
+          
+            &.p_2 {
+                top: 2vh;
+                left:13vh;
             }
 
             &.p_3 {
-                left: 3rem;
-                top: 5.5rem;
+                left: 4vh;
+                top: 9vh;
             }
 
             &.p_5 {
                 top: .7rem;
-                left: -80px;
+                left: -5vh;
             }
-
-            &.p_6, &.p_4 {
-                left: -70px;
-                top: 1.7rem;
+            &.p_4 {
+                left: -5vh;
+                top: 3vh;
+            }
+            &.p_6 {
+                left: -6vh;
+                top: 0.7rem;
             }
 
             &.p_7 {
-                left: -1.5rem;
-                top: -3rem;
+                left: -7vh;
+                top: -15vh;
             }
 
             &.p_8 {
-                left: 4.5rem;
-                top: -3rem;
+                left: 10vh;
+                top: -15vh;
             }
         }
 
@@ -134,23 +180,26 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            top: -4.5rem;
+            top: -0.5vh;
             z-index: -1;
             width: 100%;
-
+			left:0vh;
             &.holdem {
                 top: -4.8rem; 
             }
 
-            &.omaha {
-                top: -4.8rem;
+        .omaha {
+                 top: 4.8rem;
+        
             }
+            
 
             .card-containers {
+                margin-top: -4rem!important;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-
+				margin-left:0vh!important;
                 &.holdem {
                     .card {
                         width: 3.5rem; 
@@ -259,28 +308,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        &.loser-shiny {
-            &::after {
-                content: '⚡';
+        &.active {
+            &::before {
+                content: "";
                 position: absolute;
-                inset: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2rem;
-                background: rgba(255, 255, 255, 0.3);
-                animation: thunder-flash 0.5s infinite;
-                pointer-events: none;
-                border-radius: 12px;
-                z-index: 100;
-                box-sizing: border-box;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: #579;  
+                z-index: -1;
+                // animation removed as per new countdown bar request
             }
-        }
-
-
-        @keyframes thunder-flash {
-            0%, 50%, 100% { opacity: 0; }
-            25%, 75% { opacity: 0.8; }
         }
 
         .turn-countdown-container {
@@ -316,35 +355,18 @@
                 background-color: #e74c3c;
             }
         }
-        
-        &.seat8 {
+           &.seat8 {
             top: 94%;
             left: 5%;
         }
-
-        &.seat7 {
-            top: 94%;
-            left: 72%;
-        }
-
-        &.seat6 {
+//1
+        &.seat0 {
             top: 70%;
-            left: 91%;
+            left: -15%;
         }
-
-        &.seat5 {
+         &.seat1 {
             top: 33.5%;
-            left: 91%;
-        }
-
-        &.seat4 {
-            top: 9%;
-            left: 89%;
-        }
-
-        &.seat3 {
-            top: 0%;
-            left: 40%;
+            left: -15%;
         }
 
         &.seat2 {
@@ -352,15 +374,32 @@
             left: -13%;
         }
 
-        &.seat1 {
-            top: 33.5%;
-            left: -15%;
+        &.seat3 {
+            top: 0%;
+            left: 40%;
         }
 
-        &.seat0 {
-            top: 70%;
-            left: -15%;
+        &.seat4{
+            top: 9%;
+            left: 89%;
         }
+
+        &.seat5 {
+            top: 33.5%;
+            left: 91%;
+        }
+
+        &.seat6 {
+            top: 70%;
+            left: 91%;
+        }
+
+        &.seat7 {
+            top: 94%;
+            left: 72%;
+        }
+
+
     }
 
     .pots-container {
@@ -627,9 +666,6 @@
     0 12px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   transition: all 0.1s ease;
-  margin: 5px;
-  min-width: 140px;
-  box-sizing: border-box;
 }
 
 .btn-fold:active {
@@ -654,9 +690,6 @@
     0 8px 0 #fbbf24,
     0 12px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.1s ease;
-  margin: 5px;
-  min-width: 140px;
-  box-sizing: border-box;
 }
 
 .btn-call:active {
@@ -668,7 +701,7 @@
 
 /* Bouton TAPIS (gold) */
 .btn-allin {
-  background: linear-gradient(180deg, #fb8524 0%, #f59e0b 100%);
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
   border: none;
   border-radius: 50px;
   padding: 15px 40px;
@@ -678,12 +711,9 @@
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: 
-    0 8px 0 #fb8524,
+    0 8px 0 #fbbf24,
     0 12px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.1s ease;
-  margin: 5px;
-  min-width: 140px;
-  box-sizing: border-box;
 }
 
 .btn-allin:active {

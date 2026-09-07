@@ -2,43 +2,41 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    background: rgba(20, 20, 20, 0.9);
-    border: 1px solid #FFD700;
-    color: #FFD700;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #1a1a1a;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
     z-index: 1000;
 
     &:hover {
-        background: #FFD700;
-        color: #1a1a1a;
-        transform: translateY(-2px);
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.6);
     }
 
     &:active {
-        transform: translateY(0);
+        transform: scale(0.95);
     }
 
     .unread-badge {
         position: absolute;
-        top: -8px;
-        right: -8px;
+        top: -5px;
+        right: -5px;
         background: #e63946;
         color: white;
         border-radius: 50%;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 10px;
+        font-size: 12px;
         font-weight: bold;
         border: 2px solid #1a1a1a;
     }
@@ -50,9 +48,10 @@
     right: 20px;
     width: 320px;
     max-height: 500px;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 20, 20, 0.95));
-    border: 2px solid #FFD700;
-    border-radius: 12px;
+    // Fond vert sapin sombre style tapis de casino
+    background: rgba(11, 46, 19, 0.98); 
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 16px; // Plus arrondi
     display: flex;
     flex-direction: column;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -64,13 +63,13 @@
     }
 
     .chat-header {
-        background: linear-gradient(135deg, #FFD700, #FFA500);
-        color: #1a1a1a;
+        background: transparent; // Fond transparent pour le header
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        color: #FFD700; // Texte doré
         padding: 12px 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #B8860B;
 
         .chat-title {
             display: flex;
@@ -100,7 +99,7 @@
             .chat-control-btn {
                 background: none;
                 border: none;
-                color: #1a1a1a;
+                color: #FFD700;
                 cursor: pointer;
                 padding: 4px;
                 border-radius: 4px;
@@ -110,7 +109,7 @@
                 transition: background 0.2s;
 
                 &:hover {
-                    background: rgba(0, 0, 0, 0.1);
+                    background: rgba(255, 255, 255, 0.1);
                 }
             }
         }
@@ -161,21 +160,15 @@
 
         .chat-message {
             padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #FFD700;
+            border-radius: 18px; // Bulle plus arrondie
+            background: rgba(255, 255, 255, 0.03); // Légère transparence
+            border: 1px solid rgba(255, 255, 255, 0.05); // Bordure très fine
             max-width: 85%;
             animation: slideIn 0.2s ease-out;
 
             &.own-message {
                 align-self: flex-end;
-                background: rgba(255, 215, 0, 0.1);
-                border-left: none;
-                border-right: 3px solid #FFD700;
-
-                .message-username {
-                    color: #FFD700;
-                }
+                background: rgba(255, 215, 0, 0.15); // Un peu plus contrasté pour soi-même
             }
 
             .message-header {
@@ -215,7 +208,7 @@
 
         .chat-input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 215, 0, 0.3);
             border-radius: 20px;
             padding: 8px 16px;
@@ -234,9 +227,8 @@
         }
 
         .chat-send-button {
-            // Updated style
-            background: transparent;
-            border: 1px solid #FFD700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
             border-radius: 50%;
             width: 36px;
             height: 36px;
@@ -244,12 +236,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: #FFD700;
-            transition: all 0.2s;
+            color: #1a1a1a;
+            transition: transform 0.2s, opacity 0.2s;
 
             &:hover:not(:disabled) {
-                background: #FFD700;
-                color: #1a1a1a;
                 transform: scale(1.1);
             }
 
@@ -260,11 +250,8 @@
             &:disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
-                border-color: rgba(255, 215, 0, 0.3);
-                color: rgba(255, 215, 0, 0.3);
             }
         }
-
     }
 }
 

@@ -47,6 +47,8 @@ const Nav = () => {
     const avatarSrc = avatarUrl || '/avatars/0.png';
 
     return (
+
+        
         <header className="header-nav-premium">
             <div className="title-logo" onClick={() => navigateNav("/acceuil")}>
                 <img src="/logo192.png" alt="Logo" style={{width: '40px', height: '40px'}} />
@@ -97,5 +99,7 @@ const Nav = () => {
         </header>
     );
 };
+
+
 
 export default Nav;

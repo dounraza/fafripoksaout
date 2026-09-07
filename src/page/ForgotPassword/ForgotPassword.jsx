@@ -242,6 +242,9 @@ const ForgotPassword = () => {
                 );
 
                 setResultType('succes');
+                
+                // Sauvegarde de l'email dans sessionStorage pour le flux de vérification
+                sessionStorage.setItem('userEmail', email.trim());
 
                 setTimeout(() => {
                     navigate('/verify-code', { state: { email: email.trim() } });

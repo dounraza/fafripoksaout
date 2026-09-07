@@ -1,10 +1,10 @@
-import api from "./api";
+import api, { publicApi } from "./api";
 const API_URL = `/api/tables`;
 
 
 export const getAll = async (setter, setSitCounts) => {    
   try {
-    const response = await api.get(API_URL);
+    const response = await publicApi.get(API_URL);
     if(response.data){
         
         setter(response.data.data);

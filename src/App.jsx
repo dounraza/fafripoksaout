@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Depot from "./page/depot/Depot";
 import Retrait from "./page/retrait/Retrait";
@@ -9,10 +8,8 @@ import History from './page/history/History';
 import GameTable from './page/game/GameTable';
 import Register from './page/register/Register';
 import Profile from './page/profile/Profile';
-import Index from './page/index/Index'; // Import Index
 import ForgotPassword from './page/ForgotPassword/ForgotPassword';
 import VerifyCode from './page/ForgotPassword/VerifyCode';
-import ResetPassword from './page/ForgotPassword/ResetPassword';
 
 import './App.scss';
 import Transaction from './page/admin/transaction/Transaction';
@@ -23,14 +20,10 @@ import Acceuil from './page/acceuil/Acceuil';
 import SoldePlayers from './page/admin/soldeplayers/SoldePlayers';
 import Dashboard from './component/dashboard/Dashboard';
 import HistoriqueMain from "./page/admin/historiquemain/HistoriqueMain";
-import { syncSession, initAuthFormTracking } from './page/services/afripoksBridge';
+import ResetPassword from './page/ForgotPassword/ResetPassword';
 
+import Index from "./page/index/Index";
 function App() {
-  useEffect(() => {
-    syncSession();
-    initAuthFormTracking();
-  }, []);
-
   return (
     <div className="app-container">
       <Router>
@@ -38,7 +31,8 @@ function App() {
           <Route path="/table" element={<Tables />} />
           <Route path="/acceuil" element={<Acceuil />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={<Index />} /> {/* Changed here */}
+		   <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+          <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login/admin" element={<PageLogin />} />
           <Route path="/register" element={<Register />} />
@@ -47,8 +41,7 @@ function App() {
           <Route path="/retrait" element={<Retrait />} />
           <Route path="/game/:tableid" element={<GameTable />} />
           <Route path="/game/:tableid/:tableSessionIdShared" element={<GameTable />} />
-         <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
-         <Route path="/verify-code" element={<VerifyCode />} />
+    <Route path="/verify-code" element={<VerifyCode />} />
          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* admin  */}
