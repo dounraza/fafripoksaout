@@ -105,7 +105,8 @@ const LudoGame = () => {
   const boardKey = useMemo(() => Date.now(), []);
 
   useEffect(() => {
-      const socket = io('http://localhost:5000');
+      const socketUrl = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+      const socket = io(socketUrl);
       socketRef.current = socket;
       setChatReady(true);
       socket.on('connect', () => {
