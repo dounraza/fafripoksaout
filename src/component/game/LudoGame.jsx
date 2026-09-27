@@ -301,7 +301,8 @@ const LudoGame = () => {
   });
   };
   const handleQuit = () => {
-      if (!window.confirm('Voulez-vous vraiment quitter la partie ? Le joueur restant sera déclaré gagnant.')) return;
+      const seatedPlayersCount = (gameState?.seats || []).filter(Boolean).length;
+      if (seatedPlayersCount >= 2 && !window.confirm('Voulez-vous vraiment quitter la partie ? Le joueur restant sera déclaré gagnant.')) return;
       socketRef.current?.emit('ludoAction', {
           tableId: String(tableid),
           tableSessionId: tableSessionIdRef.current,
