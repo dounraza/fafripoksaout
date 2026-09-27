@@ -44,6 +44,7 @@ const PLAYERS = {
 const SAFE_CELLS = new Set([1, 9, 14, 22, 27, 35, 40, 48]);
 const STEP_DURATION = 220;
 const DICE_ROLL_DURATION = 1100;
+const AUTO_MOVE_DELAY = 140;
 
 const getElement = (id) => document.getElementById(String(id));
 
@@ -124,7 +125,7 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     const randomFaces = window.setInterval(() => {
       const randomFace = Math.floor(Math.random() * 6) + 1;
       setDiceFace(color, randomFace);
-    }, 180);
+    }, 125);
 
     window.setTimeout(() => {
       window.clearInterval(randomFaces);
@@ -406,7 +407,8 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     const validPawnNumbers = getValidPawnNumbers(color, count);
 
     if (validPawnNumbers.length === 1) {
-      setTimeout(() => choose(color, validPawnNumbers[0]), DICE_ROLL_DURATION + 140);
+      // L'animation du dé est déjà terminée à ce stade.
+      setTimeout(() => choose(color, validPawnNumbers[0]), AUTO_MOVE_DELAY);
       return true;
     }
 
@@ -419,12 +421,18 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     if (hasPendingMove(requestedColor)) return;
 
     const activeColor = state.turn;
+    const result = forcedCount ?? Math.floor(Math.random() * 6 + 1);
 
+    // Tant que le dé roule, aucun pion ne peut devenir actif ou se déplacer.
+    state.isAnimating = true;
     setMessage(activeColor);
     animateDice(activeColor);
-    state.count = forcedCount ?? Math.floor(Math.random() * 6 + 1);
-    window.setTimeout(() => setDiceFace(activeColor, state.count), DICE_ROLL_DURATION);
-    clearOtherPendingCounts(activeColor);
+
+    window.setTimeout(() => {
+      state.count = result;
+      setDiceFace(activeColor, state.count);
+      state.isAnimating = false;
+      clearOtherPendingCounts(activeColor);
 
     if (state.count === 6) {
       state.consecutiveSixes[activeColor] += 1;
@@ -457,7 +465,8 @@ export function createLudoEngine(diceImages, callbacks = {}) {
       return;
     }
 
-    passTurn(activeColor);
+      passTurn(activeColor);
+    }, DICE_ROLL_DURATION);
   };
 
   setMessage(state.turn);

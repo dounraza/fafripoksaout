@@ -60,6 +60,9 @@ function Base({ color, onChoose, onRoll, playerInfo, isMyTurn, myColor, diceAnim
         aria-label={`Roll ${color} dice`}
         disabled={!isOccupied || myColor !== color || !isMyTurn || diceAnimating}
       />
+      <div className={`ludo-empty-logo ludo-empty-logo-${color}`} aria-hidden={isOccupied}>
+        <img src="/logo512.png" alt="" />
+      </div>
       <div className="inner">
         <div className="base-row" id={`${color}_upper`}>
           {[1, 2].map((number) => (
