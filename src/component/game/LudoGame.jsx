@@ -67,14 +67,18 @@ function Base({ color, onChoose, onRoll, playerInfo, isMyTurn, myColor, diceAnim
         <div className="base-row" id={`${color}_upper`}>
           {[1, 2].map((number) => (
             <div className={config.className} id={`${config.holderPrefix}${number}`} key={number}>
-              <button type="button" className="ludo-token" id={`${config.tokenPrefix}${number}`} onClick={() => isOccupied && isMyTurn && myColor === color && onChoose(color, number)} aria-label={`${color} token ${number}`} />
+              <button type="button" className="ludo-token" id={`${config.tokenPrefix}${number}`} onClick={() => isOccupied && isMyTurn && myColor === color && onChoose(color, number)} aria-label={`${color} token ${number}`}>
+                <img className="ludo-token-image" src={`/pions/${color}.png`} alt="" draggable="false" />
+              </button>
             </div>
           ))}
         </div>
         <div className="base-row" id={`${color}_lower`}>
           {[3, 4].map((number) => (
             <div className={config.className} id={`${config.holderPrefix}${number}`} key={number}>
-              <button type="button" className="ludo-token" id={`${config.tokenPrefix}${number}`} onClick={() => isOccupied && isMyTurn && myColor === color && onChoose(color, number)} aria-label={`${color} token ${number}`} />
+              <button type="button" className="ludo-token" id={`${config.tokenPrefix}${number}`} onClick={() => isOccupied && isMyTurn && myColor === color && onChoose(color, number)} aria-label={`${color} token ${number}`}>
+                <img className="ludo-token-image" src={`/pions/${color}.png`} alt="" draggable="false" />
+              </button>
             </div>
           ))}
         </div>

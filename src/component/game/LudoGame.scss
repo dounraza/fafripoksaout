@@ -661,6 +661,15 @@
   transition: filter 160ms ease, transform 160ms ease;
 }
 
+.ludo-token-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
 .ludo-token:hover {
   filter: brightness(1.14) saturate(1.12);
 }
@@ -693,34 +702,6 @@
   box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.9),
     0 12px 18px rgba(0, 0, 0, 0.32);
-}
-
-#b1,
-#b2,
-#b3,
-#b4 {
-  background-image: url("/pions/blue.png");
-}
-
-#g1,
-#g2,
-#g3,
-#g4 {
-  background-image: url("/pions/green.png");
-}
-
-#y1,
-#y2,
-#y3,
-#y4 {
-  background-image: url("/pions/yellow.png");
-}
-
-#r1,
-#r2,
-#r3,
-#r4 {
-  background-image: url("/pions/red.png");
 }
 
 #r1,
