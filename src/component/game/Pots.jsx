@@ -17,7 +17,7 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
         ) {
             const potRect = potRef.current.getBoundingClientRect();
 
-            const newAnimations = winnerSeats.map((seat) => {
+            const newAnimations = winnerSeats.map((seat, index) => {
                 const winnerRef = playerRefs[seat];
                 const winnerRect = winnerRef?.current?.getBoundingClientRect();
                 if (winnerRect) {
@@ -26,7 +26,7 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
                     const endX = winnerRect.left + winnerRect.width / 2;
                     const endY = winnerRect.top + winnerRect.height / 2;
                     return {
-                        key: seat,
+                        key: `pot-anim-${seat}-${index}-${Date.now()}`,
                         startX,
                         startY,
                         endX,
@@ -95,6 +95,7 @@ const Pots = ({ tableState, jetonMany, jeton, potRef, animatePotToWinner, winner
                             {/* <img src={jetonMany} alt="" style={{ width: '56px', height: '56px', objectFit: 'contain' }} /> */}
                             {[singleJeton, singleJeton1, singleJeton2].map((jeton, i) => (
                               <div
+                                key={i}
                                 style={{
                                   width: '24px',
                                   height: '24px',

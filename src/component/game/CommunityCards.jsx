@@ -78,6 +78,12 @@ const CommunityCards = ({
                     All Fold
                 </div>
             )}
+
+            {gameOver && winData?.allCards && Object.values(winData.allCards).some(hand => hand && hand.length > 0) && !isRevealFinished && (
+                <div className="showdown-banner-overlay">
+                    <span className="showdown-text">⚡ SHOWDOWN ⚡</span>
+                </div>
+            )}
         </div>
     );
 

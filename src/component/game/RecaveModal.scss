@@ -1,91 +1,118 @@
 .recave-modal-overlay {
     position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: grid;
-    place-items: center;
-    background: rgba(10, 3, 5, 0.85);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
     backdrop-filter: blur(4px);
-    padding: 16px;
 }
 
 .recave-modal-content {
-    width: min(400px, 92vw);
-    background: #1c0509;
-    border: 1px solid #e0b84a;
-    border-radius: 20px;
-    padding: 24px;
-    color: #f6ecd4;
-    text-align: center;
+    background: linear-gradient(145deg, #2c3e50, #000);
+    color: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 350px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #444;
 }
 
 .recave-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-
+    margin-bottom: 1.5rem;
+    
     h2 {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 32px;
-        color: #e0b84a;
         margin: 0;
+        font-size: 1.5rem;
+        color: #FFD700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     button {
-        background: transparent;
-        color: #f6ecd4;
+        background: none;
         border: none;
+        color: #aaa;
         cursor: pointer;
+        &:hover { color: #fff; }
     }
 }
 
 .recave-modal-body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1.5rem;
+
+    .countdown {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #FFD700;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+    }
 
     label {
-        font-size: 14px;
-        text-transform: uppercase;
-        color: #c4b089;
-        font-weight: 800;
+        font-size: 0.9rem;
+        color: #ccc;
     }
 
     input {
-        width: 100%;
-        height: 48px;
-        border-radius: 999px;
-        border: 1px solid rgba(243, 230, 200, 0.2);
-        background: rgba(18, 3, 7, 0.5);
-        color: #f3e6c8;
-        padding: 0 16px;
-        font-size: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #444;
+        background: #1a1a1a;
+        color: white;
+        font-size: 1.2rem;
         text-align: center;
-    }
-
-    button {
-        background: #e0b84a;
-        color: #140307;
-        padding: 12px 24px;
-        border-radius: 999px;
-        font-weight: 800;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
+        
+        &:focus {
+            outline: none;
+            border-color: #FFD700;
         }
     }
-}
 
-.timer-text {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #ff3030;
-    font-weight: 700;
+    .recave-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    button.btn-recave-yellow {
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        background: #FFD700;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: background 0.3s;
+
+        &:hover {
+            background: #e6c200;
+        }
+    }
+
+    button.btn-recave-quit {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ff4444;
+        background: transparent;
+        color: #ff4444;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.3s;
+
+        &:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+    }
 }

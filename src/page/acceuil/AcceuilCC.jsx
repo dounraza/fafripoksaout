@@ -16,6 +16,11 @@ import tableImg5 from '../../styles/image/table/5.jpg';
 import tableImg6 from '../../styles/image/table/6.png';
 
 const Acceuil = () => {
+    useEffect(() => {
+        const lastTableId = sessionStorage.getItem('lastTableId');
+        alert("LastTableId: " + lastTableId);
+    }, []);
+
     const { joinedTables } = useContext(JoinedTableContext);
     const [activeTab, setActiveTab] = useState('cash'); 
     const [gameFilter, setGameFilter] = useState('all');
@@ -244,7 +249,7 @@ const Acceuil = () => {
                             <div className="lobby-card-info-bottom">
                                 <div className="info-row">
                                     <span className="game-type-badge">{table.gameType === 'holdem' ? "Texas Hold'em" : "Omaha"}</span>
-                                    <span className="player-count"><Users size={14}/> {sitCounts.get(String(table?.id)) || 0}/9</span>
+                                    <span className="player-count"><Users size={14}/> {sitCounts.get(String(table?.id)) || 0}/{String(table?.gameType).toLowerCase() === 'ludo' ? 2 : 9}</span>
                                 </div>
                                 <div className="info-row main-stats">
                                     <div className="stat"><span>Cave</span> <b>{(table?.cave ?? 0).toLocaleString()} Ar</b></div>

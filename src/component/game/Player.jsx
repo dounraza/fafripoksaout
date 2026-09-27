@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Smile, Zap } from "lucide-react";
+import { Smile } from "lucide-react";
 import SmileyModal from './SmileyModal';
 import { smileySocket } from '../../engine/socket';
 import { getFullAvatarUrl } from '../../services/api';
@@ -25,6 +25,7 @@ const Player = ({
     gameOver,
     isRevealFinished,
     hideStack,
+    frozenStack,
     tableId,
 }) => {
     const [smileysOpen, setSmileysOpen] = useState(false);
@@ -67,6 +68,8 @@ const Player = ({
     const [displayStack, setDisplayStack] = useState(chips?.stack ?? 0);
     const [isStackHidden, setIsStackHidden] = useState(false);
     const [showResult, setShowResult] = useState(false);
+    const isWaitingForShowdown = frozenStack !== undefined &&
+        !gameOver && !(winData?.winStates?.length > 0);
     
     // Références pour verrouiller le solde
     const lastSafeStack = useRef(chips?.stack ?? 0);
@@ -81,18 +84,42 @@ const Player = ({
     }, [gameOver]);
 
     useEffect(() => {
-        if (chips?.stack !== undefined && chips?.stack !== lastSafeStack.current) {
-            setDisplayStack(chips.stack);
-            lastSafeStack.current = chips.stack;
-        }
-    }, [chips?.stack]);
-
-    useEffect(() => {
         if (chips?.stack === undefined) return;
 
         const actualStack = chips.stack;
         const isWinPhase = gameOver || (winData?.winStates?.length > 0);
-        
+
+        // The table state received at an all-in can already contain the final
+        // stack.  Keep the snapshot from before the all-in visible/hidden until
+        // the board reveal has completed.
+        if (frozenStack !== undefined && !isWinPhase) {
+            lastSafeStack.current = frozenStack;
+            setDisplayStack(frozenStack);
+            // The all-in has been announced, but showdown has not started yet.
+            // Keep the previous balance visible; do not show "Suspense" early.
+            setIsStackHidden(false);
+            return;
+        }
+
+        if (frozenStack !== undefined && !isRevealFinished) {
+            lastSafeStack.current = frozenStack;
+            setDisplayStack(frozenStack);
+            setIsStackHidden(true);
+            return;
+        }
+
+        // ✅ CAS PRIORITAIRE : RECAVE ou PREMIER JOIN
+        // Si le joueur était à 0 et reçoit un stack positif → recave ou première installation
+        // On affiche immédiatement peu importe gameOver ou winData (sinon la logique showdown cache le stack 5s)
+        if (!isWinPhase && lastSafeStack.current === 0 && actualStack > 0) {
+            lastSafeStack.current = actualStack;
+            setDisplayStack(actualStack);
+            setIsStackHidden(false);
+            isLocked.current = false;
+            setShowResult(false);
+            return;
+        }
+
         // DÉTECTION PROACTIVE : Si le solde du serveur est supérieur à notre dernier solde sûr,
         // c'est une victoire certaine (ou un gain de pot).
         const isIncreasing = actualStack > lastSafeStack.current;
@@ -168,13 +195,14 @@ const Player = ({
             }
         } else {
             // Perdants foldés ou spectateurs (pas de victoire ni de défaite affichée directement)
-            setDisplayStack(actualStack);
-            lastSafeStack.current = actualStack;
-            // Ensure showResult is false if not in a win/loss phase
-            setShowResult(false);
-            setIsStackHidden(false);
+            if (!isWinPhase) {
+                setDisplayStack(actualStack);
+                lastSafeStack.current = actualStack;
+                setShowResult(false);
+                setIsStackHidden(false);
+            }
         }
-        }, [chips?.stack, gameOver, isRevealFinished, winData, i]);
+        }, [chips?.stack, frozenStack, gameOver, isRevealFinished, winData, i]);
 
     const { avatarUrl: fetchedAvatarUrl } = useUserAvatar(tableState.playerIds[i]);
 
@@ -235,6 +263,7 @@ const Player = ({
 
     const winner = winData?.winStates?.find(w => w.seat === i);
     const isLoser = winner && !winner.isWinner && !foldedPlayers.current.has(i);
+    const isWinner = winner?.isWinner;
 
     const cardCount = getCardCount();
 
@@ -246,7 +275,7 @@ const Player = ({
                     player 
                     seat${i} 
                     ${(winData?.winStates ?? []).length > 0 && winData.winStates.find(w => w.seat === i)?.isWinner && isRevealFinished ?'win': '' }
-                    ${isLoser && isRevealFinished ? 'thunder-animation' : ''}
+                    ${isWinner && isRevealFinished ? 'thunder-animation' : ''}
                     ${tableState.toAct === i ?'active': '' }`
                 }
                 style={{ borderRadius: 12 }}
@@ -275,11 +304,6 @@ const Player = ({
                         zIndex: -1,
                     }}
                 >
-                    {isRevealFinished && winData?.winStates?.find(w => w.seat === i)?.handName && (
-                        <div className="hand-name-badge" style={{ display: 'none' }}>
-                            {winData.winStates.find(w => w.seat === i).handName}
-                        </div>
-                    )}
                     <div
                         style={{
                             width: '40pt',
@@ -288,12 +312,14 @@ const Player = ({
                             borderRadius: '100%',
                             fontSize: '1.2rem',
                             fontWeight: 'bold',
-                            border: '2px solid #EEE',
+                            border: isWinner && isRevealFinished && showResult ? '3px solid #FFD700' : '2px solid #EEE',
                             overflow: 'hidden',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: tableState.toAct === i ? '0 0 0 0 rgba(255, 255, 0, 0.7)' : 'none',
+                            boxShadow: isWinner && isRevealFinished && showResult
+                                ? '0 0 15px #FFD700, 0 0 25px rgba(255, 215, 0, 0.8)'
+                                : (tableState.toAct === i ? '0 0 0 0 rgba(255, 255, 0, 0.7)' : 'none'),
                             animation: tableState.toAct === i ? 'sonar-yellow 2s infinite' : 'none',
                         }}
                     >
@@ -321,7 +347,7 @@ const Player = ({
                             {(winData.allCards[i] ?? []).length > 0 && !foldedPlayers.current.has(i) && (
                                 <>
                                     {(winData.allCards[i]).map((card, idx) => (
-                                        <div className="card" key={idx}>
+                                        <div className={`card showdown-card-reveal ${isWinner && showResult ? 'winner-card-highlight' : ''}`} key={idx}>
                                             <img src={getSrcCard(card)} alt="" />
                                         </div>
                                     ))}
@@ -432,10 +458,10 @@ const Player = ({
                                         {label}
                                     </div>
                                 );
-                            } else if (isLoser && isRevealFinished) {
+                            } else if (isWinner && isRevealFinished && showResult) {
                                 return (
-                                    <div className="action-badge badge-lose" key={i}>
-                                        <Zap size={16} />
+                                    <div className="action-badge badge-win winner-badge-reveal" key={i}>
+                                        <img src="/animate/thunder.svg" alt="Thunder" style={{ width: "3.5rem", height: "1.2rem", objectFit: "contain" }} />
                                     </div>
                                 );
                             }
@@ -559,14 +585,14 @@ const Player = ({
                     }
                 </div>
                 <div className="stacks">
-                    {isStackHidden ? (
+                    {isWaitingForShowdown ? null : isStackHidden ? (
                         showResult ? (
                             winData?.winStates?.find(w => w.seat === i)?.isWinner ? (
-                                <div className="hand-name-result" style={{ color: '#00FF99', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                    {winData.winStates.find(w => w.seat === i).handName}
+                                <div className="hand-name-result winner-badge-reveal" style={{ color: '#00e5ff', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                                    🏆 {winData.winStates.find(w => w.seat === i).handName || 'Gagnant'}
                                 </div>
                             ) : (
-                                <div className="hand-name-result lose-badge" style={{ 
+                                <div className="hand-name-result lose-badge loser-badge-reveal" style={{ 
                                     backgroundColor: '#888888', 
                                     color: 'white', 
                                     fontSize: '0.7rem', 
@@ -578,7 +604,11 @@ const Player = ({
                                     {foldedPlayers.current.has(i) ? 'Fold' : 'Lose'}
                                 </div>
                             )
-                        ) : null // Zone vide pour le suspense
+                        ) : (
+                            <div className="suspense-badge">
+                                ⌛ Suspense...
+                            </div>
+                        )
                     ) : (
                         <>
                             {chips != null ? `${displayStack}` :

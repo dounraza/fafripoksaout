@@ -21,6 +21,7 @@ import SoldePlayers from './page/admin/soldeplayers/SoldePlayers';
 import Dashboard from './component/dashboard/Dashboard';
 import HistoriqueMain from "./page/admin/historiquemain/HistoriqueMain";
 import ResetPassword from './page/ForgotPassword/ResetPassword';
+import LudoGame from './component/game/LudoGame';
 
 import Index from "./page/index/Index";
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/depot" element={<Depot />} />
           <Route path="/retrait" element={<Retrait />} />
+          <Route path="/ludo/:tableId" element={<LudoGame />} />
           <Route path="/game/:tableid" element={<GameTable />} />
           <Route path="/game/:tableid/:tableSessionIdShared" element={<GameTable />} />
     <Route path="/verify-code" element={<VerifyCode />} />

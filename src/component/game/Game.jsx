@@ -18,21 +18,27 @@ import Pots from './Pots';
 import SoundButton from './SoundButton';
 import GameHistoryModal from './GameHistoryModal';
 import { onlineUsersSocket } from '../../engine/socket';
+import Confetti from 'react-confetti';
 
-import RecaveModal from './RecaveModal';
 import TableTabs from './TableTabs';
 import TableChat from './TableChat';
+import RecaveModal from './RecaveModal';
+import { PlusCircle } from 'lucide-react';
 const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) => {
     const [tableState, setTableState] = useState({});
+    const [frozenStacks, setFrozenStacks] = useState(null);
+    const lastStableSeatsRef = useRef(null);
+    const [isRecaveModalOpen, setIsRecaveModalOpen] = useState(false);
     const [betSize, setBetSize] = useState(0);
     const [winData, setWinData] = useState({});
+    const [showConfetti, setShowConfetti] = useState(false);
     const [sb, setSb] = useState(-1);
     const [bb, setBb] = useState(-1);
     const [dealer, setDealer] = useState(-1);
     const [game, setGame] = useState(false);
     const socketRef = useRef(null);
     const navigate = useNavigate();
-    const playerCave = cavePlayer;
+    const playerCave = Number(cavePlayer) || 0;
     const [community, setCommunity] = useState([]);
     const [communityShow, setCommunityShow] = useState([]);
     const [isRevealFinished, setIsRevealFinished] = useState(false);
@@ -40,7 +46,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     const isPossibleAction = useRef(true);
     const [soundMute, setSoundMute] = useState(false);
     const [avatars, setAvatars] = useState([]);
-    const [showRecaveModal, setShowRecaveModal] = useState(false);
     const tableRef = useRef(null);
     const playerRefs = [
         useRef(null),
@@ -66,6 +71,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     const [winAllIn, setWinAllIn] = useState(false)
     const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false)
     const [lastMatchHistory, setLastMatchHistory] = useState(null)
+    const quitRedirectTimerRef = useRef(null);
 
     
     useEffect(() => {
@@ -87,27 +93,6 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             socket.disconnect(); // ✅ Pas socket.emit('disconnect')
         };
     }, [tableId]);
-    // Gérer l'ouverture de la modal quand le stack est 0
-    useEffect(() => {
-        const currentSeat = tableState.seats && tableState.seat !== undefined ? tableState.seats[tableState.seat] : null;
-        
-        console.log("Checking RecaveModal condition:", {
-            seatIndex: tableState.seat,
-            seatData: currentSeat,
-            handInProgress: tableState.handInProgress,
-            stack: currentSeat ? currentSeat.stack : 'N/A'
-        });
-
-        const isStackZero = currentSeat && currentSeat.stack === 0;
-
-        if (isStackZero && !tableState.handInProgress) {
-            console.log("Stack is 0 and hand not in progress, setting showRecaveModal to true");
-            setShowRecaveModal(true);
-        } else {
-            console.log("Conditions for RecaveModal not met.");
-        }
-    }, [tableState.seats, tableState.seat, tableState.handInProgress]);
-
     /**
      * Plays sound
      * 
@@ -222,17 +207,31 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             }
         });
 
+        // Debug listener
+        socketRef.current.onAny((event, ...args) => {
+            console.log(`Socket event received: ${event}`, args);
+            
+        });
+
         socketRef.current.on('playerActionError', (data) => {
+            // Restore the normal server-driven display if the all-in was refused.
+            setFrozenStacks(null);
             toast.error(data.message || "Une erreur est survenue.");
         });
 
 
         socketRef.current.on('joinError', (data) => {
+            console.log("❌ Join Error received:", data.message);
             toast.error(data.message);
-            onlineUsersSocket.emit('joined-tables:leave', { uid: userId, tid: tableId });
+            
+            // Forcer la sortie immédiate côté serveur pour que les adversaires voient le départ
+            quitter(true);
         });
 
         socketRef.current.on('win', (data) => {
+            // Reset before applying the result so stacks remain frozen while the
+            // community-card reveal effect starts.
+            setIsRevealFinished(false);
             setGameOver(true);
             
             setGame(false);
@@ -267,6 +266,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             setCommunityShow([]);
             setCommunityToShow([]);
             setAllInArr([]);
+            setFrozenStacks(null);
             
             setShouldShareCards(true);
             setTimeout(async () => {
@@ -283,6 +283,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
             setCommunity([]);
             setCommunityShow([]);
             setAllInArr([]);
+            setFrozenStacks(null);
             foldedPlayers.current = new Set();
 
             console.log("Start");
@@ -291,9 +292,33 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
 
         socketRef.current.on('tableState', (data) => {
+            console.log("s");
+            console.log(data);
+            const lastAction = data?.actions?.[data.actions.length - 1];
+            const allInSeat = lastAction?.playerId;
+            const stackBeforeAction = lastStableSeatsRef.current?.[allInSeat];
+            const isAllIn = lastAction?.action === 'raise' && (
+                data?.seats?.[allInSeat]?.stack === 0 ||
+                (Number.isFinite(Number(stackBeforeAction)) &&
+                    Number(lastAction?.amount) >= Number(stackBeforeAction))
+            );
+
+            // Keep the all-in display separate from the server's final stack.
+            if (isAllIn) {
+                // The all-in player's visible stack is immediately 0: their full
+                // stack has gone into the pot. Other players keep receiving their
+                // remaining stacks while they call or raise.
+                setFrozenStacks(current => {
+                    const next = current ? [...current] : [];
+                    next[allInSeat] = 0;
+                    return next;
+                });
+            } else if (Array.isArray(data?.seats)) {
+                lastStableSeatsRef.current = data.seats.map(seat => seat?.stack);
+            }
             const minBet = data?.legalActions?.chipRange?.min ?? 0;
             setBetSize(minBet);
-            setTableState(data);
+            setTableState({ ...data });
             setTableSessionId(data.tableId);
             
             setAvatars(data.avatars);
@@ -329,13 +354,11 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                 }
             }
             
-            const lastAction = data?.actions[data?.actions.length - 1];
-            
             if (lastAction) {
                 const playerId = lastAction?.playerId;
                 const seatInfo = data?.seats[playerId];
                 
-                if (lastAction.action === 'raise' && seatInfo.stack === 0) {
+                if (isAllIn) {
                   playSound('allin', soundMute);
                   setAllInArr(prev => [...prev, seatInfo]);
                   return;
@@ -345,16 +368,32 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
 
         socketRef.current.on('quitsuccess', () => {
-            onlineUsersSocket.emit('joined-tables:leave', { uid: parseInt(userId), tid: parseInt(tableId) });
-            // REDIRECTION VERS L'ACCUEIL : au lieu de '/' qui est le login
-            window.location.href = '/acceuil';
+            if (quitRedirectTimerRef.current) {
+                clearTimeout(quitRedirectTimerRef.current);
+                quitRedirectTimerRef.current = null;
+            }
+            
+            finalizeQuit();
         });
 
         socketRef.current.on('quiterror', () => {
             quitter();
         });
 
+        socketRef.current.on('rebuyError', (data) => {
+            toast.error(data.message || "Erreur lors de la recave.");
+            if (data.message === 'Solde insuffisant' || data.message?.includes('Solde insuffisant')) {
+                quitter(true); // Force quit immédiat
+            }
+        });
+
         socketRef.current.on('timeerror', (data) => {
+            // Le serveur refuse la sortie (temps minimum non écoulé) :
+            // annuler la redirection de secours programmée par quitter().
+            if (quitRedirectTimerRef.current) {
+                clearTimeout(quitRedirectTimerRef.current);
+                quitRedirectTimerRef.current = null;
+            }
             toast.info(`Vous ne pouvez pas quitter. Temps restant : ${data.formatted}`, {
                 autoClose: 10000
             });
@@ -362,11 +401,25 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
 
 
         return () => {
+            if (quitRedirectTimerRef.current) {
+                clearTimeout(quitRedirectTimerRef.current);
+                quitRedirectTimerRef.current = null;
+            }
             socketRef.current?.disconnect();
             socketRef.current = null;
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableId, soundMute, winAllIn]);
+
+    useEffect(() => {
+        if (gameOver && isRevealFinished && winData?.winStates?.some(w => w.isWinner)) {
+            setShowConfetti(true);
+            const timer = setTimeout(() => setShowConfetti(false), 4500);
+            return () => clearTimeout(timer);
+        } else {
+            setShowConfetti(false);
+        }
+    }, [gameOver, isRevealFinished, winData]);
 
     useEffect(() => {
         if (!game || !tableState.activeSeats) return;
@@ -465,6 +518,24 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         fetchLastHistory();
     }, [tableId]);
 
+    // Timer pour quitter automatiquement si le tapis est vide et qu'on ne recave pas
+    const [autoQuitTimer, setAutoQuitTimer] = useState(null);
+
+    // Automatically open recave modal when stack is 0
+    useEffect(() => {
+        if (!tableState.seats || tableState.seat === undefined || tableState.seat === null) return;
+
+        const playerSeat = tableState.seats[tableState.seat];
+        
+        if (playerSeat && playerSeat.stack === 0 && gameOver && !tableState.handInProgress) {
+            setTimeout(() => {
+                setIsRecaveModalOpen(true);
+            }, 7000);
+        } else {
+            setIsRecaveModalOpen(false);
+        }
+    }, [tableState, gameOver]);
+
     const emitPlayerAction = (action, betSizeParam = undefined) => {
         const userId = sessionStorage.getItem('userId');
         if (!isPossibleAction.current) return;
@@ -474,6 +545,17 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         const betSizeSend = betSizeParam ? betSizeParam : betSize;
         const { min, max } = tableState.legalActions.chipRange;
         const clampedBet = Math.max(min, Math.min(betSizeSend, max));
+
+        // The Tapis button sends a raise equal to the maximum legal amount.
+        // Freeze this seat at zero immediately, before the next socket state.
+        if (action === 'raise' && Number(clampedBet) === Number(max)) {
+            const allInSeat = tableState.seat;
+            setFrozenStacks(current => {
+                const next = current ? [...current] : [];
+                next[allInSeat] = 0;
+                return next;
+            });
+        }
         const key= `players_stacks_${tableId}_${tableState.seat}_${userId}`;
         sessionStorage.setItem(key, (parseInt(tableState.seats[tableState.seat].stack)));
         let actionTrue = action;
@@ -486,22 +568,58 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
     }
 
-    const quitter = () => {
+    const quitter = (force = false) => {
+        if (quitRedirectTimerRef.current) {
+            clearTimeout(quitRedirectTimerRef.current);
+        }
         socketRef.current.emit("quit", {
             tableId: tableId,
             tableSessionId: tableState.tableId,
             playerSeats: tableState.seat,
+            force: force // Ajout du paramètre force
         });
         const userId = sessionStorage.getItem('userId');
-        onlineUsersSocket.emit('joined-tables:leave', { uid: parseInt(userId), tid: parseInt(tableId) });
+        onlineUsersSocket.emit('leave_table', { userId: parseInt(userId), tableId: parseInt(tableId) });
         
         // Nettoyage complet du session storage
         sessionStorage.removeItem('lastTableId');
         // Si vous avez d'autres clés spécifiques aux tables, ajoutez-les ici :
-        // sessionStorage.removeItem('autreCle');
+        // sessionStorage.removeItem('autreCle')
         
         // Dispatch d'un événement pour avertir les autres composants de la sortie
         window.dispatchEvent(new Event('tableLeft'));
+
+        // Redirection de secours : si quitsuccess ne revient pas dans 3s, on redirige quand même
+        quitRedirectTimerRef.current = setTimeout(() => {
+            quitRedirectTimerRef.current = null;
+            finalizeQuit();
+        }, 3000);
+    };
+
+    function finalizeQuit() {
+        navigate('/acceuil');
+    }
+
+    const handleRecave = (amount) => {
+        if (!socketRef.current) return;
+
+        const numericAmount = Number(amount);
+        if (isNaN(numericAmount) || numericAmount <= 0) return;
+
+        // ✅ Annuler immédiatement le timer d'expulsion automatique pour éviter l'expulsion en cas de latence réseau
+        if (autoQuitTimer) {
+            clearTimeout(autoQuitTimer);
+            setAutoQuitTimer(null);
+        }
+
+        // Stocker le montant dans le sessionStorage
+        sessionStorage.setItem(`recave_amount_${tableId}`, numericAmount);
+
+        socketRef.current.emit('rebuy', {
+            tableId: tableId,
+            tableSessionId: tableState.tableId,
+            amount: numericAmount
+        });
     };
 
     const getSrcCard = (card_id) => {
@@ -526,6 +644,11 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
     return (
         <div key={tableId} className="game-container">
             <ToastContainer />
+            {showConfetti && (
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 99999, overflow: 'hidden' }}>
+                    <Confetti numberOfPieces={120} recycle={false} width={400} height={720} gravity={0.25} />
+                </div>
+            )}
           
             {tableState.handInProgress && tableState.toAct === tableState.seat && ( 
                 <PlayerActions
@@ -620,6 +743,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                             key={i}
                             i={i}
                             chips={chips}
+                            frozenStack={frozenStacks?.[i]}
                             tableState={tableState}
                             winData={winData}
                             sb={sb}
@@ -696,23 +820,22 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
                     {/* <span>Historique</span> */}
                 </div>
             </div>
+            
+            <RecaveModal 
+                isOpen={isRecaveModalOpen} 
+                onClose={() => setIsRecaveModalOpen(false)} 
+                onRecave={handleRecave}
+                onQuit={() => quitter(true)}
+                minCave={tableState.legalActions?.chipRange?.min || sessionStorage.getItem('amount_cave_' + tableId) || 0} 
+                defaultCave={tableState.legalActions?.chipRange?.min || sessionStorage.getItem('amount_cave_' + tableId) || 0}
+            />
+
             <GameHistoryModal 
                 isOpen={isHistoryModalOpen}
                 onClose={() => setIsHistoryModalOpen(false)}
                 lastMatchData={lastMatchHistory}
                 getSrcCard={getSrcCard}
                 playerNames={tableState.playerNames || []}
-            />
-            <RecaveModal
-                isOpen={showRecaveModal}
-                onClose={() => setShowRecaveModal(false)}
-                onRecave={(cave) => {
-                    // Logique pour envoyer la demande de recave au serveur
-                    socketRef.current.emit('recave', { tableId: tableId, cave: cave });
-                    setShowRecaveModal(false);
-                }}
-                minCave={tableState.minCave || 0}
-                defaultCave={tableState.defaultCave || 0}
             />
             {/* Ajoutez le chat ici */}
                 <TableChat 

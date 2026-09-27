@@ -17,6 +17,8 @@ const PlayerHandHoldem = ({
 }) => {
     const cardCount = 2;
 
+    const isWinner = winData?.winStates?.find(w => w.seat === i)?.isWinner;
+
     return (
         <div className="player-cards holdem">
             {(winData?.allCards ?? []).length > 0 ? (
@@ -24,7 +26,11 @@ const PlayerHandHoldem = ({
                     {(winData.allCards[i] ?? []).length > 0 && !foldedPlayers.current.has(i) && (
                         <>
                             {(winData.allCards[i]).map((card, idx) => (
-                                <div className="card" key={idx}>
+                                <div 
+                                    className={`card showdown-card-reveal ${isWinner ? 'winner-card-highlight' : ''}`} 
+                                    key={idx}
+                                    style={{ animationDelay: `${idx * 0.2}s` }}
+                                >
                                     <img src={getSrcCard(card)} alt="" />
                                 </div>
                             ))}

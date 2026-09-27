@@ -334,9 +334,9 @@ function TableCard({ table, onEnter, sitCount }) {
           {(table.v || table.gameType || "Texas Hold'em").charAt(0).toUpperCase() + (table.v || table.gameType || "Texas Hold'em").slice(1)}
         </span>
 
-        <span className="seats">
-          {sitCount || 0} / {String(table.v || table.gameType || '').toLowerCase() === 'ludo' ? 2 : 9}
-        </span>
+          <span className="seats">
+            {sitCount || 0} / {String(table.gameType || table.v || '').toLowerCase() === 'ludo' ? 2 : 9}
+          </span>
       </div>
 
       <div className="bottom">

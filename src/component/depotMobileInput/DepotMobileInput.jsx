@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const DepotMobileInput = ({ isVerified }) => {
+    const [id, setId] = useState(sessionStorage.getItem("userId") || "");
+    const [emailId, setEmailId] = useState(sessionStorage.getItem(`userEmail_${id}`) || "");
+    
     const [pseudo, setPseudo] = useState(sessionStorage.getItem("userName") || "");
     const [amount, setAmount] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -276,7 +279,7 @@ const DepotMobileInput = ({ isVerified }) => {
                             <p>Votre compte n'est pas encore vérifié. Veuillez le vérifier pour effectuer un dépôt.</p>
                             <button
                                 className="btn-verify"
-                                onClick={() => navigate("/verify-code", { state: { type: 'account-verification' } })}
+                                onClick={() => navigate("/verify-code", { state: { type: 'account-verification', email: emailId } })}
                             >
                                 Vérifier mon compte
                             </button>

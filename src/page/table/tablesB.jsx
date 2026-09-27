@@ -25,10 +25,7 @@ const Tables = () => {
     const isNavigatingRef = useRef(false);
 
     // ─── TABLE QUE L'UTILISATEUR VIENT DE QUITTER (retour arrière) ───────
-    const [lastTableId, setLastTableId] = useState(() => {
-        const saved = sessionStorage.getItem('lastTableId');
-        return saved ? Number(saved) : null;
-    });
+    const lastTableId = sessionStorage.getItem('lastTableId');
 
     const { onlineUsers } = useContext(OnlineUserContext);
     const { joinedTables } = useContext(JoinedTableContext);
@@ -68,7 +65,6 @@ const Tables = () => {
     const goToTable = (tableId, caveValue) => {
         isNavigatingRef.current = true; // Activer le flag avant navigation
         sessionStorage.setItem('lastTableId', String(tableId));
-        setLastTableId(tableId);
         navigate(`/game/${tableId}`, { state: { cave: caveValue } });
     };
 
@@ -102,7 +98,7 @@ const Tables = () => {
         : null;
 
     // ─── Lobby : toutes les tables SAUF la lastTable (évite doublon) ──────
-    const waitingTables = tables.filter(t => Number(t.id) !== Number(lastTableId));
+    const waitingTables = tables.filter(t => !lastTableId || Number(t.id) !== Number(lastTableId));
 
     const pokerImages = [
         "https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=400&h=300&fit=crop&q=80",
@@ -261,7 +257,7 @@ const Tables = () => {
                                                 </div>
                                                 <div className="info-chip">
                                                     <Users size={12} />
-                                                    <span>{sitCounts.get(String(table?.id)) || 0}/9</span>
+                                                    <span>{sitCounts.get(String(table?.id)) || 0}/{String(table?.gameType).toLowerCase() === 'ludo' ? 2 : 9}</span>
                                                 </div>
                                             </div>
                                             <button

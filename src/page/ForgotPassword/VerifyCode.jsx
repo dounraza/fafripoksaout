@@ -20,9 +20,9 @@ const VerifyCode = () => {
     const [storedEmail, setStoredEmail] = useState("");
 
     useEffect(() => {
-        const emailFromSession = sessionStorage.getItem('userEmail');
-        console.log("DEBUG - sessionStorage email:", emailFromSession);
-        setStoredEmail(location.state?.email || emailFromSession || "");
+        const userId = sessionStorage.getItem('userId');
+        const emailFromSession = sessionStorage.getItem(`userEmail_${userId}`) || sessionStorage.getItem('userEmail');
+        setStoredEmail(location.state?.email || emailFromSession);
     }, [location.state?.email]);
 
     const email = storedEmail;
@@ -150,7 +150,6 @@ const VerifyCode = () => {
      */
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("DEBUG - handleSubmit triggered");
 
         const codeValue = code.join("");
 
@@ -170,7 +169,6 @@ const VerifyCode = () => {
        const type = location.state?.type || 'password-reset';
        
         try {
-            
             await verifyCode(email, codeValue, type);
 
             toast.success("Code valide !");
@@ -234,14 +232,14 @@ const VerifyCode = () => {
      * Retour à l'accueil
      */
     const handleHome = () => {
-        navigate("/");
+        navigate("/acceuil");
     };
 
     /*
      * Retour connexion
      */
     const handleLogin = () => {
-        navigate("/connexion");
+        navigate("/login");
     };
 
     return (

@@ -34,6 +34,15 @@ export const getById = async (id) => {
   }
 };
 
+export const getTableDetails = async (id) => {    
+  try {
+    const response = await api.get(API_URL+`/${id}`);
+    return response.data?.data ?? null;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const isUserInTable = async (userId) => {
   try { 
     const response = await api.get(API_URL+`/in-table/${userId}`);
@@ -54,4 +63,4 @@ export const getLastHistory = async (tableId) => {
   }
 }
 
-export default {getAll, getTablesInfos, getById, isUserInTable, getLastHistory};
+export default {getAll, getTablesInfos, getById, getTableDetails, isUserInTable, getLastHistory};

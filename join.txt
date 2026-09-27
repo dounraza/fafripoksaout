@@ -1,0 +1,121 @@
+socket.on('joinAnyTable', async ({ tableId, userId, playerCave }) => {
+  try {
+    if (tableLocks.get(tableId)) {
+      return socket.emit('joinError', { message: 'La table est temporairement verrouillée, réessayez.' });
+    }
+
+    tableLocks.set(tableId, true);
+    console.log('join : table =>', tableId, ', user =>', userId, ', cave =>', playerCave);
+
+    // --- 1. Gestion Reconnexion ---
+    const found = findPlayerInAllTables(userId, tableId);
+    if (found) {
+      console.log('[JOIN TABLE] player found !');
+      const { table, player } = found;
+      let idlePlayers = idlePlayersMap.get(table.tableInfo.id) || [];
+      
+      if (idlePlayers.find(id => id === Number(userId))) {
+        socket.emit('joinError', { message: 'Vous étiez inactif, vous devez rejoindre à nouveau.' });
+        idlePlayers = idlePlayers.filter(id => id !== Number(userId));
+        idlePlayersMap.set(Number(tableId), idlePlayers);
+        table.disconnectTimers.delete(Number(userId));
+        setTimeout(() => {
+          table.removePlayer(socket.id);
+        }, 3000);
+        return;
+      }
+      
+      const oldSocketId = player.socketio.id;
+      player.socketio = socket;
+      table.players.delete(oldSocketId);
+      table.players.set(socket.id, player);
+      table.handleReconnect(player.user.id);
+      table.broadcastState();
+      
+      const disconnected = disconnectedPlayers.get(table.id);
+      if (disconnected) {
+        disconnected.delete(userId);
+        for (const [uid, p] of disconnected.entries()) {
+          if (p.seatIndex === player.seatIndex) {
+            disconnected.delete(uid);
+          }
+        }
+      }
+      return;
+    }
+
+    // --- 2. Vérification et Débit du Solde ---
+    const solde = await Soldes.findOne({ where: { userId } });
+    if (!solde) {
+      return socket.emit('joinError', { message: 'Informations introuvables' });
+    }
+
+    if (solde.montant < playerCave) {
+      return socket.emit('joinError', { message: 'Solde insuffisant' });    
+    }
+
+    // [CORRECTION] : Débit immédiat et atomique AVANT d'ajouter le joueur
+    try {
+        solde.montant -= Number(playerCave);
+        await solde.save();
+        console.log('[JOIN TABLE] Solde débité de', playerCave, 'pour', userId);
+    } catch (err) {
+        console.error('[JOIN TABLE] Erreur lors du débit du solde:', err);
+        return socket.emit('joinError', { message: 'Erreur lors de la transaction financière.' });
+    }
+
+    // --- 3. Initialisation de la table ---
+    let table = findTable(tableId);
+    if (!table) { 
+      table = await createNewTable(tableId);
+    }
+
+    let idlePlayers = idlePlayersMap.get(Number(tableId)) || [];
+    idlePlayers = idlePlayers.filter(id => id !== Number(userId));
+    idlePlayersMap.set(Number(tableId), idlePlayers);
+    table.disconnectTimers.delete(Number(userId));
+
+    // --- 4. Création du joueur et ajout ---
+    const user = await User.findByPk(userId);
+    const player = new PokerPlayer(socket, user, playerCave);
+    
+    let seatIndex = null;
+    for (let i = 0; i < table.maxSeats; i++) {
+       if (!table.seatTaken.has(i)) {
+         seatIndex = i;
+         break;
+       }
+    }
+    
+    if (seatIndex === null) {
+      // [CORRECTION] : Remboursement si table pleine
+      solde.montant += Number(playerCave);
+      await solde.save();
+      return socket.emit('joinError', { message: 'La table est pleine, veuillez choisir une autre.' });
+    }
+
+    // Ajout effectif au moteur de jeu
+    const result = table.addPlayer(player, seatIndex);
+    
+    // --- 5. Mise à jour des références ---
+    const ownTables = playerTables.get(player.user.id) || [];
+    ownTables.push(tableId);
+    playerTables.set(player.user.id, ownTables);
+    
+    const disconnected = disconnectedPlayers.get(table.id);
+    if (disconnected) {
+      disconnected.delete(userId);
+      for (const [uid, p] of disconnected.entries()) {
+        if (p.seatIndex === player.seatIndex) {
+          disconnected.delete(uid);
+        }
+      }
+    }
+
+  } catch(err) {
+    console.error('[JOIN TABLE] Erreur critique:', err);
+    socket.emit('joinError', { message: 'Erreur interne lors de la connexion.' });
+  } finally {
+    tableLocks.set(tableId, false);
+  }
+});

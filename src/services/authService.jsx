@@ -34,14 +34,19 @@ export const updateProfile = async (userId, name, avatar) => {
 
 export const login = async (email, password) => {
   try {
-    const data= { email: email, password: password }
+    const data = { email: email, password: password };
     const response = await axios.post(API_URL, data);
-     const { accessToken, name, id, avatar_url } = response.data;
+    const { accessToken, name, id, avatar_url, email: userEmail } = response.data;
+    
+    // Fallback to input email if API doesn't return it
+    const emailToStore = userEmail || email;
 
     sessionStorage.setItem('accessToken', accessToken);
     sessionStorage.setItem('userName', name);
     sessionStorage.setItem('userId', id);
-     
+    sessionStorage.setItem(`userEmail_${id}`, emailToStore);
+    sessionStorage.setItem(`userEmail`, emailToStore);
+    
     if (avatar_url) {
       sessionStorage.setItem(`avatar_${id}`, avatar_url);
     } else {

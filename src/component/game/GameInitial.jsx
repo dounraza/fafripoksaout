@@ -318,7 +318,7 @@ const Game = ({tableId, tableSessionIdShared, setTableSessionId, cavePlayer }) =
         });
 
         socketRef.current.on('quitsuccess', () => {
-            onlineUsersSocket.emit('joined-tables:leave', { uid: parseInt(userId), tid: parseInt(tableId) });
+            onlineUsersSocket.emit('leave_table', { userId: parseInt(userId), tableId: parseInt(tableId) });
             navigate('/');
         });
 

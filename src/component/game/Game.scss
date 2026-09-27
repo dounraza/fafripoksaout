@@ -950,3 +950,140 @@
     background-color: #666666;
     border: 1px solid #333333;
 }
+
+/* ========================================================
+   SUSPENSE & SHOWDOWN ANIMATIONS
+   ======================================================== */
+@keyframes suspensePulse {
+    0% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 2px #ffd700); }
+    50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 10px #ffd700); }
+    100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 2px #ffd700); }
+}
+
+@keyframes winnerBadgePop {
+    0% { transform: scale(0.4) translateY(10px); opacity: 0; }
+    70% { transform: scale(1.15) translateY(-2px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes winnerCardGlow {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(0, 255, 153, 0.6)); }
+    50% { filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.95)) brightness(1.15); }
+}
+
+@keyframes cardFlip3D {
+    0% { transform: rotateY(90deg) scale(0.85); opacity: 0; }
+    60% { transform: rotateY(-15deg) scale(1.08); opacity: 1; }
+    100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes showdownBannerPulse {
+    0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+    20% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+}
+
+.showdown-banner-overlay {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+    padding: 8px 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+    animation: showdownBannerPulse 2.5s ease-out forwards;
+    
+    .showdown-text {
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        background: linear-gradient(45deg, #ffd700, #ff8c00, #fff, #ffd700);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        text-transform: uppercase;
+    }
+}
+
+.suspense-badge {
+    background: transparent;
+    color: #00e5ff;
+    font-size: 0.72rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: none;
+    animation: suspensePulse 1.2s infinite ease-in-out;
+    white-space: nowrap;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.9), 0 0 14px rgba(0, 140, 255, 0.7);
+}
+
+.winner-badge-reveal {
+    background: transparent;
+    color: #00e5ff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+    animation: winnerBadgePop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.9), 0 0 18px rgba(0, 140, 255, 0.8);
+}
+
+.loser-badge-reveal {
+    background-color: rgba(60, 60, 60, 0.85);
+    color: #cccccc;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+}
+
+.card.showdown-card-reveal {
+    animation: cardFlip3D 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.card.winner-card-highlight {
+    animation: winnerCardGlow 1.8s infinite ease-in-out;
+}
+
+.winner-crown-badge {
+    position: absolute;
+    top: -30px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #111111;
+    font-weight: 900;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 14px;
+    border: 1.5px solid #ffffff;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 25px rgba(255, 140, 0, 0.8);
+    animation: crownPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, crownGlow 1.5s infinite ease-in-out alternate;
+    white-space: nowrap;
+    z-index: 100;
+    letter-spacing: 0.5px;
+}
+
+@keyframes crownPop {
+    0% { transform: scale(0) translateY(12px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes crownGlow {
+    0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 15px rgba(255, 140, 0, 0.6); }
+    100% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px rgba(0, 255, 153, 0.9); }
+}
+

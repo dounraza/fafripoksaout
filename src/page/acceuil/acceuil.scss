@@ -35,8 +35,89 @@
     );
 
   background-attachment: fixed;
+.btn-out{
+  background: transparent;
 
+    color: var(--cream);
 
+    border: 1px solid rgba(224, 184, 74, 0.45);
+    height: 1%;
+    width:50%;
+    text-align:center;
+    border-radius: 20%;
+}
+     .subnav {
+        background: linear-gradient(
+            180deg,
+            #E7C879,
+            #C79A2E
+        );
+
+        border-bottom: 1px solid #8A6416;
+
+        box-shadow:
+            0 2px 10px rgba(0, 0, 0, .3);
+
+        .wrap {
+            display: flex;
+            gap: 28px;
+            height: 48px;
+            align-items: center;
+            overflow-x: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        a {
+            font-size: 14px;
+            color: #4A2E06;
+            font-weight: 600;
+            white-space: nowrap;
+
+            border-bottom: 2px solid transparent;
+
+            line-height: 46px;
+            position: relative;
+
+            &:hover {
+                color: #1A0205;
+            }
+
+            &.on {
+                color: #5C0A10;
+                font-weight: 800;
+                border-bottom-color: #8E1219;
+            }
+        }
+    }
+ .tag {
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        background: #8E1219;
+        color: var(--gold-hi);
+
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .8px;
+
+        padding: 1px 6px;
+        border-radius: 3px;
+
+        line-height: 1.5;
+    }
+ .subnav a.on
+
+ {
+    color: #5C0A10;
+    font-weight: 800;
+    border-bottom-color: #8E1219;
+}
   /* =========================================================
      2. RESET / BASE
   ========================================================= */
@@ -1373,7 +1454,7 @@
   @media (max-width: 900px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
-      margin-top: 10vh
+      margin-top: 5vh
     }
   }
 
@@ -1418,6 +1499,7 @@
     }
     .burger-menu {
         display: block !important;
+
     }
     .who-btn {
         padding: 0;
@@ -1449,7 +1531,8 @@
 
     .burger-menu {
       display: block;
-      margin-top: -11vh !important;
+      margin-top: -14vh !important;
+      left: 11%;
     }
 
     .tools {
@@ -1462,6 +1545,10 @@
 
       height: 44px;
     }
+
+//NAV
+
+//END NAV
 
     .grid {
         padding-bottom: 28px;
@@ -1482,5 +1569,8 @@
     .rejoin-banner-right {
       justify-content: flex-end;
     }
+
+   
+
   }
 }

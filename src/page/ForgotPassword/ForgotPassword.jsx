@@ -210,7 +210,8 @@ const ForgotPassword = () => {
             //         })
             //     }
             // );
-            const response = await fetch('https://afripoks-backend-production.up.railway.app/api/auth/forgot-password', // URL COMPLÈTE
+            // const response = await fetch('https://afripoks-backend-production.up.railway.app/api/auth/forgot-password', // URL COMPLÈTE
+            const response = await fetch('https://afripoks-back-production.up.railway.app/api/auth/forgot-password', // URL COMPLÈTE
                 {
                     method: 'POST',
                         headers: {

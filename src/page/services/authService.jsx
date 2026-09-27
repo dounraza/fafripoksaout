@@ -61,16 +61,21 @@ export const resetPassword = async (email, code, password) => {
 };
 
 export const login = async (email, password) => {
+  console.log("DEBUG - authService.login called with:", email);
   try {
     const data= { email: email, password: password }
     const response = await axios.post(API_URL, data);
      const { accessToken, name, id, avatar_url, email: userEmail } = response.data;
+    
+    console.log("DEBUG - login response email:", userEmail);
 
     sessionStorage.setItem('accessToken', accessToken);
     sessionStorage.setItem('userName', name);
     sessionStorage.setItem('userId', id);
-    sessionStorage.setItem('userEmail', userEmail);
-     
+    sessionStorage.setItem(`userEmail_${id}`, userEmail);
+    sessionStorage.setItem(`userEmail`, userEmail);
+    console.log("DEBUG - stored email in sessionStorage:", sessionStorage.getItem('userEmail'));
+
     if (avatar_url) {
       sessionStorage.setItem(`avatar_${id}`, avatar_url);
     } else {
@@ -81,6 +86,7 @@ export const login = async (email, password) => {
 
     return true;
   } catch (error) {
+    console.error("DEBUG - authService.login error:", error);
     return false;
   }
 };
