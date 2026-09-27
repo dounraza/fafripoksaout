@@ -745,10 +745,54 @@
   .ludo-main {
     flex-direction: column;
     gap: 16px;
+    width: min(100%, 650px);
+    align-items: stretch;
+  }
+
+  .ludo-info-panel {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .ludo-info-panel > div {
+    min-width: 0;
+  }
+
+  .ludo-info-panel > div:not(.ludo-turn-info):not(.ludo-settlement-balance) {
+    padding: 8px 6px;
+    border: 1px solid rgba(148, 163, 184, .18);
+    border-radius: 10px;
+    background: rgba(15, 23, 42, .42);
+    text-align: center;
+  }
+
+  .ludo-info-panel strong {
+    overflow-wrap: anywhere;
+    font-size: 14px;
+  }
+
+  .ludo-settlement-balance,
+  .ludo-turn-info,
+  .ludo-temporary-quit {
+    grid-column: 1 / -1;
+  }
+
+  .ludo-turn-info {
+    margin: 0;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .ludo-temporary-quit {
+    margin-top: 0;
   }
 
   .ludo-board {
-    width: min(650px, 96vw);
+    width: min(650px, 100%, calc(100vw - 28px));
   }
 
   .ludo-base {
@@ -767,6 +811,37 @@
 
   #message {
     font-size: 28px;
+  }
+}
+
+@media (max-width: 430px) {
+  .ludo-game-container {
+    padding: 8px;
+  }
+
+  .ludo-main {
+    gap: 10px;
+  }
+
+  .ludo-info-panel {
+    padding: 8px;
+    gap: 5px;
+    border-radius: 14px;
+    font-size: 11px;
+  }
+
+  .ludo-info-panel > div:not(.ludo-turn-info):not(.ludo-settlement-balance) {
+    padding: 6px 3px;
+  }
+
+  .ludo-info-panel strong {
+    font-size: 12px;
+  }
+
+  .ludo-board {
+    width: 100%;
+    border-width: 5px;
+    border-radius: 13px;
   }
 }
 
