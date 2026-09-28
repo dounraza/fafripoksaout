@@ -1233,6 +1233,35 @@
   width: 42%;
   height: 42%;
   z-index: 4;
+  display: block;
+}
+
+#multicolor .ludo-finished-pawns .ludo-token {
+  position: absolute;
+  width: 24%;
+  height: 24%;
+  flex: none;
+  margin: 0;
+}
+
+#multicolor .ludo-finished-pawns .ludo-token:nth-child(1) {
+  top: 2%;
+  left: 2%;
+}
+
+#multicolor .ludo-finished-pawns .ludo-token:nth-child(2) {
+  top: 26%;
+  left: 26%;
+}
+
+#multicolor .ludo-finished-pawns .ludo-token:nth-child(3) {
+  top: 50%;
+  left: 50%;
+}
+
+#multicolor .ludo-finished-pawns .ludo-token:nth-child(4) {
+  top: 74%;
+  left: 74%;
 }
 
 #multicolor .ludo-finished-green {
