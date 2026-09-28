@@ -688,12 +688,19 @@
   animation: ludo-pawn-pulse 900ms ease-in-out infinite alternate;
   outline: 3px solid rgba(255, 255, 255, .95);
   outline-offset: 3px;
+  filter: drop-shadow(0 0 5px rgba(255, 232, 92, .95));
   cursor: pointer;
 }
 
 @keyframes ludo-pawn-pulse {
-  from { filter: brightness(1.05) saturate(1.05); transform: scale(1); }
-  to { filter: brightness(1.45) saturate(1.35); transform: scale(1.14); }
+  from {
+    filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 4px rgba(255, 232, 92, .8));
+    transform: scale(1.04);
+  }
+  to {
+    filter: brightness(1.5) saturate(1.4) drop-shadow(0 0 9px rgba(255, 232, 92, 1));
+    transform: scale(1.2);
+  }
 }
 
 .ludo-token::before {
@@ -753,11 +760,9 @@
 
 .ludo-finished-pawns {
   position: absolute;
-  top: 42%;
-  left: 42%;
   z-index: 12;
-  width: 16%;
-  height: 16%;
+  width: 14%;
+  height: 14%;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
@@ -768,6 +773,34 @@
   background: rgba(255,255,255,.18);
   box-shadow: 0 0 18px rgba(255,255,255,.42), inset 0 0 12px rgba(255,255,255,.28);
   pointer-events: none;
+}
+
+.ludo-finished-green {
+  top: 36%;
+  left: 43%;
+  border-color: rgba(32, 190, 91, .95);
+  background: rgba(22, 163, 74, .3);
+}
+
+.ludo-finished-yellow {
+  top: 43%;
+  left: 56%;
+  border-color: rgba(245, 220, 40, .95);
+  background: rgba(245, 196, 20, .3);
+}
+
+.ludo-finished-red {
+  top: 50%;
+  left: 43%;
+  border-color: rgba(239, 68, 68, .95);
+  background: rgba(220, 38, 38, .3);
+}
+
+.ludo-finished-blue {
+  top: 43%;
+  left: 30%;
+  border-color: rgba(82, 135, 255, .95);
+  background: rgba(37, 99, 235, .3);
 }
 
 .ludo-finished-pawns .ludo-token {
@@ -1161,6 +1194,42 @@
   width: 30%;
   height: 30%;
   flex-basis: 30%;
+}
+
+/* Pions du parcours plus lisibles sur les écrans mobiles. */
+@media (max-width: 780px) {
+  .ludo-token {
+    width: 76%;
+    height: 76%;
+    flex-basis: 76%;
+  }
+
+  .ludo-finished-pawns .ludo-token {
+    width: 34%;
+    height: 34%;
+    flex-basis: 34%;
+  }
+}
+
+@media (max-width: 480px) {
+  .ludo-token {
+    width: 80%;
+    height: 80%;
+    flex-basis: 80%;
+  }
+}
+
+/* Plateau légèrement plus haut sur mobile pour une meilleure lisibilité. */
+@media (max-width: 780px) {
+  .ludo-board {
+    aspect-ratio: .94;
+  }
+}
+
+@media (max-width: 480px) {
+  .ludo-board {
+    aspect-ratio: .92;
+  }
 }
 @keyframes afripoks-logo-glow {
   0%, 100% { transform: scale(0.96); opacity: 0.9; }

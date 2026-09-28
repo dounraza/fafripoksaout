@@ -409,7 +409,10 @@ const LudoGame = () => {
             <MoveGrid id="red_move" cells={redMove} />
             <Base color="blue" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('blue')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
           </div>
-          <div id="out" className="ludo-finished-pawns" aria-label="Pions arrivés" />
+          <div id="out-green" className="ludo-finished-pawns ludo-finished-green" aria-label="Arrivée verte" />
+          <div id="out-yellow" className="ludo-finished-pawns ludo-finished-yellow" aria-label="Arrivée jaune" />
+          <div id="out-red" className="ludo-finished-pawns ludo-finished-red" aria-label="Arrivée rouge" />
+          <div id="out-blue" className="ludo-finished-pawns ludo-finished-blue" aria-label="Arrivée bleue" />
           </div>
         </div>
         <aside className="ludo-players-panel">

@@ -47,6 +47,7 @@ const DICE_ROLL_DURATION = 1100;
 const AUTO_MOVE_DELAY = 140;
 
 const getElement = (id) => document.getElementById(String(id));
+const getFinishedDestination = (color) => getElement(`out-${color}`);
 
 export function createLudoEngine(diceImages, callbacks = {}) {
   const message = getElement("message");
@@ -203,7 +204,7 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     // Le compteur interne est zero-based : la ligne finale commence au 51e pas.
     if (move >= 50) {
       if (position === config.finish) {
-        return getElement("out");
+        return getFinishedDestination(color);
       }
 
       return getElement(`${config.finalPrefix}${position}`);
@@ -319,8 +320,8 @@ export function createLudoEngine(diceImages, callbacks = {}) {
       } else {
         // La restauration ne doit pas programmer d'anciennes animations :
         // seule la position finale de l'historique doit être affichée.
-        const finalDestination = getElement("out") && pawn.finished
-          ? getElement("out")
+        const finalDestination = pawn.finished
+          ? getFinishedDestination(color)
           : getDestination(color, finalPositionAtStep, finalMoveAtStep);
         if (pawn.element && finalDestination) finalDestination.appendChild(pawn.element);
         killCheck(color, targetPosition, pawn);
