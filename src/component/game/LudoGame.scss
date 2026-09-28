@@ -1104,6 +1104,54 @@
   animation: none !important;
   transform: scale(1) !important;
 }
+
+/* Dé animé plus lisible, bien ancré dans chaque garage. */
+.ludo-base-die {
+  width: 66px;
+  top: 8px;
+  left: 8px;
+}
+
+.ludo-base-die-yellow {
+  top: 8px;
+  right: 8px;
+  left: auto;
+}
+
+.ludo-base-die-red {
+  right: auto;
+  bottom: 8px;
+  left: 8px;
+  top: auto;
+}
+
+.ludo-base-die-blue {
+  right: 8px;
+  bottom: 8px;
+  left: auto;
+  top: auto;
+}
+
+@media (max-width: 780px) {
+  .ludo-base-die { width: 42px; }
+}
+
+@media (max-width: 480px) {
+  .ludo-base-die { width: 34px; }
+}
+
+/* Pions jouables un peu plus grands sur les cases du parcours. */
+.ludo-token {
+  width: 68%;
+  height: 68%;
+  flex-basis: 68%;
+}
+
+.ludo-finished-pawns .ludo-token {
+  width: 30%;
+  height: 30%;
+  flex-basis: 30%;
+}
 @keyframes afripoks-logo-glow {
   0%, 100% { transform: scale(0.96); opacity: 0.9; }
   50% { transform: scale(1.04); opacity: 1; }
