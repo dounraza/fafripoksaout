@@ -248,23 +248,27 @@
 }
 
 .inner > .base-row > [id$="1"] {
-  top: 5%;
-  left: 33%;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .inner > .base-row > [id$="2"] {
-  top: 33%;
-  right: 5%;
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
 }
 
 .inner > .base-row > [id$="3"] {
-  bottom: 5%;
-  left: 33%;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .inner > .base-row > [id$="4"] {
-  top: 33%;
-  left: 5%;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
 }
 
 .g_green,
