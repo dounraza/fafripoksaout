@@ -412,7 +412,7 @@ const LudoGame = () => {
           </div>
         </div>
         <aside className="ludo-players-panel">
-          <div className="players-heading"><Users size={25} /><strong>Joueurs connectés</strong><span>({players.length}/4)</span></div>
+          <div className="players-heading"><Users size={25} /><strong>Joueurs connectés</strong><span>({players.length}/2)</span></div>
           <div className="players-list">{players.map((player) => <div className={`player-card ${player.color}`} key={player.userId || player.color}><div className="player-avatar">{player.host ? <Crown size={27} fill="currentColor" /> : (player.name || "J").charAt(0)}</div><div className="player-details"><strong>{player.name}</strong><span><i className={`mini-dot ${player.color}`} />{palette[player.color] || player.color}</span></div>{player.host && <em>Hôte</em>}<b className="player-coins">🪙 {formatAr(player.cave)}</b><Menu size={20} className="player-menu" /></div>)}</div>
           <div className="table-name-card"><div><Gem size={25} /><strong>Nom de la table</strong></div><p>{tableName}</p><Edit3 size={18} /></div>
           <div className="ludo-motto"><span>━━</span><Crown size={24} fill="currentColor" /><span>━━</span><small>Ludo, plus qu’un jeu !</small></div>
