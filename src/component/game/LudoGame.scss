@@ -686,20 +686,20 @@
 .ludo-token.is-selectable {
   z-index: 12;
   animation: ludo-pawn-pulse 900ms ease-in-out infinite alternate;
-  outline: 3px solid rgba(255, 255, 255, .95);
-  outline-offset: 3px;
-  filter: drop-shadow(0 0 5px rgba(255, 232, 92, .95));
+  outline: 4px solid rgba(255, 255, 255, .98);
+  outline-offset: 4px;
+  filter: drop-shadow(0 0 7px rgba(255, 232, 92, 1));
   cursor: pointer;
 }
 
 @keyframes ludo-pawn-pulse {
   from {
     filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 4px rgba(255, 232, 92, .8));
-    transform: scale(1.04);
+    transform: scale(1.06);
   }
   to {
     filter: brightness(1.5) saturate(1.4) drop-shadow(0 0 9px rgba(255, 232, 92, 1));
-    transform: scale(1.2);
+    transform: scale(1.25);
   }
 }
 
@@ -761,8 +761,8 @@
 .ludo-finished-pawns {
   position: absolute;
   z-index: 12;
-  width: 14%;
-  height: 14%;
+  width: 10%;
+  height: 10%;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
@@ -775,29 +775,29 @@
 }
 
 .ludo-finished-green {
-  top: 34%;
-  left: 34%;
+  top: 35%;
+  left: 29%;
   border-color: rgba(32, 190, 91, .95);
   background: rgba(22, 163, 74, .3);
 }
 
 .ludo-finished-yellow {
-  top: 34%;
-  left: 52%;
+  top: 35%;
+  left: 61%;
   border-color: rgba(245, 220, 40, .95);
   background: rgba(245, 196, 20, .3);
 }
 
 .ludo-finished-red {
-  top: 52%;
-  left: 34%;
+  top: 55%;
+  left: 29%;
   border-color: rgba(239, 68, 68, .95);
   background: rgba(220, 38, 38, .3);
 }
 
 .ludo-finished-blue {
-  top: 52%;
-  left: 52%;
+  top: 55%;
+  left: 61%;
   border-color: rgba(82, 135, 255, .95);
   background: rgba(37, 99, 235, .3);
 }
@@ -1222,6 +1222,10 @@
 @media (max-width: 780px) {
   .ludo-board {
     aspect-ratio: .94;
+    width: calc(100vw - 8px);
+    max-width: none;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 }
 
