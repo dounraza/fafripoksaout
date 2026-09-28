@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
+import { Crown, Dice5, DoorOpen, Edit3, Gem, Info, Menu, MessageCircle, Users } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
 import { createLudoEngine } from "./ludoEngine";
 import TableChat from "./TableChat";
@@ -344,6 +345,20 @@ const LudoGame = () => {
       });
   }, [diceAnimating, gameState, myColor]);
   const formatAr = (value) => Number(value || 0).toLocaleString("fr-FR");
+  const tableName = "Table des Champions";
+  const palette = { green: "Vert", yellow: "Jaune", red: "Rouge", blue: "Bleu" };
+  const playerDefaults = [
+    { name: "Emma", color: "yellow", cave: 1200, host: true },
+    { name: "Lucas", color: "blue", cave: 980 },
+    { name: "Chloé", color: "green", cave: 860 },
+    { name: "Théo", color: "red", cave: 740 },
+  ];
+  const players = ["yellow", "blue", "green", "red"].map((color, index) => {
+    const seat = getPlayerForColor(color);
+    return { ...playerDefaults[index], ...(seat || {}), color };
+  });
+  const potValue = gameState?.prizePool ?? 2250;
+  const rakeValue = gameState?.rakePercent ?? 10;
 
   return (
     <main className="ludo-game-container" key={boardKey}>
@@ -367,20 +382,22 @@ const LudoGame = () => {
           </div>
         </div>
       )}
+      <header className="ludo-topbar">
+        <div className="ludo-brand"><div className="brand-pawns"><span>🔴</span><span>🔵</span><span>🟢</span></div><div><strong>Ludo<span>Zone</span></strong><small>Joue · Partage · Gagne</small></div></div>
+        <div className="ludo-table-title"><Crown size={26} fill="currentColor" /><strong>{tableName}</strong><button type="button" aria-label="Modifier le nom de la table"><Edit3 size={19} /></button></div>
+        <button type="button" className="ludo-exit-button" onClick={handleQuit}><DoorOpen size={25} /><span>Quitter la partie</span></button>
+      </header>
       <section className="ludo-main" id="main">
         <aside className="ludo-info-panel">
-          <div>Cave totale : <strong>{formatAr(gameState?.totalCave)} Ar</strong></div>
-          <div>Rake (10%) : <strong>{formatAr(gameState?.rakeAmount)} Ar</strong></div>
-          <div>Pot net : <strong>{formatAr(gameState?.prizePool)} Ar</strong></div>
+          <div className="ludo-stat-card"><span className="stat-icon coin-icon">◉</span><div><span>Pot actuel</span><strong>{formatAr(potValue)} <i>🪙</i></strong></div></div>
+          <div className="ludo-stat-card"><span className="stat-icon percent-icon">%</span><div><span>Rake <Info size={14} /></span><strong>{rakeValue} %</strong></div></div>
+          <div className={`ludo-stat-card turn-card ${turnIsReady && gameState.activeColor === myColor ? 'is-my-turn' : ''}`}><span className="stat-icon turn-icon">⟳</span><div><span>Tour actuel</span><strong><b className={`mini-dot ${gameState?.activeColor || 'blue'}`} />{activePlayerName}</strong></div></div>
           {settlementBalance !== null && <div className="ludo-settlement-balance">Votre solde : <strong>{formatAr(settlementBalance)} Ar</strong></div>}
-          <div className={`ludo-turn-info ${turnIsReady && gameState.activeColor === myColor ? 'is-my-turn' : ''}`}>
-            {turnIsReady
-              ? <><span>Tour : <strong>{activePlayerName} ({gameState.activeColor})</strong></span>{gameState.activeColor === myColor && <span> — À vous de jouer</span>}</>
-              : <strong>En attente du deuxième joueur…</strong>}
-          </div>
+          <div className="ludo-good-luck"><Dice5 size={68} strokeWidth={1.5} /><strong>Bonne partie !</strong><span>Que le meilleur<br />l’emporte !</span></div>
           {gameState?.yourColor && <button type="button" className="ludo-temporary-quit" onClick={handleQuit}>Quitter la partie</button>}
         </aside>
-        <div className="ludo-board" id="board">
+        <div className="ludo-center-column">
+          <div className="ludo-board" id="board">
           <div className="board-row board-row-large" id="row1">
             <Base color="green" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('green')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
             <MoveGrid id="yellow_move" cells={yellowMove} />
@@ -395,7 +412,16 @@ const LudoGame = () => {
             <Base color="blue" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('blue')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
           </div>
           <div id="out" className="ludo-finished-pawns" aria-label="Pions arrivés" />
+          </div>
+          <div className="ludo-dice-tray"><button type="button" className="tray-die" onClick={() => myColor && handleRoll(myColor)} aria-label="Lancer le dé"><Dice5 size={38} /></button><button type="button" className="tray-die"><Dice5 size={38} /></button></div>
+          <div className="ludo-chat-bar"><MessageCircle size={22} fill="currentColor" /><span>Écrire un message...</span><span>☺</span></div>
         </div>
+        <aside className="ludo-players-panel">
+          <div className="players-heading"><Users size={25} /><strong>Liste des joueurs</strong><span>({seatedPlayersCount || 4}/4)</span></div>
+          <div className="players-list">{players.map((player) => <div className={`player-card ${player.color}`} key={player.color}><div className="player-avatar">{player.host ? <Crown size={27} fill="currentColor" /> : (player.name || "J").charAt(0)}</div><div className="player-details"><strong>{player.name || player.username || "Joueur"}</strong><span><i className={`mini-dot ${player.color}`} />{palette[player.color]}</span></div>{player.host && <em>Hôte</em>}<b className="player-coins">🪙 {formatAr(player.cave || player.stack || 0)}</b><Menu size={20} className="player-menu" /></div>)}</div>
+          <div className="table-name-card"><div><Gem size={25} /><strong>Nom de la table</strong></div><p>{tableName}</p><Edit3 size={18} /></div>
+          <div className="ludo-motto"><span>━━</span><Crown size={24} fill="currentColor" /><span>━━</span><small>Ludo, plus qu’un jeu !</small></div>
+        </aside>
       </section>
       {chatReady && (
         <TableChat
