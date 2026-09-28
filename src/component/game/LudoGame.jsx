@@ -34,6 +34,7 @@ const redMove = [["5"], ["rf56", "box-r"], ["45"], ["4"], ["rf55", "box-r"], ["4
 function Base({ color, onChoose, onRoll, playerInfo, isMyTurn, myColor, diceAnimating }) {
   const config = bases[color];
   const isOccupied = !!playerInfo;
+  const canRoll = isOccupied && myColor === color && isMyTurn && !diceAnimating;
 
   return (
     <div id={color} className={`ludo-base ${!isOccupied ? 'is-empty' : ''}`}>
@@ -48,7 +49,7 @@ function Base({ color, onChoose, onRoll, playerInfo, isMyTurn, myColor, diceAnim
         )}
       </div>
       <button
-        className={`ludo-die ludo-base-die ludo-base-die-${color} ${!isOccupied ? 'disabled' : ''}`}
+        className={`ludo-die ludo-base-die ludo-base-die-${color} ${!isOccupied ? 'disabled' : ''} ${canRoll ? 'is-active' : ''}`}
         id={`die-${color}`}
         type="button"
         onClick={() => {
