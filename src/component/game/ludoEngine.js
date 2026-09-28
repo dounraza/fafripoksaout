@@ -121,14 +121,12 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     const die = diceElements[color];
     if (!die) return;
 
+    // Afficher le GIF pendant toute la durée du lancer. La face finale est
+    // appliquée ensuite dans le timeout de `roll`.
+    die.style.backgroundImage = 'url("/dice/dice.gif")';
     die.classList.add("is-rolling");
-    const randomFaces = window.setInterval(() => {
-      const randomFace = Math.floor(Math.random() * 6) + 1;
-      setDiceFace(color, randomFace);
-    }, 125);
 
     window.setTimeout(() => {
-      window.clearInterval(randomFaces);
       die.classList.remove("is-rolling");
     }, DICE_ROLL_DURATION);
   };

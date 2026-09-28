@@ -1087,6 +1087,12 @@
 .ludo-exit-button,
 .ludo-good-luck strong,
 .player-coins { font-weight: 600; }
+
+/* Pions des zones joueurs légèrement plus imposants. */
+.inner > .base-row > [id^="g_"] {
+  width: 39%;
+  height: 39%;
+}
 @keyframes afripoks-logo-glow {
   0%, 100% { transform: scale(0.96); opacity: 0.9; }
   50% { transform: scale(1.04); opacity: 1; }
