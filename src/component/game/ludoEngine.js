@@ -273,7 +273,7 @@ export function createLudoEngine(diceImages, callbacks = {}) {
     });
   };
 
-  const movePawn = (color, pawn, count) => {
+  const movePawn = (color, pawn, count, animate = true) => {
     const config = PLAYERS[color];
 
     if (!canMovePawn(pawn, count)) {
@@ -286,6 +286,8 @@ export function createLudoEngine(diceImages, callbacks = {}) {
       const willFinish = pawn.move + count === 56;
       let targetPosition = pawn.j + count;
       let stepDelay = 0;
+      let finalPositionAtStep = pawn.j;
+      let finalMoveAtStep = pawn.move;
 
       for (let position = pawn.j + 1; position <= targetPosition; position += 1) {
         if (color !== "red" && position === 53) {
@@ -297,23 +299,42 @@ export function createLudoEngine(diceImages, callbacks = {}) {
         stepDelay += 1;
         const moveAtStep = pawn.move;
         const positionAtStep = position;
+        finalPositionAtStep = positionAtStep;
+        finalMoveAtStep = moveAtStep;
 
-        setTimeout(() => {
-          const destination = getDestination(color, positionAtStep, moveAtStep);
-          animateTo(pawn.element, destination);
-        }, STEP_DURATION * stepDelay);
+        if (animate) {
+          setTimeout(() => {
+            const destination = getDestination(color, positionAtStep, moveAtStep);
+            animateTo(pawn.element, destination);
+          }, STEP_DURATION * stepDelay);
+        }
 
         pawn.move += 1;
       }
 
       pawn.j = targetPosition;
       pawn.finished = willFinish;
-      setTimeout(() => killCheck(color, targetPosition, pawn), STEP_DURATION * (stepDelay + 1));
+      if (animate) {
+        setTimeout(() => killCheck(color, targetPosition, pawn), STEP_DURATION * (stepDelay + 1));
+      } else {
+        // La restauration ne doit pas programmer d'anciennes animations :
+        // seule la position finale de l'historique doit être affichée.
+        const finalDestination = getElement("out") && pawn.finished
+          ? getElement("out")
+          : getDestination(color, finalPositionAtStep, finalMoveAtStep);
+        if (pawn.element && finalDestination) finalDestination.appendChild(pawn.element);
+        killCheck(color, targetPosition, pawn);
+      }
       return { moved: true, duration: STEP_DURATION * (stepDelay + 1), finished: willFinish };
     }
 
     if (count === 6) {
-      animateTo(pawn.element, getElement(config.start));
+      const startDestination = getElement(config.start);
+      if (animate) {
+        animateTo(pawn.element, startDestination);
+      } else if (pawn.element && startDestination) {
+        startDestination.appendChild(pawn.element);
+      }
       pawn.j = config.start;
       pawn.home = false;
       return { moved: true, duration: STEP_DURATION + 30, finished: false };
@@ -342,7 +363,11 @@ export function createLudoEngine(diceImages, callbacks = {}) {
       if (!PLAYERS[color] || !Number.isInteger(pawnNumber) || !Number.isFinite(diceValue)) return;
       const pawn = state.pawns[color][pawnNumber - 1];
       if (!pawn) return;
-      movePawn(color, pawn, diceValue);
+      // L'historique représente déjà l'état serveur. Le rejouer avec des
+      // timeouts d'animation pouvait faire revenir le pion sur une ancienne
+      // case après le rafraîchissement, notamment lorsqu'il venait d'arriver.
+      const result = movePawn(color, pawn, diceValue, false);
+      console.log(`Replay: ${color} pawn ${pawnNumber}, dice ${diceValue}, finished: ${result.finished}`);
     });
 
     state.isAnimating = false;
