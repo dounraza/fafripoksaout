@@ -245,6 +245,7 @@
   height: 34%;
   margin: 0;
   border-radius: 50%;
+  
 }
 
 .inner > .base-row > [id$="1"] {
@@ -1094,13 +1095,13 @@
 
 /* Pions des zones joueurs légèrement plus imposants. */
 .inner > .base-row > [id^="g_"] {
-  width: 43%;
-  height: 43%;
+  width: 31%;
+  height: 28%;
 }
 
 .inner > .base-row > [id^="g_"] .ludo-token {
-  width: 68%;
-  height: 68%;
+  width: 75%;
+  height: 75%;
 }
 
 /* Le GIF est la seule animation du dé pendant le lancer. */
