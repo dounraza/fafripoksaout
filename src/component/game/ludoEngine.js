@@ -290,7 +290,24 @@ export function createLudoEngine(diceImages, callbacks = {}) {
       return { moved: false, duration: 0 };
     }
 
-    if (!pawn.home && pawn.j !== 0) {
+    // Un pion au garage sort directement sur sa case de départ avec un 6.
+    // Cette règle doit être évaluée avant tout déplacement sur le parcours.
+    if (pawn.home) {
+      if (count !== 6) return { moved: false, duration: 0 };
+
+      const startDestination = getElement(config.start);
+      if (animate) {
+        animateTo(pawn.element, startDestination);
+      } else if (pawn.element && startDestination) {
+        startDestination.appendChild(pawn.element);
+      }
+      pawn.j = config.start;
+      pawn.home = false;
+      pawn.finished = false;
+      return { moved: true, duration: STEP_DURATION + 30, finished: false };
+    }
+
+    if (pawn.j !== 0) {
       // L'arrivée réelle correspond au dernier pas du parcours (56).
       // Une case portant le même numéro peut être traversée bien avant.
       const willFinish = pawn.move + count === 56;
@@ -336,18 +353,6 @@ export function createLudoEngine(diceImages, callbacks = {}) {
         killCheck(color, targetPosition, pawn);
       }
       return { moved: true, duration: STEP_DURATION * (stepDelay + 1), finished: willFinish };
-    }
-
-    if (count === 6) {
-      const startDestination = getElement(config.start);
-      if (animate) {
-        animateTo(pawn.element, startDestination);
-      } else if (pawn.element && startDestination) {
-        startDestination.appendChild(pawn.element);
-      }
-      pawn.j = config.start;
-      pawn.home = false;
-      return { moved: true, duration: STEP_DURATION + 30, finished: false };
     }
 
     return { moved: false, duration: 0 };

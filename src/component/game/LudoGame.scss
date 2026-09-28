@@ -1227,6 +1227,37 @@
     aspect-ratio: .92;
   }
 }
+
+/* Les arrivées sont les quatre coins de la zone multicolore centrale. */
+#multicolor .ludo-finished-pawns {
+  width: 42%;
+  height: 42%;
+  z-index: 4;
+}
+
+#multicolor .ludo-finished-green {
+  top: 3%;
+  left: 3%;
+}
+
+#multicolor .ludo-finished-yellow {
+  top: 3%;
+  right: 3%;
+  left: auto;
+}
+
+#multicolor .ludo-finished-red {
+  bottom: 3%;
+  left: 3%;
+  top: auto;
+}
+
+#multicolor .ludo-finished-blue {
+  right: 3%;
+  bottom: 3%;
+  left: auto;
+  top: auto;
+}
 @keyframes afripoks-logo-glow {
   0%, 100% { transform: scale(0.96); opacity: 0.9; }
   50% { transform: scale(1.04); opacity: 1; }

@@ -402,17 +402,18 @@ const LudoGame = () => {
             <Base color="yellow" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('yellow')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
           </div>
           <div className="board-row board-row-middle" id="row2">
-            <MoveGrid id="green_move" cells={greenMove} /><div id="multicolor"><img src="/logo512.png" alt="Afripoks" className="ludo-logo" /></div><MoveGrid id="blue_move" cells={blueMove} />
+            <MoveGrid id="green_move" cells={greenMove} /><div id="multicolor"><img src="/logo512.png" alt="Afripoks" className="ludo-logo" />
+              <div id="out-green" className="ludo-finished-pawns ludo-finished-green" aria-label="Arrivée verte" />
+              <div id="out-yellow" className="ludo-finished-pawns ludo-finished-yellow" aria-label="Arrivée jaune" />
+              <div id="out-red" className="ludo-finished-pawns ludo-finished-red" aria-label="Arrivée rouge" />
+              <div id="out-blue" className="ludo-finished-pawns ludo-finished-blue" aria-label="Arrivée bleue" />
+            </div><MoveGrid id="blue_move" cells={blueMove} />
           </div>
           <div className="board-row board-row-large" id="row3">
             <Base color="red" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('red')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
             <MoveGrid id="red_move" cells={redMove} />
             <Base color="blue" onChoose={handleChoose} onRoll={handleRoll} playerInfo={getPlayerForColor('blue')} isMyTurn={isMyTurn()} myColor={myColor} diceAnimating={diceAnimating} />
           </div>
-          <div id="out-green" className="ludo-finished-pawns ludo-finished-green" aria-label="Arrivée verte" />
-          <div id="out-yellow" className="ludo-finished-pawns ludo-finished-yellow" aria-label="Arrivée jaune" />
-          <div id="out-red" className="ludo-finished-pawns ludo-finished-red" aria-label="Arrivée rouge" />
-          <div id="out-blue" className="ludo-finished-pawns ludo-finished-blue" aria-label="Arrivée bleue" />
           </div>
         </div>
         <aside className="ludo-players-panel">
