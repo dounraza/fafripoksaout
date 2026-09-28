@@ -47,7 +47,16 @@ const DICE_ROLL_DURATION = 1100;
 const AUTO_MOVE_DELAY = 140;
 
 const getElement = (id) => document.getElementById(String(id));
-const getFinishedDestination = (color) => getElement(`out-${color}`);
+const FINISH_ZONE_IDS = {
+  green: "out-green",
+  yellow: "out-yellow",
+  red: "out-red",
+  blue: "out-blue",
+};
+const getFinishedDestination = (color) => {
+  const zoneId = FINISH_ZONE_IDS[color];
+  return zoneId ? getElement(zoneId) : null;
+};
 
 export function createLudoEngine(diceImages, callbacks = {}) {
   const message = getElement("message");
