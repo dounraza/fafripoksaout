@@ -1224,8 +1224,8 @@
     aspect-ratio: .94;
     width: calc(100vw - 8px);
     max-width: none;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    margin-left: 0;
+    transform: none;
   }
 }
 
