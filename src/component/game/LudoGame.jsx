@@ -347,18 +347,15 @@ const LudoGame = () => {
   const formatAr = (value) => Number(value || 0).toLocaleString("fr-FR");
   const tableName = "Table des Champions";
   const palette = { green: "Vert", yellow: "Jaune", red: "Rouge", blue: "Bleu" };
-  const playerDefaults = [
-    { name: "Emma", color: "yellow", cave: 1200, host: true },
-    { name: "Lucas", color: "blue", cave: 980 },
-    { name: "Chloé", color: "green", cave: 860 },
-    { name: "Théo", color: "red", cave: 740 },
-  ];
-  const players = ["yellow", "blue", "green", "red"].map((color, index) => {
-    const seat = getPlayerForColor(color);
-    return { ...playerDefaults[index], ...(seat || {}), color };
-  });
-  const potValue = gameState?.prizePool ?? 2250;
-  const rakeValue = gameState?.rakePercent ?? 10;
+  // Les sièges envoyés par le serveur représentent les joueurs actuellement
+  // connectés à cette partie. Aucun joueur fictif n'est affiché.
+  const players = (gameState?.seats || []).filter(Boolean).map((seat) => ({
+    ...seat,
+    name: seat.name || seat.username || "Joueur",
+    color: seat.color,
+  }));
+  const potValue = gameState?.totalCave ?? 0;
+  const rakeValue = 10;
 
   return (
     <main className="ludo-game-container" key={boardKey}>
@@ -383,7 +380,7 @@ const LudoGame = () => {
         </div>
       )}
       <header className="ludo-topbar">
-        <div className="ludo-brand"><div className="brand-pawns"><span>🔴</span><span>🔵</span><span>🟢</span></div><div><strong>Ludo<span>Zone</span></strong><small>Joue · Partage · Gagne</small></div></div>
+        <div className="ludo-brand"><div className="brand-pawns"><span>🔴</span><span>🔵</span><span>🟢</span></div><div><strong>Afri<span>poks</span></strong><small>Joue · Partage · Gagne</small></div></div>
         <div className="ludo-table-title"><Crown size={26} fill="currentColor" /><strong>{tableName}</strong><button type="button" aria-label="Modifier le nom de la table"><Edit3 size={19} /></button></div>
         <button type="button" className="ludo-exit-button" onClick={handleQuit}><DoorOpen size={25} /><span>Quitter la partie</span></button>
       </header>
@@ -417,8 +414,8 @@ const LudoGame = () => {
           <div className="ludo-chat-bar"><MessageCircle size={22} fill="currentColor" /><span>Écrire un message...</span><span>☺</span></div>
         </div>
         <aside className="ludo-players-panel">
-          <div className="players-heading"><Users size={25} /><strong>Liste des joueurs</strong><span>({seatedPlayersCount || 4}/4)</span></div>
-          <div className="players-list">{players.map((player) => <div className={`player-card ${player.color}`} key={player.color}><div className="player-avatar">{player.host ? <Crown size={27} fill="currentColor" /> : (player.name || "J").charAt(0)}</div><div className="player-details"><strong>{player.name || player.username || "Joueur"}</strong><span><i className={`mini-dot ${player.color}`} />{palette[player.color]}</span></div>{player.host && <em>Hôte</em>}<b className="player-coins">🪙 {formatAr(player.cave || player.stack || 0)}</b><Menu size={20} className="player-menu" /></div>)}</div>
+          <div className="players-heading"><Users size={25} /><strong>Joueurs connectés</strong><span>({players.length}/4)</span></div>
+          <div className="players-list">{players.map((player) => <div className={`player-card ${player.color}`} key={player.userId || player.color}><div className="player-avatar">{player.host ? <Crown size={27} fill="currentColor" /> : (player.name || "J").charAt(0)}</div><div className="player-details"><strong>{player.name}</strong><span><i className={`mini-dot ${player.color}`} />{palette[player.color] || player.color}</span></div>{player.host && <em>Hôte</em>}<b className="player-coins">🪙 {formatAr(player.cave)}</b><Menu size={20} className="player-menu" /></div>)}</div>
           <div className="table-name-card"><div><Gem size={25} /><strong>Nom de la table</strong></div><p>{tableName}</p><Edit3 size={18} /></div>
           <div className="ludo-motto"><span>━━</span><Crown size={24} fill="currentColor" /><span>━━</span><small>Ludo, plus qu’un jeu !</small></div>
         </aside>
