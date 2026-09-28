@@ -380,7 +380,7 @@ const LudoGame = () => {
         </div>
       )}
       <header className="ludo-topbar">
-        <div className="ludo-brand"><div className="brand-pawns"><span>🔴</span><span>🔵</span><span>🟢</span></div><div><strong>Afri<span>poks</span></strong><small>Joue · Partage · Gagne</small></div></div>
+        <div className="ludo-brand"><div className="brand-pawns"><img src="/logo512.png" alt="Afripoks" /></div><div><strong>Afri<span>poks</span></strong><small>Joue · Partage · Gagne</small></div></div>
         <div className="ludo-table-title"><Crown size={26} fill="currentColor" /><strong>{tableName}</strong><button type="button" aria-label="Modifier le nom de la table"><Edit3 size={19} /></button></div>
         <button type="button" className="ludo-exit-button" onClick={handleQuit}><DoorOpen size={25} /><span>Quitter la partie</span></button>
       </header>
