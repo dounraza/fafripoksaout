@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import { toast } from "react-toastify";
-import { Crown, Dice5, DoorOpen, Edit3, Gem, Info, Menu, MessageCircle, Users } from "lucide-react";
+import { Crown, Dice5, DoorOpen, Edit3, Gem, Info, Menu, Users } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
 import { createLudoEngine } from "./ludoEngine";
 import TableChat from "./TableChat";
@@ -410,8 +410,6 @@ const LudoGame = () => {
           </div>
           <div id="out" className="ludo-finished-pawns" aria-label="Pions arrivés" />
           </div>
-          <div className="ludo-dice-tray"><button type="button" className="tray-die" onClick={() => myColor && handleRoll(myColor)} aria-label="Lancer le dé"><Dice5 size={38} /></button><button type="button" className="tray-die"><Dice5 size={38} /></button></div>
-          <div className="ludo-chat-bar"><MessageCircle size={22} fill="currentColor" /><span>Écrire un message...</span><span>☺</span></div>
         </div>
         <aside className="ludo-players-panel">
           <div className="players-heading"><Users size={25} /><strong>Joueurs connectés</strong><span>({players.length}/4)</span></div>
